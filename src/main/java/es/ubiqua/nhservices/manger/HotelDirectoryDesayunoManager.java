@@ -5,11 +5,11 @@ import java.util.List;
 import es.ubiqua.nhservices.dao.HotelDirectoryDesayunoDAO;
 import es.ubiqua.nhservices.model.HotelDirectoryDesayuno;
 
-public class HotelDirectoryDesayunoManger {
+public class HotelDirectoryDesayunoManager {
 	
 	private HotelDirectoryDesayunoDAO hotelDirectoryDesayunoDao = new HotelDirectoryDesayunoDAO();
 	
-	public HotelDirectoryDesayunoManger(){
+	public HotelDirectoryDesayunoManager(){
 		
 	}
 	
