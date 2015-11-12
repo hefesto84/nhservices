@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelDirectoryEventos">
+    
+    <resultMap id="HotelDirectoryEventos" type="es.ubiqua.nhservices.model.HotelDirectoryEventos">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="description" column="description"/>
+        <result property="images" column="images"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelDirectoryEventos.HotelDirectoryEventos">
+        SELECT * FROM hotel_directory_eventos;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos" resultMap="SqlMapHotelDirectoryEventos.HotelDirectoryEventos">
+        SELECT * FROM hotel_directory_eventos WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_eventos (lang,description,images) 
+        	VALUES (
+        		#{lang},
+        		#{description},
+        		#{images}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos">
+    	UPDATE hotel_directory_eventos SET 
+    		lang = #{lang},
+    		description = #{description},
+    		images = #{images},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos">
+	  	delete from hotel_directory_eventos where id = #{id}
+	</delete>
+    
+</mapper>

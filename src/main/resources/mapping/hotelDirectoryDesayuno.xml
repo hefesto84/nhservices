@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelDirectoryDesayuno">
+    
+    <resultMap id="HotelDirectoryDesayuno" type="es.ubiqua.nhservices.model.HotelDirectoryDesayuno">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="description" column="description"/>
+        <result property="images" column="images"/>
+        <result property="localization" column="localization"/>
+        <result property="timetable" column="timetable"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelDirectoryDesayuno.HotelDirectoryDesayuno">
+        SELECT * FROM hotel_directory_desayuno;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno" resultMap="SqlMapHotelDirectoryDesayuno.HotelDirectoryDesayuno">
+        SELECT * FROM hotel_directory_desayuno WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_desayuno (lang,description,images,localization,timetable) 
+        	VALUES (
+        		#{lang},
+        		#{description},
+        		#{images},
+        		#{localization},
+        		#{timetable}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno">
+    	UPDATE hotel_directory_desayuno SET 
+    		lang = #{lang},
+    		description = #{description},
+    		images = #{images},
+    		localization = #{localization},
+    		timetable = #{timetable},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno">
+	  	delete from hotel_directory_desayuno where id = #{id}
+	</delete>
+    
+</mapper>

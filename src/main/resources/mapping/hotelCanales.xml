@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelCanales">
+    
+    <resultMap id="HotelCanales" type="es.ubiqua.nhservices.model.HotelCanales">
+        <result property="id" column="id"/>
+        <result property="id_hotel" column="id_hotel"/>
+        <result property="lang" column="lang"/>
+        <result property="channels" column="channels"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelCanales.HotelCanales">
+        SELECT * FROM hotel_canales;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelCanales" resultMap="SqlMapHotelCanales.HotelCanales">
+        SELECT * FROM hotel_canales WHERE id_hotel = #{id_hotel};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelCanales" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_canales (id_hotel,lang,channels) 
+        	VALUES (
+        		#{id_hotel},
+        		#{lang},
+        		#{channels}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelCanales">
+    	UPDATE hotel_canales SET 
+    		id_hotel = #{id_hotel},
+    		lang = #{lang},
+    		channels = #{channels},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelCanales">
+	  	delete from hotel_canales where id = #{id}
+	</delete>
+    
+</mapper>

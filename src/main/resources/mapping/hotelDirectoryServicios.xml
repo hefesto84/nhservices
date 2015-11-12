@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelDirectoryServicios">
+    
+    <resultMap id="HotelDirectoryServicios" type="es.ubiqua.nhservices.model.HotelDirectoryServicios">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="timetable" column="timetable"/>
+        <result property="phone" column="phone"/>
+        <result property="rate" column="rate"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelDirectoryServicios.HotelDirectoryServicios">
+        SELECT * FROM hotel_directory_servicios;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryServicios" resultMap="SqlMapHotelDirectoryServicios.HotelDirectoryServicios">
+        SELECT * FROM hotel_directory_servicios WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryServicios" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_servicios (lang,name,description,timetable,phone,rate) 
+        	VALUES (
+        		#{lang},
+        		#{name},
+        		#{description},
+        		#{timetable},
+        		#{phone},
+        		#{rate}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryServicios">
+    	UPDATE hotel_directory_servicios SET 
+    		lang = #{lang},
+    		name = #{name},
+    		description = #{description},
+    		timetable = #{timetable},
+    		phone = #{phone},
+    		rate = #{rate},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryServicios">
+	  	delete from hotel_directory_servicios where id = #{id}
+	</delete>
+    
+</mapper>

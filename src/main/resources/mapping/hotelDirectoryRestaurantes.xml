@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelDirectoryRestaurante">
+    
+    <resultMap id="HotelDirectoryRestaurante" type="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="images" column="images"/>
+        <result property="menu" column="menu"/>
+        <result property="localization" column="localization"/>
+        <result property="timetable" column="timetable"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelDirectoryRestaurante.HotelDirectoryRestaurantes">
+        SELECT * FROM hotel_directory_restaurantes;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes" resultMap="SqlMapHotelDirectoryRestaurante.HotelDirectoryRestaurantes">
+        SELECT * FROM hotel_directory_restaurantes WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_restaurantes (lang,name,description,images,menu,localization,timetable,phone) 
+        	VALUES (
+        		#{lang},
+        		#{name},
+        		#{description},
+        		#{images},
+        		#{menu},
+        		#{localization},
+        		#{timetable},
+        		#{phone}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+    	UPDATE hotel_directory_restaurantes SET 
+    		lang = #{lang},
+    		name = #{name},
+    		description = #{description},
+    		images = #{images},
+    		menu = #{menu},
+    		localization = #{localization},
+    		timetable = #{timetable},
+    		phone = #{phone},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+	  	delete from hotel_directory_restaurantes where id = #{id}
+	</delete>
+    
+</mapper>

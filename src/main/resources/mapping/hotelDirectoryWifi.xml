@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelDirectoryWifi">
+    
+    <resultMap id="HotelDirectoryWifi" type="es.ubiqua.nhservices.model.HotelDirectoryWifi">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="description" column="description"/>
+        <result property="user" column="user"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    
+    <select id="list" resultMap="SqlMapHotelDirectoryWifi.HotelDirectoryWifi">
+        SELECT * FROM hotel_directory_wifi;
+    </select>
+    
+    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryWifi" resultMap="SqlMapHotelDirectoryWifi.HotelDirectoryWifi">
+        SELECT * FROM hotel_directory_wifi WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryWifi" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_wifi (lang,description,user,password) 
+        	VALUES (
+        		#{lang},
+        		#{description},
+        		#{user},
+        		#{password}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryWifi">
+    	UPDATE hotel_directory_wifi SET 
+    		lang = #{lang},
+    		description = #{description},
+    		user = #{user},
+    		password = #{password},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryWifi">
+	  	delete from hotel_directory_wifi where id = #{id}
+	</delete>
+    
+</mapper>
