@@ -24,4 +24,13 @@ public class HotelCanalesManager {
 	public HotelCanales add(HotelCanales hotelCanales){
 		return hotelCanalesDao.add(hotelCanales);
 	}
+	
+	public void update(HotelCanales hotelCanales){
+		hotelCanalesDao.update(hotelCanales);
+	}
+	
+	public void del(HotelCanales hotelCanales){
+		hotelCanalesDao.del(hotelCanales);
+	}
+	
 }

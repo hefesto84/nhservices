@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelDirectoryPicinaDAO;
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryPicina;
 
 public class HotelDirectoryPicinaManager {
@@ -23,5 +24,13 @@ public class HotelDirectoryPicinaManager {
 	
 	public HotelDirectoryPicina add(HotelDirectoryPicina hotelDirectoryPicina){
 		return hotelDirectoryPicinaDao.add(hotelDirectoryPicina);
+	}
+	
+	public void update(HotelDirectoryPicina hotelDirectoryPicina){
+		hotelDirectoryPicinaDao.update(hotelDirectoryPicina);
+	}
+	
+	public void del(HotelDirectoryPicina hotelDirectoryPicina){
+		hotelDirectoryPicinaDao.del(hotelDirectoryPicina);
 	}
 }

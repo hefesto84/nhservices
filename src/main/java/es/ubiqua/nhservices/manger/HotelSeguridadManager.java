@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelSeguridadDAO;
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSeguridad;
 
 public class HotelSeguridadManager {
@@ -23,5 +24,13 @@ public class HotelSeguridadManager {
 	
 	public HotelSeguridad add(HotelSeguridad hotelSeguridad){
 		return hotelSeguridadDao.add(hotelSeguridad);
+	}
+	
+	public void update(HotelSeguridad hotelSeguridad){
+		hotelSeguridadDao.update(hotelSeguridad);
+	}
+	
+	public void del(HotelSeguridad hotelSeguridad){
+		hotelSeguridadDao.del(hotelSeguridad);
 	}
 }
