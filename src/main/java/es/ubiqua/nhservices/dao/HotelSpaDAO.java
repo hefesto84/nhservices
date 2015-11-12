@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSpa;
 
 public class HotelSpaDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelSpaDAO extends BaseDAO{
 		List<HotelSpa> hotelSpa = new ArrayList<HotelSpa>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelSpa = session.selectList("SqlMapCustomer.list");
+			hotelSpa = session.selectList("SqlMapHotelSpa.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelSpaDAO extends BaseDAO{
 	public HotelSpa get(HotelSpa hotelSpa){
 		SqlSession session = sql.openSession();
 		try{
-			hotelSpa = session.selectOne("SqlMapHotel.get",hotelSpa);
+			hotelSpa = session.selectOne("SqlMapHotelSpa.get",hotelSpa);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelSpaDAO extends BaseDAO{
 	public HotelSpa add(HotelSpa hotelSpa){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelSpa);
+			session.insert("SqlMapHotelSpa.add",hotelSpa);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelSpaDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelSpa;
+	}
+	
+	public void update(HotelSpa hotelCanales){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelSpa.update",hotelCanales);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelSpa hotelCanales){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelSpa.delete",hotelCanales);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

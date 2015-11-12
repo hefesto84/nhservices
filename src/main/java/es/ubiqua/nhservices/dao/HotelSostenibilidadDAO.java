@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSostenibilidad;
 
 public class HotelSostenibilidadDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 		List<HotelSostenibilidad> hotelSostenibilidad = new ArrayList<HotelSostenibilidad>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelSostenibilidad = session.selectList("SqlMapCustomer.list");
+			hotelSostenibilidad = session.selectList("SqlMapHotelSostenibilidad.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 	public HotelSostenibilidad get(HotelSostenibilidad hotelSostenibilidad){
 		SqlSession session = sql.openSession();
 		try{
-			hotelSostenibilidad = session.selectOne("SqlMapHotel.get",hotelSostenibilidad);
+			hotelSostenibilidad = session.selectOne("SqlMapHotelSostenibilidad.get",hotelSostenibilidad);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 	public HotelSostenibilidad add(HotelSostenibilidad hotelSostenibilidad){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelSostenibilidad);
+			session.insert("SqlMapHotelSostenibilidad.add",hotelSostenibilidad);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelSostenibilidad;
+	}
+	
+	public void update(HotelSostenibilidad hotelSostenibilidad){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelSostenibilidad.update",hotelSostenibilidad);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelSostenibilidad hotelSostenibilidad){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelSostenibilidad.delete",hotelSostenibilidad);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

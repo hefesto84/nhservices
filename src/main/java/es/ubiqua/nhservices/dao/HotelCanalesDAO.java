@@ -13,7 +13,7 @@ public class HotelCanalesDAO extends BaseDAO{
 		List<HotelCanales> hotelCanales = new ArrayList<HotelCanales>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelCanales = session.selectList("SqlMapCustomer.list");
+			hotelCanales = session.selectList("SqlMapHotelCanales.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +25,7 @@ public class HotelCanalesDAO extends BaseDAO{
 	public HotelCanales get(HotelCanales hotelCanales){
 		SqlSession session = sql.openSession();
 		try{
-			hotelCanales = session.selectOne("SqlMapHotel.get",hotelCanales);
+			hotelCanales = session.selectOne("SqlMapHotelCanales.get",hotelCanales);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +37,7 @@ public class HotelCanalesDAO extends BaseDAO{
 	public HotelCanales add(HotelCanales hotelCanales){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelCanales);
+			session.insert("SqlMapHotelCanales.add",hotelCanales);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -46,4 +46,29 @@ public class HotelCanalesDAO extends BaseDAO{
 		}
 		return hotelCanales;
 	}
+	
+	public void update(HotelCanales hotelCanales){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelCanales.update",hotelCanales);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelCanales hotelCanales){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelCanales.delete",hotelCanales);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
 }

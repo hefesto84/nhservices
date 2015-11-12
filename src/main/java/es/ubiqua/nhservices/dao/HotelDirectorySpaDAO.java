@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectorySpa;
 
 public class HotelDirectorySpaDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelDirectorySpaDAO extends BaseDAO{
 		List<HotelDirectorySpa> hotelDirectorySpa = new ArrayList<HotelDirectorySpa>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectorySpa = session.selectList("SqlMapCustomer.list");
+			hotelDirectorySpa = session.selectList("SqlMapHotelDirectorySpa.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelDirectorySpaDAO extends BaseDAO{
 	public HotelDirectorySpa get(HotelDirectorySpa hotelDirectorySpa){
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectorySpa = session.selectOne("SqlMapHotel.get",hotelDirectorySpa);
+			hotelDirectorySpa = session.selectOne("SqlMapHotelDirectorySpa.get",hotelDirectorySpa);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelDirectorySpaDAO extends BaseDAO{
 	public HotelDirectorySpa add(HotelDirectorySpa hotelDirectorySpa){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelDirectorySpa);
+			session.insert("SqlMapHotelDirectorySpa.add",hotelDirectorySpa);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelDirectorySpaDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelDirectorySpa;
+	}
+	
+	public void update(HotelDirectorySpa hotelDirectorySpa){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelDirectorySpa.update",hotelDirectorySpa);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelDirectorySpa hotelDirectorySpa){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelDirectorySpa.delete",hotelDirectorySpa);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

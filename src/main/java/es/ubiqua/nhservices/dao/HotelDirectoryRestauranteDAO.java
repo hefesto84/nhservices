@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryRestaurantes;
 
 public class HotelDirectoryRestauranteDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelDirectoryRestauranteDAO extends BaseDAO{
 		List<HotelDirectoryRestaurantes> hotelDirectoryRestaurantes = new ArrayList<HotelDirectoryRestaurantes>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectoryRestaurantes = session.selectList("SqlMapCustomer.list");
+			hotelDirectoryRestaurantes = session.selectList("SqlMapHotelDirectoryRestaurantes.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelDirectoryRestauranteDAO extends BaseDAO{
 	public HotelDirectoryRestaurantes get(HotelDirectoryRestaurantes hotelDirectoryRestaurantes){
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectoryRestaurantes = session.selectOne("SqlMapHotel.get",hotelDirectoryRestaurantes);
+			hotelDirectoryRestaurantes = session.selectOne("SqlMapHotelDirectoryRestaurantes.get",hotelDirectoryRestaurantes);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelDirectoryRestauranteDAO extends BaseDAO{
 	public HotelDirectoryRestaurantes add(HotelDirectoryRestaurantes hotelDirectoryRestaurantes){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelDirectoryRestaurantes);
+			session.insert("SqlMapHotelDirectoryRestaurantes.add",hotelDirectoryRestaurantes);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelDirectoryRestauranteDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelDirectoryRestaurantes;
+	}
+	
+	public void update(HotelDirectoryRestaurantes hotelDirectoryRestaurantes){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelDirectoryRestaurantes.update",hotelDirectoryRestaurantes);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelDirectoryRestaurantes hotelDirectoryRestaurantes){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelDirectoryRestaurantes.delete",hotelDirectoryRestaurantes);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

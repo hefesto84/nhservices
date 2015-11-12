@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelGimnasio;
 
 public class HotelGimnasioDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelGimnasioDAO extends BaseDAO{
 		List<HotelGimnasio> hotelGimnasio = new ArrayList<HotelGimnasio>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelGimnasio = session.selectList("SqlMapCustomer.list");
+			hotelGimnasio = session.selectList("SqlMapHotelGimnasio.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelGimnasioDAO extends BaseDAO{
 	public HotelGimnasio get(HotelGimnasio hotelGimnasio){
 		SqlSession session = sql.openSession();
 		try{
-			hotelGimnasio = session.selectOne("SqlMapHotel.get",hotelGimnasio);
+			hotelGimnasio = session.selectOne("SqlMapHotelGimnasio.get",hotelGimnasio);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelGimnasioDAO extends BaseDAO{
 	public HotelGimnasio add(HotelGimnasio hotelGimnasio){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelGimnasio);
+			session.insert("SqlMapHotelGimnasio.add",hotelGimnasio);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelGimnasioDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelGimnasio;
+	}
+	
+	public void update(HotelGimnasio hotelGimnasio){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelGimnasio.update",hotelGimnasio);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelGimnasio hotelGimnasio){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelGimnasio.delete",hotelGimnasio);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

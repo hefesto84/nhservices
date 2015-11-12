@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryPicina;
 
 public class HotelDirectoryPicinaDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelDirectoryPicinaDAO extends BaseDAO{
 		List<HotelDirectoryPicina> hotelDirectoryPicina = new ArrayList<HotelDirectoryPicina>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectoryPicina = session.selectList("SqlMapCustomer.list");
+			hotelDirectoryPicina = session.selectList("SqlMapHotelDirectoryPicina.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelDirectoryPicinaDAO extends BaseDAO{
 	public HotelDirectoryPicina get(HotelDirectoryPicina hotelDirectoryPicina){
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectoryPicina = session.selectOne("SqlMapHotel.get",hotelDirectoryPicina);
+			hotelDirectoryPicina = session.selectOne("SqlMapHotelDirectoryPicina.get",hotelDirectoryPicina);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelDirectoryPicinaDAO extends BaseDAO{
 	public HotelDirectoryPicina add(HotelDirectoryPicina hotelDirectoryPicina){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelDirectoryPicina);
+			session.insert("SqlMapHotelDirectoryPicina.add",hotelDirectoryPicina);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelDirectoryPicinaDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelDirectoryPicina;
+	}
+	
+	public void update(HotelDirectoryPicina hotelDirectoryPicina){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelDirectoryPicina.update",hotelDirectoryPicina);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelDirectoryPicina hotelDirectoryPicina){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelDirectoryPicina.delete",hotelDirectoryPicina);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSeguridad;
 
 public class HotelSeguridadDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelSeguridadDAO extends BaseDAO{
 		List<HotelSeguridad> hotelSeguridad = new ArrayList<HotelSeguridad>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelSeguridad = session.selectList("SqlMapCustomer.list");
+			hotelSeguridad = session.selectList("SqlMapHotelSeguridad.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelSeguridadDAO extends BaseDAO{
 	public HotelSeguridad get(HotelSeguridad hotelSeguridad){
 		SqlSession session = sql.openSession();
 		try{
-			hotelSeguridad = session.selectOne("SqlMapHotel.get",hotelSeguridad);
+			hotelSeguridad = session.selectOne("SqlMapHotelSeguridad.get",hotelSeguridad);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelSeguridadDAO extends BaseDAO{
 	public HotelSeguridad add(HotelSeguridad hotelSeguridad){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelSeguridad);
+			session.insert("SqlMapHotelSeguridad.add",hotelSeguridad);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelSeguridadDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelSeguridad;
+	}
+	
+	public void update(HotelSeguridad hotelSeguridad){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelSeguridad.update",hotelSeguridad);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelSeguridad hotelSeguridad){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelSeguridad.delete",hotelSeguridad);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }

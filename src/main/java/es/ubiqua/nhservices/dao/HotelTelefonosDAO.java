@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelTelefonos;
 
 public class HotelTelefonosDAO extends BaseDAO{
@@ -13,7 +14,7 @@ public class HotelTelefonosDAO extends BaseDAO{
 		List<HotelTelefonos> hotelTelefonos = new ArrayList<HotelTelefonos>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelTelefonos = session.selectList("SqlMapCustomer.list");
+			hotelTelefonos = session.selectList("SqlMapHotelTelefonos.list");
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{
@@ -25,7 +26,7 @@ public class HotelTelefonosDAO extends BaseDAO{
 	public HotelTelefonos get(HotelTelefonos hotelTelefonos){
 		SqlSession session = sql.openSession();
 		try{
-			hotelTelefonos = session.selectOne("SqlMapHotel.get",hotelTelefonos);
+			hotelTelefonos = session.selectOne("SqlMapHotelTelefonos.get",hotelTelefonos);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -37,7 +38,7 @@ public class HotelTelefonosDAO extends BaseDAO{
 	public HotelTelefonos add(HotelTelefonos hotelTelefonos){
 		SqlSession session = sql.openSession();
 		try{
-			session.insert("SqlMapHotel.add",hotelTelefonos);
+			session.insert("SqlMapHotelTelefonos.add",hotelTelefonos);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
@@ -45,5 +46,29 @@ public class HotelTelefonosDAO extends BaseDAO{
 			session.close();
 		}
 		return hotelTelefonos;
+	}
+	
+	public void update(HotelTelefonos hotelTelefonos){
+		SqlSession session = sql.openSession();
+		try{
+			session.update("SqlMapHotelTelefonos.update",hotelTelefonos);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+	}
+	
+	public void del(HotelTelefonos hotelTelefonos){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapHotelTelefonos.delete",hotelTelefonos);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 }
