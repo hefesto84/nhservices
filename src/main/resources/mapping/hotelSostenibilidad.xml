@@ -11,7 +11,7 @@
     </resultMap>
     
     <select id="list" resultMap="SqlMapHotelSostenibilidad.HotelSostenibilidad">
-        SELECT * FROM hotel_sostenibilidad;
+    	SELECT * FROM hotel_sostenibilidad WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
     <select id="get" parameterType="es.ubiqua.nhservices.model.HotelSostenibilidad" resultMap="SqlMapHotelSostenibilidad.HotelSostenibilidad">

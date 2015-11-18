@@ -6,6 +6,7 @@ public class HotelDirectoryGimnasio {
 	private String description;
 	private String images;
 	private String localization;
+	private String timetable;
 	
 	public HotelDirectoryGimnasio(){
 		
@@ -49,6 +50,14 @@ public class HotelDirectoryGimnasio {
 
 	public void setLocalization(String localization) {
 		this.localization = localization;
+	}
+
+	public String getTimetable() {
+		return timetable;
+	}
+
+	public void setTimetable(String timetable) {
+		this.timetable = timetable;
 	}
 
 }

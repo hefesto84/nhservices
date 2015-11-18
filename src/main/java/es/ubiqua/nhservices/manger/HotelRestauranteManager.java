@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelRestauranteDAO;
+import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelRestaurante;
 
@@ -14,8 +15,8 @@ public class HotelRestauranteManager {
 		
 	}
 	
-	public List<HotelRestaurante> list(){
-		return hotelRestauranteDao.list();
+	public List<HotelRestaurante> list(Hotel h){
+		return hotelRestauranteDao.list(h);
 	}
 
 	public HotelRestaurante get(HotelRestaurante hotelRestaurante){

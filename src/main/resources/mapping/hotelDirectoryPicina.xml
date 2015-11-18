@@ -6,22 +6,24 @@
     <resultMap id="HotelDirectoryPicina" type="es.ubiqua.nhservices.model.HotelDirectoryPicina">
         <result property="id" column="id"/>
         <result property="lang" column="lang"/>
+        <result property="images" column="images"/>
         <result property="localization" column="localization"/>
         <result property="timetable" column="timetable"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelDirectoryPicina.HotelDirectoryPicina">
-        SELECT * FROM hotel_directory_picina;
+    <select id="list" resultMap="HotelDirectoryPicina">
+    	SELECT hdpi.* FROM hotel_directory_picina hdpi, hotel_picina hpi WHERE hpi.id_hotel = #{hotel.id} AND hdpi.id = hpi.id_hotel_directory_picina AND hdpi.lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryPicina" resultMap="SqlMapHotelDirectoryPicina.HotelDirectoryPicina">
+    <select id="get" parameterType="HotelDirectoryPicina" resultMap="HotelDirectoryPicina">
         SELECT * FROM hotel_directory_picina WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryPicina" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO hotel_directory_picina (lang,localization,timetable) 
+    <insert id="add" parameterType="HotelDirectoryPicina" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_picina (lang,images,localization,timetable) 
         	VALUES (
         		#{lang},
+        		#{images},
         		#{localization},
         		#{timetable}
         	)
@@ -32,15 +34,16 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryPicina">
+    <update id="update" parameterType="HotelDirectoryPicina">
     	UPDATE hotel_directory_picina SET 
     		lang = #{lang},
+    		images = #{images},
     		localization = #{localization},
     		timetable = #{timetable},
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryPicina">
+    <delete id="del" parameterType="HotelDirectoryPicina">
 	  	delete from hotel_directory_picina where id = #{id}
 	</delete>
     

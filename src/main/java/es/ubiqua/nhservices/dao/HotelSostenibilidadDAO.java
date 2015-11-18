@@ -1,20 +1,27 @@
 package es.ubiqua.nhservices.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSostenibilidad;
 
 public class HotelSostenibilidadDAO extends BaseDAO{
-	public List<HotelSostenibilidad> list(){
+	
+	public List<HotelSostenibilidad> list(Hotel h, String lang){
 		List<HotelSostenibilidad> hotelSostenibilidad = new ArrayList<HotelSostenibilidad>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelSostenibilidad = session.selectList("SqlMapHotelSostenibilidad.list");
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("hotel", h);
+			map.put("lang", lang);
+			hotelSostenibilidad = session.selectList("SqlMapHotelSostenibilidad.list",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{

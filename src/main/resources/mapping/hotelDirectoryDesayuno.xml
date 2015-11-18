@@ -12,15 +12,15 @@
         <result property="timetable" column="timetable"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelDirectoryDesayuno.HotelDirectoryDesayuno">
-        SELECT * FROM hotel_directory_desayuno;
+    <select id="list" resultMap="HotelDirectoryDesayuno" parameterType="java.util.Map">
+    	SELECT hdde.* FROM hotel_directory_desayuno hdde, hotel_desayuno hde WHERE hde.id_hotel = #{hotel.id} AND hdde.id = hde.id_hotel_directory_desayuno AND hdde.lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno" resultMap="SqlMapHotelDirectoryDesayuno.HotelDirectoryDesayuno">
+    <select id="get" parameterType="HotelDirectoryDesayuno" resultMap="HotelDirectoryDesayuno">
         SELECT * FROM hotel_directory_desayuno WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="add" parameterType="HotelDirectoryDesayuno" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_directory_desayuno (lang,description,images,localization,timetable) 
         	VALUES (
         		#{lang},
@@ -36,7 +36,7 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno">
+    <update id="update" parameterType="HotelDirectoryDesayuno">
     	UPDATE hotel_directory_desayuno SET 
     		lang = #{lang},
     		description = #{description},
@@ -46,7 +46,7 @@
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryDesayuno">
+    <delete id="del" parameterType="HotelDirectoryDesayuno">
 	  	delete from hotel_directory_desayuno where id = #{id}
 	</delete>
     

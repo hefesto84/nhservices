@@ -4,7 +4,19 @@
     
     <!-- Alias -->
     <typeAliases>
-	    <typeAlias alias="className" type="path_to_class"/>
+	    <typeAlias alias="Hotel" type="es.ubiqua.nhservices.model.Hotel"/>
+	    <typeAlias alias="HotelDirectoryRestaurantes" type="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes"/>
+		<typeAlias alias="HotelDirectoryDesayuno" type="es.ubiqua.nhservices.model.HotelDirectoryDesayuno"/>
+		<typeAlias alias="HotelDirectoryEventos" type="es.ubiqua.nhservices.model.HotelDirectoryEventos"/>
+		<typeAlias alias="HotelDirectoryGimnasio" type="es.ubiqua.nhservices.model.HotelDirectoryGimnasio"/>
+		<typeAlias alias="HotelDirectoryPicina" type="es.ubiqua.nhservices.model.HotelDirectoryPicina"/>
+		<typeAlias alias="HotelDirectoryServicios" type="es.ubiqua.nhservices.model.HotelDirectoryServicios"/>
+		<typeAlias alias="HotelDirectorySpa" type="es.ubiqua.nhservices.model.HotelDirectorySpa"/>
+		<typeAlias alias="HotelDirectoryWifi" type="es.ubiqua.nhservices.model.HotelDirectoryWifi"/>
+		<typeAlias alias="HotelCanales" type="es.ubiqua.nhservices.model.HotelCanales"/>
+		<typeAlias alias="HotelSeguridad" type="es.ubiqua.nhservices.model.HotelSeguridad"/>
+		<typeAlias alias="HotelSostenibilidad" type="es.ubiqua.nhservices.model.HotelSostenibilidad"/>
+		<typeAlias alias="HotelTelefonos" type="es.ubiqua.nhservices.model.HotelTelefonos"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -13,17 +25,29 @@
 			<transactionManager type="JDBC"/>
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.jdbc.Driver"/>
-				<property name="url" value="jdbc:mysql://localhost:3306/123compareme-v2"/>
-				<property name="username" value="compare"/>
-				<property name="password" value="20Ubiq2015"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/telefono2.0"/>
+				<property name="username" value="root"/>
+				<property name="password" value="Roccopl2006"/>
 			</dataSource>
 		</environment>
 	</environments>
 	
-	<!-- 
+	
 	<mappers>
-		<mapper resource="ibatis/class.xml"/>
+		<mapper resource="mapping/hotel.xml"/>
+		<mapper resource="mapping/hotelDirectoryRestaurantes.xml"/>
+		<mapper resource="mapping/hotelDirectoryDesayuno.xml"/>
+		<mapper resource="mapping/hotelDirectoryEventos.xml"/>
+		<mapper resource="mapping/hotelDirectoryGimnasio.xml"/>
+		<mapper resource="mapping/hotelDirectoryPicina.xml"/>
+		<mapper resource="mapping/hotelDirectoryServicios.xml"/>
+		<mapper resource="mapping/hotelDirectorySpa.xml"/>
+		<mapper resource="mapping/hotelDirectoryWifi.xml"/>
+		<mapper resource="mapping/hotelCanales.xml"/>
+		<mapper resource="mapping/hotelSeguridad.xml"/>
+		<mapper resource="mapping/hotelSostenibilidad.xml"/>
+		<mapper resource="mapping/hotelTelefonos.xml"/>
 	</mappers>
-	-->
+	
 	
 </configuration>

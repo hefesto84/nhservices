@@ -16,6 +16,74 @@
         </action>
     </package>
     
+    <package name="api" namespace="/api" extends="json-default">
+    	<action name="information" class="es.ubiqua.nhservices.actions.GetHotelDirectory">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listRestaurants" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listRestaurants">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listBreakfast" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listBreakfast">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listEvents" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listEvents">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listGym" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listGym">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listPool" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listPool">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listServices" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listServices">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listSpa" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listSpa">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listWifi" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listWifi">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listChannels" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listChannels">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listSecurity" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listSecurity">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listSustainability" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listSustainability">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+        <action name="listPhones" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listPhones">
+           <result type="json"/>
+        	<param name="encoding">UTF-8</param>
+        	<param name="contentType">application/json</param>
+        </action>
+    </package>
+    
     <!-- XML With API Functions -->
     <include file="/struts/struts-api.xml"></include>
 

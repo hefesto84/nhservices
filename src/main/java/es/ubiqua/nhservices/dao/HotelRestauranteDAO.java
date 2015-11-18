@@ -6,15 +6,17 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelRestaurante;
 
 public class HotelRestauranteDAO extends BaseDAO{
-	public List<HotelRestaurante> list(){
+	
+	public List<HotelRestaurante> list(Hotel h){
 		List<HotelRestaurante> hotelRestaurante = new ArrayList<HotelRestaurante>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelRestaurante = session.selectList("SqlMapHotelRestaurante.list");
+			hotelRestaurante = session.selectList("SqlMapHotelRestaurante.list",h);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{

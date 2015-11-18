@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelDirectoryWifiDAO;
+import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryWifi;
 
@@ -14,8 +15,8 @@ public class HotelDirectoryWifiManager {
 		
 	}
 	
-	public List<HotelDirectoryWifi> list(){
-		return hotelDirectoryWifiDao.list();
+	public List<HotelDirectoryWifi> list(Hotel h, String lang){
+		return hotelDirectoryWifiDao.list(h,lang);
 	}
 
 	public HotelDirectoryWifi get(HotelDirectoryWifi hotelDirectoryWifi){

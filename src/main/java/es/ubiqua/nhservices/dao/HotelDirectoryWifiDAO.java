@@ -1,20 +1,26 @@
 package es.ubiqua.nhservices.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
+import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryWifi;
 
 public class HotelDirectoryWifiDAO extends BaseDAO{
-	public List<HotelDirectoryWifi> list(){
+	public List<HotelDirectoryWifi> list(Hotel h, String lang){
 		List<HotelDirectoryWifi> hotelDirectoryWifi = new ArrayList<HotelDirectoryWifi>();
 		SqlSession session = sql.openSession();
 		try{
-			hotelDirectoryWifi = session.selectList("SqlMapHotelDirectoryWifi.list");
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("hotel", h);
+			map.put("lang", lang);
+			hotelDirectoryWifi = session.selectList("SqlMapHotelDirectoryWifi.list",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
 		}finally{

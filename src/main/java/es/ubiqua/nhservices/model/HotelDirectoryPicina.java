@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.model;
 public class HotelDirectoryPicina {
 	private int id;
 	private String lang;
+	private String images;
 	private String localization;
 	private String timetable;
 	
@@ -40,6 +41,14 @@ public class HotelDirectoryPicina {
 	
 	public void setTimetable(String timetable) {
 		this.timetable = timetable;
+	}
+
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
 	}
 	
 }

@@ -14,7 +14,7 @@
     </resultMap>
     
     <select id="list" resultMap="SqlMapHotelDirectoryServicios.HotelDirectoryServicios">
-        SELECT * FROM hotel_directory_servicios;
+    	SELECT hdse.* FROM hotel_directory_servicios hdse, hotel_servicios hse WHERE hse.id_hotel = #{hotel.id} AND hdse.id = hse.id_hotel_directory_servicios AND hdse.lang = #{lang};
     </select>
     
     <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryServicios" resultMap="SqlMapHotelDirectoryServicios.HotelDirectoryServicios">

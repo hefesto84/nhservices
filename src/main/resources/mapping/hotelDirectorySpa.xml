@@ -13,15 +13,15 @@
         <result property="phone" column="phone"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelDirectorySpa.HotelDirectorySpa">
-        SELECT * FROM hotel_directory_spa;
+    <select id="list" resultMap="HotelDirectorySpa">
+    	SELECT hdsp.* FROM hotel_directory_spa hdsp, hotel_spa hsp WHERE hsp.id_hotel = #{hotel.id} AND hdsp.id = hsp.id_hotel_directory_spa AND hdsp.lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectorySpa" resultMap="SqlMapHotelDirectorySpa.HotelDirectorySpa">
+    <select id="get" parameterType="HotelDirectorySpa" resultMap="HotelDirectorySpa">
         SELECT * FROM hotel_directory_spa WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectorySpa" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="add" parameterType="HotelDirectorySpa" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_directory_spa (lang,description,images,localization,timetable,phone) 
         	VALUES (
         		#{lang},
@@ -38,7 +38,7 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectorySpa">
+    <update id="update" parameterType="HotelDirectorySpa">
     	UPDATE hotel_directory_spa SET 
     		lang = #{lang},
     		description = #{description},
@@ -49,7 +49,7 @@
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectorySpa">
+    <delete id="del" parameterType="HotelDirectorySpa">
 	  	delete from hotel_directory_spa where id = #{id}
 	</delete>
     

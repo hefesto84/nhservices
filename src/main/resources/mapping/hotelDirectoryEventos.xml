@@ -10,15 +10,15 @@
         <result property="images" column="images"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelDirectoryEventos.HotelDirectoryEventos">
-        SELECT * FROM hotel_directory_eventos;
+    <select id="list" resultMap="HotelDirectoryEventos"  parameterType="java.util.Map">
+    	SELECT hdev.* FROM hotel_directory_eventos hdev, hotel_eventos hev WHERE hev.id_hotel = #{hotel.id} AND hdev.id = hev.id_hotel_directory_eventos AND hdev.lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos" resultMap="SqlMapHotelDirectoryEventos.HotelDirectoryEventos">
+    <select id="get" parameterType="HotelDirectoryEventos" resultMap="HotelDirectoryEventos">
         SELECT * FROM hotel_directory_eventos WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="add" parameterType="HotelDirectoryEventos" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_directory_eventos (lang,description,images) 
         	VALUES (
         		#{lang},
@@ -32,7 +32,7 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos">
+    <update id="update" parameterType="HotelDirectoryEventos">
     	UPDATE hotel_directory_eventos SET 
     		lang = #{lang},
     		description = #{description},
@@ -40,7 +40,7 @@
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryEventos">
+    <delete id="del" parameterType="HotelDirectoryEventos">
 	  	delete from hotel_directory_eventos where id = #{id}
 	</delete>
     

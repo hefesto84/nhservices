@@ -34,6 +34,7 @@ public class HotelDAO extends BaseDAO{
 		}
 		return hotel;
 	}
+
 	
 	public Hotel add(Hotel hotel){
 		SqlSession session = sql.openSession();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="SqlMapHotelDirectoryRestaurante">
+<mapper namespace="SqlMapHotelDirectoryRestaurantes">
     
-    <resultMap id="HotelDirectoryRestaurante" type="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+    <resultMap id="HotelDirectoryRestaurantes" type="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
         <result property="id" column="id"/>
         <result property="lang" column="lang"/>
         <result property="name" column="name"/>
@@ -15,15 +15,15 @@
         <result property="phone" column="phone"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelDirectoryRestaurante.HotelDirectoryRestaurantes">
-        SELECT * FROM hotel_directory_restaurantes;
+    <select id="list" resultMap="HotelDirectoryRestaurantes" parameterType="java.util.Map">
+    	SELECT hdre.* FROM hotel_directory_restaurantes hdre, hotel_restaurante hre WHERE hre.id_hotel = #{hotel.id} AND hdre.id = hre.id_hotel_directory_restaurantes AND hdre.lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes" resultMap="SqlMapHotelDirectoryRestaurante.HotelDirectoryRestaurantes">
+    <select id="get" parameterType="HotelDirectoryRestaurantes" resultMap="HotelDirectoryRestaurantes">
         SELECT * FROM hotel_directory_restaurantes WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="add" parameterType="HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_directory_restaurantes (lang,name,description,images,menu,localization,timetable,phone) 
         	VALUES (
         		#{lang},
@@ -42,7 +42,7 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+    <update id="update" parameterType="HotelDirectoryRestaurantes">
     	UPDATE hotel_directory_restaurantes SET 
     		lang = #{lang},
     		name = #{name},
@@ -55,7 +55,7 @@
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelDirectoryRestaurantes">
+    <delete id="del" parameterType="HotelDirectoryRestaurantes">
 	  	delete from hotel_directory_restaurantes where id = #{id}
 	</delete>
     

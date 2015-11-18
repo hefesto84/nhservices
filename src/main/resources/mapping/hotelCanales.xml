@@ -10,15 +10,15 @@
         <result property="channels" column="channels"/>
     </resultMap>
     
-    <select id="list" resultMap="SqlMapHotelCanales.HotelCanales">
-        SELECT * FROM hotel_canales;
+    <select id="list" resultMap="HotelCanales">
+    	SELECT * FROM hotel_canales WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelCanales" resultMap="SqlMapHotelCanales.HotelCanales">
+    <select id="get" parameterType="HotelCanales" resultMap="HotelCanales">
         SELECT * FROM hotel_canales WHERE id_hotel = #{id_hotel};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelCanales" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="add" parameterType="HotelCanales" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_canales (id_hotel,lang,channels) 
         	VALUES (
         		#{id_hotel},
@@ -32,7 +32,7 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelCanales">
+    <update id="update" parameterType="HotelCanales">
     	UPDATE hotel_canales SET 
     		id_hotel = #{id_hotel},
     		lang = #{lang},
@@ -40,7 +40,7 @@
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelCanales">
+    <delete id="del" parameterType="HotelCanales">
 	  	delete from hotel_canales where id = #{id}
 	</delete>
     
