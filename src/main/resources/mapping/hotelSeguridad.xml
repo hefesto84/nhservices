@@ -8,14 +8,27 @@
         <result property="id_hotel" column="id_hotel"/>
         <result property="lang" column="lang"/>
         <result property="description" column="description"/>
+        <result property="hotel_name" column="hotel_name"/>
     </resultMap>
+    
+    <select id="listLang" resultMap="HotelSeguridad">
+    	 SELECT lang FROM hotel_seguridad WHERE id_hotel = #{id};
+    </select>
+    
+    <select id="listAll" resultMap="HotelSeguridad">
+    	 SELECT hse.id, hse.id_hotel, hse.lang, h.name as hotel_name FROM hotel h, hotel_seguridad hse WHERE hse.id_hotel = h.id;
+    </select>
     
     <select id="list" resultMap="HotelSeguridad">
     	SELECT * FROM hotel_seguridad WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
     <select id="get" parameterType="HotelSeguridad" resultMap="HotelSeguridad">
-        SELECT * FROM hotel_seguridad WHERE id_hotel = #{id_hotel};
+        SELECT * FROM hotel_seguridad WHERE id = #{id};
+    </select>
+    
+    <select id="getSeguridadByIdAndLang" parameterType="HotelSeguridad" resultMap="HotelSeguridad">
+        SELECT hse.*, h.name as hotel_name FROM hotel h, hotel_seguridad hse WHERE hse.id_hotel = #{id} AND lang = #{lang} AND hse.id_hotel = h.id;
     </select>
     
     <insert id="add" parameterType="HotelSeguridad" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -34,9 +47,7 @@
     
     <update id="update" parameterType="HotelSeguridad">
     	UPDATE hotel_seguridad SET 
-    		id_hotel = #{id_hotel},
-    		lang = #{lang},
-    		description = #{description},
+    		description = #{description}
     	WHERE id = #{id}
     </update>
     

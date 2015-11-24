@@ -13,6 +13,32 @@ import es.ubiqua.nhservices.model.HotelCanales;
 
 public class HotelCanalesDAO extends BaseDAO{
 	
+	public List<HotelCanales> listLang(int id){
+		List<HotelCanales> hotelCanales = new ArrayList<HotelCanales>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelCanales = session.selectList("SqlMapHotelCanales.listLang",id);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelCanales;
+	}
+	
+	public List<HotelCanales> listAll(){
+		List<HotelCanales> hotelCanales = new ArrayList<HotelCanales>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelCanales = session.selectList("SqlMapHotelCanales.listAll");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelCanales;
+	}
+	
 	public List<HotelCanales> list(Hotel h, String lang){
 		List<HotelCanales> hotelCanales = new ArrayList<HotelCanales>();
 		SqlSession session = sql.openSession();
@@ -33,6 +59,22 @@ public class HotelCanalesDAO extends BaseDAO{
 		SqlSession session = sql.openSession();
 		try{
 			hotelCanales = session.selectOne("SqlMapHotelCanales.get",hotelCanales);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+		return hotelCanales;
+	}
+	
+	public HotelCanales getCanalByIdAndLang(int id, String lang){
+		HotelCanales hotelCanales = new HotelCanales();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", id);
+			map.put("lang", lang);
+			hotelCanales = session.selectOne("SqlMapHotelCanales.getCanalByIdAndLang",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -69,7 +111,7 @@ public class HotelCanalesDAO extends BaseDAO{
 	public void del(HotelCanales hotelCanales){
 		SqlSession session = sql.openSession();
 		try{
-			session.delete("SqlMapHotelCanales.delete",hotelCanales);
+			session.delete("SqlMapHotelCanales.del",hotelCanales);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());

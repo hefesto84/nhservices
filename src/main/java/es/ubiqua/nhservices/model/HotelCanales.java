@@ -5,6 +5,7 @@ public class HotelCanales {
 	private int id_hotel;
 	private String lang;
 	private String channels;
+	private String hotel_name;
 	
 	public HotelCanales(){
 		
@@ -40,6 +41,14 @@ public class HotelCanales {
 
 	public void setChannels(String channels) {
 		this.channels = channels;
+	}
+
+	public String getHotel_name() {
+		return hotel_name;
+	}
+
+	public void setHotel_name(String hotel_name) {
+		this.hotel_name = hotel_name;
 	}
 	
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelDAO;
 import es.ubiqua.nhservices.model.Hotel;
-import es.ubiqua.nhservices.model.HotelCanales;
 
 public class HotelManager {
 	

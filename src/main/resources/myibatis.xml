@@ -17,6 +17,8 @@
 		<typeAlias alias="HotelSeguridad" type="es.ubiqua.nhservices.model.HotelSeguridad"/>
 		<typeAlias alias="HotelSostenibilidad" type="es.ubiqua.nhservices.model.HotelSostenibilidad"/>
 		<typeAlias alias="HotelTelefonos" type="es.ubiqua.nhservices.model.HotelTelefonos"/>
+		<typeAlias alias="User" type="es.ubiqua.nhservices.backend.model.User"/>
+		<typeAlias alias="Language" type="es.ubiqua.nhservices.model.Language"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -47,6 +49,8 @@
 		<mapper resource="mapping/hotelSeguridad.xml"/>
 		<mapper resource="mapping/hotelSostenibilidad.xml"/>
 		<mapper resource="mapping/hotelTelefonos.xml"/>
+		<mapper resource="mapping/user.xml"/>
+		<mapper resource="mapping/language.xml"/>
 	</mappers>
 	
 	

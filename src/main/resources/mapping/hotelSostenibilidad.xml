@@ -8,18 +8,31 @@
         <result property="id_hotel" column="id_hotel"/>
         <result property="lang" column="lang"/>
         <result property="description" column="description"/>
+        <result property="hotel_name" column="hotel_name"/>
     </resultMap>
+
+    <select id="listLang" resultMap="HotelSostenibilidad">
+    	 SELECT lang FROM hotel_sostenibilidad WHERE id_hotel = #{id};
+    </select>
     
-    <select id="list" resultMap="SqlMapHotelSostenibilidad.HotelSostenibilidad">
+    <select id="listAll" resultMap="HotelSostenibilidad">
+    	 SELECT hso.id, hso.id_hotel, hso.lang, h.name as hotel_name FROM hotel h, hotel_sostenibilidad hso WHERE hso.id_hotel = h.id;
+    </select>    
+    
+    <select id="list" resultMap="HotelSostenibilidad">
     	SELECT * FROM hotel_sostenibilidad WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
-    <select id="get" parameterType="es.ubiqua.nhservices.model.HotelSostenibilidad" resultMap="SqlMapHotelSostenibilidad.HotelSostenibilidad">
-        SELECT * FROM hotel_sostenibilidad WHERE id_hotel = #{id_hotel};
+    <select id="get" parameterType="HotelSostenibilidad" resultMap="HotelSostenibilidad">
+        SELECT * FROM hotel_sostenibilidad WHERE id = #{id};
     </select>
     
-    <insert id="add" parameterType="es.ubiqua.nhservices.model.HotelSostenibilidad" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO hotel_sostenibilidad (id_hotel,lang,channels) 
+    <select id="getSostenibilidadByIdAndLang" parameterType="HotelSostenibilidad" resultMap="HotelSostenibilidad">
+        SELECT hso.*, h.name as hotel_name FROM hotel h, hotel_sostenibilidad hso WHERE hso.id_hotel = #{id} AND lang = #{lang} AND hso.id_hotel = h.id;
+    </select>
+    
+    <insert id="add" parameterType="HotelSostenibilidad" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_sostenibilidad (id_hotel,lang,description) 
         	VALUES (
         		#{id_hotel},
         		#{lang},
@@ -32,15 +45,13 @@
 	  	
     </insert>
     
-    <update id="update" parameterType="es.ubiqua.nhservices.model.HotelSostenibilidad">
-    	UPDATE hotel_sostenibilidad SET 
-    		id_hotel = #{id_hotel},
-    		lang = #{lang},
-    		description = #{description},
+    <update id="update" parameterType="HotelSostenibilidad">
+    	UPDATE hotel_sostenibilidad SET
+    		description = #{description}
     	WHERE id = #{id}
     </update>
     
-    <delete id="del" parameterType="es.ubiqua.nhservices.model.HotelSostenibilidad">
+    <delete id="del" parameterType="HotelSostenibilidad">
 	  	delete from hotel_sostenibilidad where id = #{id}
 	</delete>
     

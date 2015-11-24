@@ -5,6 +5,7 @@ public class HotelSostenibilidad {
 	private int id_hotel;
 	private String lang;
 	private String description;
+	private String hotel_name;
 	
 	public HotelSostenibilidad(){
 		
@@ -40,6 +41,14 @@ public class HotelSostenibilidad {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getHotel_name() {
+		return hotel_name;
+	}
+
+	public void setHotel_name(String hotel_name) {
+		this.hotel_name = hotel_name;
 	}
 
 }

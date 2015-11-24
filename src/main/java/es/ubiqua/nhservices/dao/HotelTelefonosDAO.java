@@ -9,9 +9,36 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import es.ubiqua.nhservices.model.Hotel;
+import es.ubiqua.nhservices.model.HotelSostenibilidad;
 import es.ubiqua.nhservices.model.HotelTelefonos;
 
 public class HotelTelefonosDAO extends BaseDAO{
+	
+	public List<HotelTelefonos> listLang(int id){
+		List<HotelTelefonos> hotelTelefonos = new ArrayList<HotelTelefonos>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelTelefonos = session.selectList("SqlMapHotelTelefonos.listLang",id);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelTelefonos;
+	}
+	
+	public List<HotelTelefonos> listAll(){
+		List<HotelTelefonos> hotelTelefonos = new ArrayList<HotelTelefonos>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelTelefonos = session.selectList("SqlMapHotelTelefonos.listAll");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelTelefonos;
+	}
 	
 	public List<HotelTelefonos> list(Hotel h, String lang){
 		List<HotelTelefonos> hotelTelefonos = new ArrayList<HotelTelefonos>();
@@ -33,6 +60,22 @@ public class HotelTelefonosDAO extends BaseDAO{
 		SqlSession session = sql.openSession();
 		try{
 			hotelTelefonos = session.selectOne("SqlMapHotelTelefonos.get",hotelTelefonos);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+		return hotelTelefonos;
+	}
+	
+	public HotelTelefonos getTelefonosByIdAndLang(int id, String lang){
+		HotelTelefonos hotelTelefonos = new HotelTelefonos();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", id);
+			map.put("lang", lang);
+			hotelTelefonos = session.selectOne("SqlMapHotelTelefonos.getTelefonosByIdAndLang",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -69,7 +112,7 @@ public class HotelTelefonosDAO extends BaseDAO{
 	public void del(HotelTelefonos hotelTelefonos){
 		SqlSession session = sql.openSession();
 		try{
-			session.delete("SqlMapHotelTelefonos.delete",hotelTelefonos);
+			session.delete("SqlMapHotelTelefonos.del",hotelTelefonos);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());

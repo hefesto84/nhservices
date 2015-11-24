@@ -9,13 +9,25 @@
         <result property="lang" column="lang"/>
         <result property="description" column="description"/>
     </resultMap>
+
+    <select id="listLang" resultMap="HotelTelefonos">
+    	 SELECT lang FROM hotel_telefonos WHERE id_hotel = #{id};
+    </select>
+    
+    <select id="listAll" resultMap="HotelTelefonos">
+    	 SELECT hte.id, hte.id_hotel, hte.lang, h.name as hotel_name FROM hotel h, hotel_telefonos hte WHERE hte.id_hotel = h.id;
+    </select>  
     
     <select id="list" resultMap="HotelTelefonos">
     	SELECT * FROM hotel_telefonos WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
     <select id="get" parameterType="HotelTelefonos" resultMap="HotelTelefonos">
-        SELECT * FROM hotel_telefonos WHERE id_hotel = #{id_hotel};
+        SELECT * FROM hotel_telefonos WHERE id = #{id};
+    </select>
+    
+    <select id="getTelefonosByIdAndLang" parameterType="HotelTelefonos" resultMap="HotelTelefonos">
+        SELECT hte.*, h.name as hotel_name FROM hotel h, hotel_telefonos hte WHERE hte.id_hotel = #{id} AND lang = #{lang} AND hte.id_hotel = h.id;
     </select>
     
     <insert id="add" parameterType="HotelTelefonos" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -33,10 +45,8 @@
     </insert>
     
     <update id="update" parameterType="HotelTelefonos">
-    	UPDATE hotel_telefonos SET 
-    		id_hotel = #{id_hotel},
-    		lang = #{lang},
-    		description = #{description},
+    	UPDATE hotel_telefonos SET
+    		description = #{description}
     	WHERE id = #{id}
     </update>
     

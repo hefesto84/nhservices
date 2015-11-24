@@ -9,10 +9,35 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import es.ubiqua.nhservices.model.Hotel;
-import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSeguridad;
 
 public class HotelSeguridadDAO extends BaseDAO{
+	
+	public List<HotelSeguridad> listLang(int id){
+		List<HotelSeguridad> hotelSeguridad = new ArrayList<HotelSeguridad>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelSeguridad = session.selectList("SqlMapHotelSeguridad.listLang",id);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelSeguridad;
+	}
+	
+	public List<HotelSeguridad> listAll(){
+		List<HotelSeguridad> hotelSeguridad = new ArrayList<HotelSeguridad>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelSeguridad = session.selectList("SqlMapHotelSeguridad.listAll");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelSeguridad;
+	}
 	
 	public List<HotelSeguridad> list(Hotel h, String lang){
 		List<HotelSeguridad> hotelSeguridad = new ArrayList<HotelSeguridad>();
@@ -34,6 +59,22 @@ public class HotelSeguridadDAO extends BaseDAO{
 		SqlSession session = sql.openSession();
 		try{
 			hotelSeguridad = session.selectOne("SqlMapHotelSeguridad.get",hotelSeguridad);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+		return hotelSeguridad;
+	}
+	
+	public HotelSeguridad getSeguridadByIdAndLang(int id, String lang){
+		HotelSeguridad hotelSeguridad = new HotelSeguridad();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", id);
+			map.put("lang", lang);
+			hotelSeguridad = session.selectOne("SqlMapHotelSeguridad.getSeguridadByIdAndLang",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -70,7 +111,7 @@ public class HotelSeguridadDAO extends BaseDAO{
 	public void del(HotelSeguridad hotelSeguridad){
 		SqlSession session = sql.openSession();
 		try{
-			session.delete("SqlMapHotelSeguridad.delete",hotelSeguridad);
+			session.delete("SqlMapHotelSeguridad.del",hotelSeguridad);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());

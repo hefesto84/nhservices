@@ -14,12 +14,24 @@ public class HotelCanalesManager {
 		
 	}
 	
+	public List<HotelCanales> listLang(int id){
+		return hotelCanalesDao.listLang(id);
+	}
+	
+	public List<HotelCanales> listAll(){
+		return hotelCanalesDao.listAll();
+	}
+	
 	public List<HotelCanales> list(Hotel h, String lang){
 		return hotelCanalesDao.list(h,lang);
 	}
 
 	public HotelCanales get(HotelCanales hotelCanales){
 		return hotelCanalesDao.get(hotelCanales);
+	}
+	
+	public HotelCanales getCanalByIdAndLang(int id, String lang){
+		return hotelCanalesDao.getCanalByIdAndLang(id,lang);
 	}
 	
 	public HotelCanales add(HotelCanales hotelCanales){

@@ -9,10 +9,35 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import es.ubiqua.nhservices.model.Hotel;
-import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelSostenibilidad;
 
 public class HotelSostenibilidadDAO extends BaseDAO{
+	
+	public List<HotelSostenibilidad> listLang(int id){
+		List<HotelSostenibilidad> hotelSostenibilidad = new ArrayList<HotelSostenibilidad>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelSostenibilidad = session.selectList("SqlMapHotelSostenibilidad.listLang",id);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelSostenibilidad;
+	}
+	
+	public List<HotelSostenibilidad> listAll(){
+		List<HotelSostenibilidad> hotelSostenibilidad = new ArrayList<HotelSostenibilidad>();
+		SqlSession session = sql.openSession();
+		try{
+			hotelSostenibilidad = session.selectList("SqlMapHotelSostenibilidad.listAll");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return hotelSostenibilidad;
+	}
 	
 	public List<HotelSostenibilidad> list(Hotel h, String lang){
 		List<HotelSostenibilidad> hotelSostenibilidad = new ArrayList<HotelSostenibilidad>();
@@ -34,6 +59,22 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 		SqlSession session = sql.openSession();
 		try{
 			hotelSostenibilidad = session.selectOne("SqlMapHotelSostenibilidad.get",hotelSostenibilidad);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
+		return hotelSostenibilidad;
+	}
+	
+	public HotelSostenibilidad getSostenibilidadByIdAndLang(int id, String lang){
+		HotelSostenibilidad hotelSostenibilidad = new HotelSostenibilidad();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("id", id);
+			map.put("lang", lang);
+			hotelSostenibilidad = session.selectOne("SqlMapHotelSostenibilidad.getSostenibilidadByIdAndLang",map);
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 		}finally{
@@ -70,7 +111,7 @@ public class HotelSostenibilidadDAO extends BaseDAO{
 	public void del(HotelSostenibilidad hotelSostenibilidad){
 		SqlSession session = sql.openSession();
 		try{
-			session.delete("SqlMapHotelSostenibilidad.delete",hotelSostenibilidad);
+			session.delete("SqlMapHotelSostenibilidad.del",hotelSostenibilidad);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());

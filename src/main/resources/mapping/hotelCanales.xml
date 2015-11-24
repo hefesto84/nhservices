@@ -8,14 +8,27 @@
         <result property="id_hotel" column="id_hotel"/>
         <result property="lang" column="lang"/>
         <result property="channels" column="channels"/>
+        <result property="hotel_name" column="hotel_name"/>
     </resultMap>
+    
+    <select id="listLang" resultMap="HotelCanales">
+    	 SELECT lang FROM hotel_canales WHERE id_hotel = #{id};
+    </select>
+    
+    <select id="listAll" resultMap="HotelCanales">
+    	 SELECT hca.id, hca.id_hotel, hca.lang, h.name as hotel_name FROM hotel h, hotel_canales hca WHERE hca.id_hotel = h.id;
+    </select>
     
     <select id="list" resultMap="HotelCanales">
     	SELECT * FROM hotel_canales WHERE id_hotel = #{hotel.id} AND lang = #{lang};
     </select>
     
     <select id="get" parameterType="HotelCanales" resultMap="HotelCanales">
-        SELECT * FROM hotel_canales WHERE id_hotel = #{id_hotel};
+        SELECT * FROM hotel_canales WHERE id = #{id};
+    </select>
+    
+    <select id="getCanalByIdAndLang" parameterType="HotelCanales" resultMap="HotelCanales">
+        SELECT hca.*, h.name as hotel_name FROM hotel h, hotel_canales hca WHERE hca.id_hotel = #{id} AND lang = #{lang} AND hca.id_hotel = h.id;
     </select>
     
     <insert id="add" parameterType="HotelCanales" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
@@ -34,9 +47,7 @@
     
     <update id="update" parameterType="HotelCanales">
     	UPDATE hotel_canales SET 
-    		id_hotel = #{id_hotel},
-    		lang = #{lang},
-    		channels = #{channels},
+    		channels = #{channels}
     	WHERE id = #{id}
     </update>
     
