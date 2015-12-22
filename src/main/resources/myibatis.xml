@@ -19,6 +19,7 @@
 		<typeAlias alias="HotelTelefonos" type="es.ubiqua.nhservices.model.HotelTelefonos"/>
 		<typeAlias alias="User" type="es.ubiqua.nhservices.backend.model.User"/>
 		<typeAlias alias="Language" type="es.ubiqua.nhservices.model.Language"/>
+		<typeAlias alias="WakeUpAlarm" type="es.ubiqua.nhservices.model.WakeUpAlarm"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -51,6 +52,7 @@
 		<mapper resource="mapping/hotelTelefonos.xml"/>
 		<mapper resource="mapping/user.xml"/>
 		<mapper resource="mapping/language.xml"/>
+		<mapper resource="mapping/wakeUpAlarm.xml"/>
 	</mappers>
 	
 	

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapWakeUpAlarm">
+    
+    <resultMap id="WakeUpAlarm" type="es.ubiqua.nhservices.model.WakeUpAlarm">
+        <result property="id" column="id"/>
+        <result property="room" column="room"/>
+        <result property="setedTime" column="setedTime"/>
+        <result property="wakeUpTime" column="wakeUpTime"/>
+        <result property="randomId" column="randomId"/>
+        <result property="actived" column="actived"/>
+    </resultMap>
+    
+    <select id="listToday" resultMap="WakeUpAlarm">
+        SELECT * FROM wakeUpAlarm WHERE DATE(setedTime) = CURDATE();
+    </select>
+    
+    <select id="get" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">
+        SELECT * FROM wakeUpAlarm WHERE id = #{id};
+    </select>
+    
+    <select id="getByRandomId" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">
+        SELECT * FROM wakeUpAlarm WHERE randomId = #{randomId};
+    </select>
+    
+    <insert id="add" parameterType="WakeUpAlarm" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO wakeUpAlarm (room,wakeUpTime,randomId) 
+        	VALUES (
+        		#{room},
+        		#{wakeUpTime},
+        		#{randomId}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="confirmAlarm" parameterType="WakeUpAlarm">
+    	UPDATE wakeUpAlarm SET 
+    		actived = 1
+    	WHERE randomId = #{randomId}
+    </update>
+    
+</mapper>

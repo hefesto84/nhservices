@@ -14,6 +14,10 @@ import es.ubiqua.nhservices.model.Language;
 
 public class backendSeguridadAction extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<HotelSeguridad> lista;
 	private HotelSeguridad seguridad;
 	private String page;

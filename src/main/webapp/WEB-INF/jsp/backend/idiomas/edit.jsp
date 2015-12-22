@@ -13,6 +13,7 @@
 	
 	<input id="form_id" type="hidden" name="form_id" value="<s:property value='idioma.id'/>">
 	<table class="table-edit">
+	<tr>
 		<th>Idioma:</th>
 		<td><input type="text" name="form_idioma" id="form_idioma" value="<s:property value='idioma.code'/>"></td>
 	</tr>

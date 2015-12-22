@@ -10,6 +10,10 @@ import es.ubiqua.nhservices.backend.model.User;
 
 public class LoginBackendAction  extends BaseBackendAction{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String user;
 	private String password;
 	

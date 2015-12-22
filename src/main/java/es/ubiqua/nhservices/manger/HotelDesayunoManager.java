@@ -3,7 +3,6 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.HotelDesayunoDAO;
-import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDesayuno;
 
 public class HotelDesayunoManager {

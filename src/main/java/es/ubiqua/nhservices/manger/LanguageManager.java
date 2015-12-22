@@ -3,7 +3,6 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.LanguageDAO;
-import es.ubiqua.nhservices.model.HotelTelefonos;
 import es.ubiqua.nhservices.model.Language;
 
 public class LanguageManager {

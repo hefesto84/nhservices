@@ -14,6 +14,10 @@ import es.ubiqua.nhservices.model.Language;
 
 public class backendTelefonosAction extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<HotelTelefonos> lista;
 	private HotelTelefonos telefonos;
 	private String page;

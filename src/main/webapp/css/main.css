@@ -172,6 +172,16 @@ td{
 	width: 60px;
 }
 
+.table-custom-room{
+	text-align: left;
+	width: 30%;
+}
+
+.table-custom-alarm{
+	width: 200px;
+	text-align: left;
+}
+
 th.table-custom-acciones{
 	text-align: center;
 }
@@ -231,6 +241,16 @@ td.td-edit-unique{
     text-align: center;
     border-radius: 5px;
     float: right;
+}
+
+#button_settear_alarma{
+	background-color:  #9d2236;
+	color: #FFFFFF;
+	padding: 0.55em;
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .table-new{

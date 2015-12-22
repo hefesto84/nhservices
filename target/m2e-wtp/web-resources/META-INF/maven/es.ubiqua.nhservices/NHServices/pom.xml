@@ -195,6 +195,34 @@
 			<version>1.1.1</version>
 		</dependency>
 		
+		<!-- PDF -->
+		<dependency>
+		    <groupId>com.itextpdf</groupId>
+		    <artifactId>itextpdf</artifactId>
+		    <version>5.5.8</version>
+		</dependency>
+		
+		<!-- Infobip -->
+		<dependency>
+		    <groupId>com.infobip</groupId>
+		    <artifactId>infobip-api-java-client</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
+		
+		<!-- Quart< scheduler -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		
+		<!-- Asterisk -->
+		<dependency>
+		    <groupId>org.asteriskjava</groupId>
+		    <artifactId>asterisk-java</artifactId>
+		    <version>2.0.0.CI-SNAPSHOT</version>
+		</dependency>
+		
     </dependencies>
 	
     <build>

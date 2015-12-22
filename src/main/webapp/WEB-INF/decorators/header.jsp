@@ -104,6 +104,7 @@
         </ul>
       </li> -->
       <li><a href="<s:url value='/backend/idiomas/list'/>">Idiomas</a></li>
+      <li><a href="<s:url value='/backend/hoteles/list'/>">Hoteles</a></li>
       <li class="dropdown">
         <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
           Web Services <b class="caret"></b>
@@ -124,13 +125,29 @@
 	              	<li><a href="#">3rd level</a></li>
 	              </ul>
 	            </li> -->
-	            <li><a href="restaurantes_list">Restaurantes</a></li>
 	            <li><a href="<s:url value='/backend/canales/list'/>">Canales</a></li>
 	            <li><a href="<s:url value='/backend/seguridad/list'/>">Seguridad</a></li>
 	            <li><a href="<s:url value='/backend/sostenibilidad/list'/>">Sostenibilidad</a></li>
+	            <li class="dropdown-submenu">
+	              <a href="#">Restaurantes</a>
+	              <ul class="dropdown-menu">
+	                  <li><a href="#">Añadir Restaurante</a></li>
+	              	<li><a href="#">Restaurantes</a></li>
+	              </ul>
+	            </li>
 	            <li><a href="<s:url value='/backend/telefonos/list'/>">Telefonos</a></li>
 	          </ul>
 	        </li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
+          Alarmas <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <!-- <li class="dropdown-submenu"> -->
+	          <li><a href="<s:url value='/backend/alarms/wakeup'/>">Wake Up</a></li>
+	      <!-- </li> -->
         </ul>
       </li>
     </ul>

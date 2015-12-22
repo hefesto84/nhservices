@@ -1,11 +1,27 @@
 package es.ubiqua.nhservices.actions;
 
-import java.util.ArrayList;
+import java.awt.print.PrinterException;
 import java.util.List;
 
-import org.apache.struts2.convention.annotation.Result;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.SimpleDoc;
 
-import com.google.gson.Gson;
+
+import org.asteriskjava.manager.AuthenticationFailedException;
+import org.asteriskjava.manager.ManagerConnection;
+import org.asteriskjava.manager.ManagerConnectionFactory;
+import org.asteriskjava.manager.TimeoutException;
+import org.asteriskjava.manager.action.OriginateAction;
+import org.asteriskjava.manager.response.ManagerResponse;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.ubiqua.nhservices.manger.HotelCanalesManager;
@@ -21,6 +37,7 @@ import es.ubiqua.nhservices.manger.HotelManager;
 import es.ubiqua.nhservices.manger.HotelSeguridadManager;
 import es.ubiqua.nhservices.manger.HotelSostenibilidadManager;
 import es.ubiqua.nhservices.manger.HotelTelefonosManager;
+import es.ubiqua.nhservices.manger.WakeUpAlarmManager;
 import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryDesayuno;
@@ -34,10 +51,18 @@ import es.ubiqua.nhservices.model.HotelDirectoryWifi;
 import es.ubiqua.nhservices.model.HotelSeguridad;
 import es.ubiqua.nhservices.model.HotelSostenibilidad;
 import es.ubiqua.nhservices.model.HotelTelefonos;
+import es.ubiqua.nhservices.model.Product;
+import es.ubiqua.nhservices.model.RoomService;
+import es.ubiqua.nhservices.model.WakeUpAlarm;
+import es.ubiqua.nhservices.utils.Utils;
 
 
 public class GetHotelDirectory extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<HotelDirectoryRestaurantes> restaurants;
 	private List<HotelDirectoryDesayuno> breakfast;
 	private List<HotelDirectoryEventos> events;
@@ -52,6 +77,12 @@ public class GetHotelDirectory extends ActionSupport {
 	private List<HotelTelefonos> phones;
 	private String lang;
 	private String name;
+	
+	private int room;
+	private int time;
+	private String id;
+	
+	private InputStream inputStream;
 	
 	public String execute() {
 	    
@@ -177,6 +208,113 @@ public class GetHotelDirectory extends ActionSupport {
 		
 		return SUCCESS;
 	}
+	
+	public String wakeUp() throws IOException{
+		
+		Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond( time ));
+		SecureRandom random = new SecureRandom();
+		String randomId = new BigInteger(130, random).toString(32);
+				
+		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
+		wakeUpAlarm.setRoom(room);
+		wakeUpAlarm.setWakeUpTime(timestamp);
+		wakeUpAlarm.setRandomId(randomId);
+		
+		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
+		
+		wakeUpAlarm = wakeUpAlarmManager.add(wakeUpAlarm);
+		
+		avisarNuevoDespertador(wakeUpAlarm);
+		
+		return SUCCESS;
+	}
+	
+	public String confirmationWakeUp(){
+		
+		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
+		wakeUpAlarm.setRandomId(id);
+		
+		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
+		
+		wakeUpAlarm = wakeUpAlarmManager.getByRandomId(wakeUpAlarm);
+		wakeUpAlarm = wakeUpAlarmManager.confirmAlarm(wakeUpAlarm);
+		
+		Utils.stopCron(wakeUpAlarm, "wakeUp");
+		
+		return SUCCESS;
+	}
+	
+	public String pdf() throws PrinterException, IOException{
+	
+		RoomService roomService = new RoomService();
+		roomService.addProduct(new Product("Suc Taronja",2));
+		roomService.addProduct(new Product("Suc Pinya",1));
+		
+		inputStream = Utils.roomServicePDF(roomService);
+		
+	    Doc pdfDoc = new SimpleDoc(inputStream, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
+	    
+	    Utils.printPDF(pdfDoc);
+	    
+	    inputStream.close();
+
+		return SUCCESS;
+		
+	}
+	
+	public String mail() throws IOException{
+		
+		RoomService roomService = new RoomService();
+		roomService.addProduct(new Product("Suc Taronja",2));
+		roomService.addProduct(new Product("Suc Pinya",1));
+		
+		inputStream = Utils.roomServicePDF(roomService);
+		
+		Utils.sendMailObject(inputStream);
+
+		return SUCCESS;
+		
+	}
+	
+	private void avisarNuevoDespertador(WakeUpAlarm wakeUpAlarm) throws IOException{
+		
+		//Utils.sendSMSWakeUpAlarm(wakeUpAlarm);
+		
+		//inputStream = Utils.wakeUpAlarmPDF(wakeUpAlarm);
+		
+		//Utils.sendMailWakeUpAlarm(inputStream, wakeUpAlarm);
+		
+		Utils.CronWakeUpAlarm(wakeUpAlarm);
+		
+	}
+	
+
+	public void provaAsterisk() throws IOException, AuthenticationFailedException, TimeoutException{
+		
+		ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.1.200", "ubiqua", "ubiqua.456");
+
+		ManagerConnection managerConnection = factory.createManagerConnection();
+        
+        OriginateAction originateAction;
+
+        originateAction = new OriginateAction();
+        originateAction.setChannel("SIP/2000");
+        originateAction.setContext("default");
+        originateAction.setExten("2002");
+        originateAction.setApplication("Playback");
+        originateAction.setData("tt-monkeys");
+        originateAction.setPriority(new Integer(1));
+
+        // connect to Asterisk and log in
+		managerConnection.login();
+        
+        // send the originate action and wait for a maximum of 30 seconds for Asterisk
+        // to send a reply
+		ManagerResponse originateResponse = managerConnection.sendAction(originateAction, 30000);
+		
+		managerConnection.logoff();
+        
+	} 
 
 	public List<HotelDirectoryRestaurantes> getRestaurants() {
 		return restaurants;
@@ -281,5 +419,38 @@ public class GetHotelDirectory extends ActionSupport {
 	public void setPhones(List<HotelTelefonos> phones) {
 		this.phones = phones;
 	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public int getRoom() {
+		return room;
+	}
+
+	public void setRoom(int room) {
+		this.room = room;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 
 }

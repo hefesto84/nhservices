@@ -14,6 +14,10 @@ import es.ubiqua.nhservices.model.Language;
 
 public class backendCanalesAction extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5192442894734535290L;
 	private List<HotelCanales> lista;
 	private HotelCanales canal;
 	private String page;

@@ -7,7 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import es.ubiqua.nhservices.model.Hotel;
-import es.ubiqua.nhservices.model.HotelCanales;
 
 public class HotelDAO extends BaseDAO{
 	public List<Hotel> list(){
@@ -64,7 +63,7 @@ public class HotelDAO extends BaseDAO{
 	public void del(Hotel hotel){
 		SqlSession session = sql.openSession();
 		try{
-			session.delete("SqlMapHotel.delete",hotel);
+			session.delete("SqlMapHotel.del",hotel);
 			session.commit();
 		}catch(Exception e){
 			Logger.getLogger(this.getClass()).error(e.getMessage());

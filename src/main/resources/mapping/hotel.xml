@@ -17,9 +17,8 @@
     </select>
     
     <insert id="add" parameterType="Hotel" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO hotel_canales (id_hotel,name) 
+        INSERT INTO hotel (name) 
         	VALUES (
-        		#{id_hotel},
         		#{name}
         	)
         	
@@ -31,7 +30,7 @@
     
     <update id="update" parameterType="Hotel">
     	UPDATE hotel SET 
-    		name = #{name},
+    		name = #{name}
     	WHERE id = #{id}
     </update>
     

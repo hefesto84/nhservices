@@ -12,6 +12,10 @@ import es.ubiqua.nhservices.backend.model.User;
 
 public class BaseBackendAction extends ActionSupport{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected UserManager userManager = new UserManager();
 
 	public boolean isLogged(){

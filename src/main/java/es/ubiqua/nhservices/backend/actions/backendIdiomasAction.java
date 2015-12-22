@@ -1,4 +1,4 @@
-package es.ubiqua.nhservices.backend.hotelDirectory.actions;
+package es.ubiqua.nhservices.backend.actions;
 
 import java.util.List;
 
@@ -9,6 +9,10 @@ import es.ubiqua.nhservices.model.Language;
 
 public class backendIdiomasAction extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2418956274308485359L;
 	private List<Language> lista;
 	private Language idioma;
 	private String form_idioma;

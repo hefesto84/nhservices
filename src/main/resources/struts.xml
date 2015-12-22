@@ -106,6 +106,43 @@
 		    	<param name="excludeNullProperties">true</param>
 		    </result>
         </action>
+        <action name="wakeUp" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="wakeUp">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+        </action>
+        <action name="confirmationWakeUp" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="confirmationWakeUp">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+        </action>
+        
+        <action name="pdf" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="pdf">
+           <result name="success" type="stream"> 
+            <param name="contentType">application/pdf</param>
+            <param name="inputName">inputStream</param>
+            <param name="contentDisposition">filename="test.pdf"</param>
+            <param name="bufferSize">1024</param>
+			</result>
+        </action>
+        <action name="mail" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="mail">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+        </action>
+        <action name="asterisk" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="provaAsterisk">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+        </action>
     </package>
     
     <package name="login" namespace="/login" extends="struts-default">
@@ -168,33 +205,69 @@
     </package>
     
     <package name="idiomas" namespace="/backend/idiomas" extends="json-default">
-    	<action name="list" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="list">
+    	<action name="list" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="list">
     		<result name="success">/WEB-INF/jsp/backend/idiomas/list.jsp</result>
     		<result name="error" type="redirect">../login/</result>
     	</action>
-    	<action name="edit" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="edit">
+    	<action name="edit" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="edit">
     		<result name="success">/WEB-INF/jsp/backend/idiomas/edit.jsp</result>
     		<result name="error" type="redirect">../login/</result>
     	</action>
-    	<action name="new" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="nuevo">
+    	<action name="new" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="nuevo">
     		<result name="success">/WEB-INF/jsp/backend/idiomas/new.jsp</result>
     		<result name="error" type="redirect">../login/</result>
     	</action>
-    	<action name="add" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="add">
+    	<action name="add" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="add">
     		<result type="json">
         		<param name="encoding">UTF-8</param>
         		<param name="contentType">application/json</param>
 		    	<param name="excludeNullProperties">true</param>
 		    </result>
     	</action>
-    	<action name="modify" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="modify">
+    	<action name="modify" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="modify">
     		<result type="json">
         		<param name="encoding">UTF-8</param>
         		<param name="contentType">application/json</param>
 		    	<param name="excludeNullProperties">true</param>
 		    </result>
     	</action>
-    	<action name="delete" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendIdiomasAction" method="delete">
+    	<action name="delete" class="es.ubiqua.nhservices.backend.actions.backendIdiomasAction" method="delete">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    </package>
+    
+    <package name="hoteles" namespace="/backend/hoteles" extends="json-default">
+    	<action name="list" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="list">
+    		<result name="success">/WEB-INF/jsp/backend/hoteles/list.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="edit" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="edit">
+    		<result name="success">/WEB-INF/jsp/backend/hoteles/edit.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="new" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="nuevo">
+    		<result name="success">/WEB-INF/jsp/backend/hoteles/new.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="add" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="add">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="modify" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="modify">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="delete" class="es.ubiqua.nhservices.backend.actions.backendHotelesAction" method="delete">
     		<result type="json">
         		<param name="encoding">UTF-8</param>
         		<param name="contentType">application/json</param>
@@ -374,6 +447,20 @@
 		    </result>
     	</action>
     	<action name="delete" class="es.ubiqua.nhservices.backend.hotelDirectory.actions.backendTelefonosAction" method="delete">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    </package>
+    
+    <package name="wakeup" namespace="/backend/alarms" extends="json-default">
+    	<action name="wakeup" class="es.ubiqua.nhservices.backend.actions.AlarmsAction" method="wakeUpList">
+    		<result name="success">/WEB-INF/jsp/backend/alarmas/list.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="wakeupActivate" class="es.ubiqua.nhservices.backend.actions.AlarmsAction" method="wakeUpActivate">
     		<result type="json">
         		<param name="encoding">UTF-8</param>
         		<param name="contentType">application/json</param>

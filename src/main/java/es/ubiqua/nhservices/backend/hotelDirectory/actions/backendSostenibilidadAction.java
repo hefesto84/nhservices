@@ -14,6 +14,10 @@ import es.ubiqua.nhservices.model.Language;
 
 public class backendSostenibilidadAction extends ActionSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<HotelSostenibilidad> lista;
 	private HotelSostenibilidad sostenibilidad;
 	private String page;
