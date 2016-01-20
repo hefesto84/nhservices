@@ -20,6 +20,9 @@
 		<typeAlias alias="User" type="es.ubiqua.nhservices.backend.model.User"/>
 		<typeAlias alias="Language" type="es.ubiqua.nhservices.model.Language"/>
 		<typeAlias alias="WakeUpAlarm" type="es.ubiqua.nhservices.model.WakeUpAlarm"/>
+		<typeAlias alias="RoomServicePlatos" type="es.ubiqua.nhservices.model.RoomServicePlatos"/>
+		<typeAlias alias="RoomServiceBebidas" type="es.ubiqua.nhservices.model.RoomServiceBebidas"/>
+		<typeAlias alias="RoomServiceIngredientes" type="es.ubiqua.nhservices.model.RoomServiceIngredientes"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -53,6 +56,9 @@
 		<mapper resource="mapping/user.xml"/>
 		<mapper resource="mapping/language.xml"/>
 		<mapper resource="mapping/wakeUpAlarm.xml"/>
+		<mapper resource="mapping/roomServicePlatos.xml"/>
+		<mapper resource="mapping/roomServiceBebidas.xml"/>
+		<mapper resource="mapping/roomServiceIngredientes.xml"/>
 	</mappers>
 	
 	

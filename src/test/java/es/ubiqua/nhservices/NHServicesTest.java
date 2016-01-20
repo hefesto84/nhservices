@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 public class NHServicesTest  extends TestCase{
 	
 	 public void testFunctions() throws Exception {
-		Utils.sendSMSWakeUpAlarm(new WakeUpAlarm());
+		//Utils.sendSMSWakeUpAlarm(new WakeUpAlarm());
 	 }
 	 
 	 

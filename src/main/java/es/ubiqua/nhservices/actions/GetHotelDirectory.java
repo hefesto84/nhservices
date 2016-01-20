@@ -37,6 +37,9 @@ import es.ubiqua.nhservices.manger.HotelManager;
 import es.ubiqua.nhservices.manger.HotelSeguridadManager;
 import es.ubiqua.nhservices.manger.HotelSostenibilidadManager;
 import es.ubiqua.nhservices.manger.HotelTelefonosManager;
+import es.ubiqua.nhservices.manger.RoomServiceBebidasManager;
+import es.ubiqua.nhservices.manger.RoomServiceIngredientesManager;
+import es.ubiqua.nhservices.manger.RoomServicePlatosManager;
 import es.ubiqua.nhservices.manger.WakeUpAlarmManager;
 import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
@@ -53,6 +56,9 @@ import es.ubiqua.nhservices.model.HotelSostenibilidad;
 import es.ubiqua.nhservices.model.HotelTelefonos;
 import es.ubiqua.nhservices.model.Product;
 import es.ubiqua.nhservices.model.RoomService;
+import es.ubiqua.nhservices.model.RoomServiceBebidas;
+import es.ubiqua.nhservices.model.RoomServiceIngredientes;
+import es.ubiqua.nhservices.model.RoomServicePlatos;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 import es.ubiqua.nhservices.utils.Utils;
 
@@ -63,6 +69,9 @@ public class GetHotelDirectory extends ActionSupport {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private List<RoomServicePlatos> platos;
+	private List<RoomServiceBebidas> bebidas;
+	private List<RoomServiceIngredientes> ingredientes;
 	private List<HotelDirectoryRestaurantes> restaurants;
 	private List<HotelDirectoryDesayuno> breakfast;
 	private List<HotelDirectoryEventos> events;
@@ -88,6 +97,18 @@ public class GetHotelDirectory extends ActionSupport {
 	    
         return SUCCESS;
     }
+	
+	public String listRoomService(){
+		
+		Hotel h = new Hotel();
+		h.setName(name);
+		h = new HotelManager().get(h);
+		platos = new RoomServicePlatosManager().list(h, lang);
+		bebidas = new RoomServiceBebidasManager().list(h, lang);
+		ingredientes = new RoomServiceIngredientesManager().list(h, lang);
+		
+		return SUCCESS;
+	}
 	
 	public String listRestaurants(){
 		
@@ -280,9 +301,9 @@ public class GetHotelDirectory extends ActionSupport {
 		
 		//Utils.sendSMSWakeUpAlarm(wakeUpAlarm);
 		
-		//inputStream = Utils.wakeUpAlarmPDF(wakeUpAlarm);
+		inputStream = Utils.wakeUpAlarmPDF(wakeUpAlarm);
 		
-		//Utils.sendMailWakeUpAlarm(inputStream, wakeUpAlarm);
+		Utils.sendMailWakeUpAlarm(inputStream, wakeUpAlarm);
 		
 		Utils.CronWakeUpAlarm(wakeUpAlarm);
 		
@@ -450,6 +471,30 @@ public class GetHotelDirectory extends ActionSupport {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<RoomServicePlatos> getPlatos() {
+		return platos;
+	}
+
+	public void setPlatos(List<RoomServicePlatos> platos) {
+		this.platos = platos;
+	}
+
+	public List<RoomServiceBebidas> getBebidas() {
+		return bebidas;
+	}
+
+	public void setBebidas(List<RoomServiceBebidas> bebidas) {
+		this.bebidas = bebidas;
+	}
+
+	public List<RoomServiceIngredientes> getIngredientes() {
+		return ingredientes;
+	}
+
+	public void setIngredientes(List<RoomServiceIngredientes> ingredientes) {
+		this.ingredientes = ingredientes;
 	}
 	
 

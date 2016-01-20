@@ -22,6 +22,13 @@
         	<param name="encoding">UTF-8</param>
         	<param name="contentType">application/json</param>
         </action>
+        <action name="listRoomService" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listRoomService">
+        	<result type="json">
+		    	<param name="excludeNullProperties">true</param>
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+        	</result>
+        </action>
         <action name="listRestaurants" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listRestaurants">
         	<result type="json">
 		    	<param name="excludeNullProperties">true</param>

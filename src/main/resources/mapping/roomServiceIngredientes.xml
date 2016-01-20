@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapRoomServiceIngredientes">
+    
+    <resultMap id="RoomServiceIngredientes" type="es.ubiqua.nhservices.model.RoomServiceIngredientes">
+        <result property="id" column="id"/>
+        <result property="lang" column="lang"/>
+        <result property="categoria" column="categoria_name"/>
+        <result property="subcategoria" column="subcategoria_name"/>
+        <result property="ingrediente" column="ingrediente"/>
+        <result property="ligero_calorias" column="ligero_calorias"/>
+        <result property="vegetariano" column="vegetariano"/>
+        <result property="sin_gluten" column="sin_gluten"/>
+        <result property="plato_especial" column="plato_especial"/>
+        <result property="disponible_24h" column="disponible_24h"/>
+    </resultMap>
+    
+    <select id="list" resultMap="RoomServiceIngredientes" parameterType="java.util.Map">
+    	SELECT rsi.*, rsc.categoria as categoria_name, rsis.subcategoria as subcategoria_name FROM room_service_ingredientes rsi, hotel_room_service_ingredientes hrsi, room_service_categoria rsc, room_service_ingredientes_subcategoria rsis WHERE hrsi.id_hotel = #{hotel.id} AND rsi.id = hrsi.id_room_service_ingredientes AND rsi.categoria = rsc.id AND rsi.subcategoria = rsis.id AND rsi.lang = #{lang};
+    </select>
+    
+    <!-- <select id="get" parameterType="HotelDirectoryRestaurantes" resultMap="HotelDirectoryRestaurantes">
+        SELECT * FROM hotel_directory_restaurantes WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO hotel_directory_restaurantes (lang,name,description,images,menu,localization,timetable,phone) 
+        	VALUES (
+        		#{lang},
+        		#{name},
+        		#{description},
+        		#{images},
+        		#{menu},
+        		#{localization},
+        		#{timetable},
+        		#{phone}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="HotelDirectoryRestaurantes">
+    	UPDATE hotel_directory_restaurantes SET 
+    		lang = #{lang},
+    		name = #{name},
+    		description = #{description},
+    		images = #{images},
+    		menu = #{menu},
+    		localization = #{localization},
+    		timetable = #{timetable},
+    		phone = #{phone},
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="HotelDirectoryRestaurantes">
+	  	delete from hotel_directory_restaurantes where id = #{id}
+	</delete> -->
+    
+</mapper>
