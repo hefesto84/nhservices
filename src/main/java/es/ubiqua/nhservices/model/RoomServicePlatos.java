@@ -3,7 +3,7 @@ package es.ubiqua.nhservices.model;
 public class RoomServicePlatos {
 	private int id;
 	private String lang;
-	private String categoria;
+	private int categoria;
 	private String titulo;
 	private String subtitulo;
 	private String precio;
@@ -23,7 +23,7 @@ public class RoomServicePlatos {
 		return lang;
 	}
 	
-	public String getCategoria() {
+	public int getCategoria() {
 		return categoria;
 	}
 	
@@ -75,7 +75,7 @@ public class RoomServicePlatos {
 		this.lang = lang;
 	}
 	
-	public void setCategoria(String categoria) {
+	public void setCategoria(int categoria) {
 		this.categoria = categoria;
 	}
 	

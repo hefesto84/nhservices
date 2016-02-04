@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 import com.itextpdf.text.BaseColor;
@@ -54,7 +56,11 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
 import es.ubiqua.nhservices.jobs.WakeUpJob;
+import es.ubiqua.nhservices.jobs.WakeUpNoRespondJob;
+import es.ubiqua.nhservices.manger.RoomExtensionManager;
+import es.ubiqua.nhservices.manger.WakeUpAlarmManager;
 import es.ubiqua.nhservices.model.Product;
+import es.ubiqua.nhservices.model.RoomExtension;
 import es.ubiqua.nhservices.model.RoomService;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 import infobip.api.client.SendSingleTextualSms;
@@ -127,7 +133,7 @@ public class Utils extends ActionSupport{
 		return inputStream;
 	}
 	
-	public static InputStream wakeUpAlarmPDF(WakeUpAlarm wakeUpAlarm){
+	/*public static InputStream wakeUpAlarmPDF(WakeUpAlarm wakeUpAlarm){
 		
 		InputStream inputStream = null;
 		
@@ -156,7 +162,7 @@ public class Utils extends ActionSupport{
         }
 		
 		return inputStream;
-	}
+	}*/
 	
 	public static void printPDF(Doc doc) throws PrinterException{
 		
@@ -236,7 +242,7 @@ public class Utils extends ActionSupport{
 		
 	}
 	
-	public static void sendMailWakeUpAlarm(InputStream stream, WakeUpAlarm wakeUpAlarm) throws IOException{
+	public static void sendMailWakeUpNoRespond(String room, String time, String randomId){
 		
 		final String username = "rocprat@gmail.com";
 		final String password = "Roccopl2006";
@@ -266,22 +272,15 @@ public class Utils extends ActionSupport{
 			
 			//3) create MimeBodyPart object and set your message text        
             BodyPart messageBodyPart1 = new MimeBodyPart();     
-            messageBodyPart1.setText("Nuevo despertador programado");
+            messageBodyPart1.setText("El despertador programado en:");
             BodyPart messageBodyPart2 = new MimeBodyPart();     
-            messageBodyPart2.setText("\nHabitación : "+wakeUpAlarm.getRoom());
+            messageBodyPart2.setText("\nHabitación : "+room);
             BodyPart messageBodyPart3 = new MimeBodyPart();     
-            messageBodyPart3.setText("\nProgramado para : "+wakeUpAlarm.getWakeUpTime());
+            messageBodyPart3.setText("\nProgramado para : "+time);
             BodyPart messageBodyPart4 = new MimeBodyPart();     
-            messageBodyPart4.setText("\nSi has leido este mail, corfirma en el siguiente enlace:");
+            messageBodyPart4.setText("\nNo se ha llebado a cabo.\nSi has leido este mail, corfirma en el siguiente enlace:");
             BodyPart messageBodyPart5 = new MimeBodyPart();     
-            messageBodyPart5.setText("\nhttp://localhost:8080/NHServices/api/confirmationWakeUp?id="+wakeUpAlarm.getRandomId());
-
-            //4) create new MimeBodyPart object and set DataHandler object to this object        
-            MimeBodyPart messageBodyPart6 = new MimeBodyPart();   
-            ByteArrayDataSource ds = new ByteArrayDataSource(stream, "application/pdf");
-            String filename = "wakeUp.pdf";//change accordingly        
-            messageBodyPart6.setDataHandler(new DataHandler(ds));    
-            messageBodyPart6.setFileName(filename);             
+            messageBodyPart5.setText("\nhttp://localhost:8080/NHServices/api/confirmationWakeUp?id="+randomId);          
 
             //5) create Multipart object and add MimeBodyPart objects to this object        
             Multipart multipart = new MimeMultipart();    
@@ -289,8 +288,7 @@ public class Utils extends ActionSupport{
             multipart.addBodyPart(messageBodyPart2);      
             multipart.addBodyPart(messageBodyPart3);      
             multipart.addBodyPart(messageBodyPart4);      
-            multipart.addBodyPart(messageBodyPart5);      
-            multipart.addBodyPart(messageBodyPart6);      
+            multipart.addBodyPart(messageBodyPart5);    
 
             //6) set the multiplart object to the message object    
             message.setContent(multipart);
@@ -322,15 +320,67 @@ public class Utils extends ActionSupport{
         
 	}
 	
-	public static void CronWakeUpAlarm(WakeUpAlarm wakeUpAlarm){
+	
+	public static void CronWakeUp(WakeUpAlarm wakeUpAlarm){
+		
+		Date date = new Date(wakeUpAlarm.getWakeUpTime().getTime());
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+		
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		int month = cal.get(Calendar.MONTH) + 1;
+		int year = cal.get(Calendar.YEAR);
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int minute = cal.get(Calendar.MINUTE);
+		
+		String wakeUpTime = day+"-"+month+"-"+year+" "+hour+":"+minute;
+		
+		RoomExtension roomExtension = new RoomExtension();
+		roomExtension.setRoom(wakeUpAlarm.getRoom());
+		roomExtension = new RoomExtensionManager().get(roomExtension);
 		
 		try{
 			String triggerName = wakeUpAlarm.getRandomId() + "Trigger";
 			JobDetail wakeUpJob = JobBuilder.newJob(WakeUpJob.class).withIdentity(wakeUpAlarm.getRandomId(), "wakeUp").build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "wakeUp").withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ?")).build();
+			wakeUpJob.getJobDataMap().put("Extension",roomExtension.getExtension());
+			wakeUpJob.getJobDataMap().put("Room",roomExtension.getRoom());
+			wakeUpJob.getJobDataMap().put("Hour",wakeUpTime); 
+			wakeUpJob.getJobDataMap().put("RandomId",wakeUpAlarm.getRandomId()); 
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "wakeUp").withSchedule(CronScheduleBuilder.cronSchedule("0 "+minute+" "+hour+" "+day+" "+month+" ? "+year+"")).build();
 			Scheduler scheduler = new StdSchedulerFactory().getScheduler();
 			scheduler.start();
 			scheduler.scheduleJob(wakeUpJob, trigger);
+			
+			} catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		
+	}
+	
+	public static void cronWakeUpNoResponse(WakeUpAlarm wakeUpAlarm){
+		
+		final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+		Calendar date = Calendar.getInstance();
+		long t = date.getTimeInMillis();
+		Date afterAddingFiveMins = new Date(t + (5 * ONE_MINUTE_IN_MILLIS));
+		date.setTime(afterAddingFiveMins);
+		
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		int month = date.get(Calendar.MONTH) + 1;
+		int year = date.get(Calendar.YEAR);
+		int hour = date.get(Calendar.HOUR_OF_DAY);
+		int minute = date.get(Calendar.MINUTE);
+		
+		System.out.println("MESSI : "+day+"-"+month+"-"+year+" "+hour+":"+minute);
+		
+		try{
+			String triggerName = wakeUpAlarm.getRandomId() + "NoRespondTrigger";
+			JobDetail wakeUpNoRespondJob = JobBuilder.newJob(WakeUpNoRespondJob.class).withIdentity(wakeUpAlarm.getRandomId(), "noRespondWakeUp").build();
+			wakeUpNoRespondJob.getJobDataMap().put("RandomId",wakeUpAlarm.getRandomId()); 
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "noRespondWakeUp").withSchedule(CronScheduleBuilder.cronSchedule("0 "+minute+" "+hour+" "+day+" "+month+" ? "+year+"")).build();
+			Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+			scheduler.start();
+			scheduler.scheduleJob(wakeUpNoRespondJob, trigger);
 			
 			} catch (Exception e) {
 	            e.printStackTrace();
@@ -354,6 +404,35 @@ public class Utils extends ActionSupport{
             
         }
 		
+	}
+	
+	public static void stopCronNoRespond(WakeUpAlarm wakeUpAlarm, String group){
+		
+		String triggerName = wakeUpAlarm.getRandomId() + "NoRespondTrigger";
+		
+		try{
+			
+			Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+			scheduler.unscheduleJob(new TriggerKey(triggerName, group));
+			scheduler.deleteJob(new JobKey(wakeUpAlarm.getRandomId(), group));
+			
+		} catch (Exception e) {
+			
+            e.printStackTrace();
+            
+        }
+		
+	}
+	
+	public static void confirmDespertador(String randomId){
+		
+		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
+		wakeUpAlarm.setRandomId(randomId);
+		
+		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
+		
+		wakeUpAlarm = wakeUpAlarmManager.getByRandomId(wakeUpAlarm);
+		wakeUpAlarm = wakeUpAlarmManager.confirmAlarm(wakeUpAlarm);
 	}
 
 }

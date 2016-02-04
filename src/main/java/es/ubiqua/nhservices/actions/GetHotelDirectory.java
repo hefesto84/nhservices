@@ -245,7 +245,7 @@ public class GetHotelDirectory extends ActionSupport {
 		
 		wakeUpAlarm = wakeUpAlarmManager.add(wakeUpAlarm);
 		
-		avisarNuevoDespertador(wakeUpAlarm);
+		Utils.CronWakeUp(wakeUpAlarm);
 		
 		return SUCCESS;
 	}
@@ -297,7 +297,7 @@ public class GetHotelDirectory extends ActionSupport {
 		
 	}
 	
-	private void avisarNuevoDespertador(WakeUpAlarm wakeUpAlarm) throws IOException{
+	/*private void avisarNuevoDespertador(WakeUpAlarm wakeUpAlarm) throws IOException{
 		
 		//Utils.sendSMSWakeUpAlarm(wakeUpAlarm);
 		
@@ -307,9 +307,8 @@ public class GetHotelDirectory extends ActionSupport {
 		
 		Utils.CronWakeUpAlarm(wakeUpAlarm);
 		
-	}
+	}*/
 	
-
 	public void provaAsterisk() throws IOException, AuthenticationFailedException, TimeoutException{
 		
 		ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.1.200", "ubiqua", "ubiqua.456");
@@ -317,21 +316,50 @@ public class GetHotelDirectory extends ActionSupport {
 		ManagerConnection managerConnection = factory.createManagerConnection();
         
         OriginateAction originateAction;
+        
+        System.out.println("LEO MESSI");
 
         originateAction = new OriginateAction();
-        originateAction.setChannel("SIP/2000");
+        originateAction.setChannel("SIP/2001"); // Sortida Extensio a on es truca //
         originateAction.setContext("default");
-        originateAction.setExten("2002");
+        originateAction.setExten("2000"); // Extensio desde on es truca //
         originateAction.setApplication("Playback");
         originateAction.setData("tt-monkeys");
         originateAction.setPriority(new Integer(1));
 
-        // connect to Asterisk and log in
-		managerConnection.login();
+        try {
+			managerConnection.login();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AuthenticationFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         // send the originate action and wait for a maximum of 30 seconds for Asterisk
         // to send a reply
-		ManagerResponse originateResponse = managerConnection.sendAction(originateAction, 30000);
+		try {
+			ManagerResponse originateResponse = managerConnection.sendAction(originateAction, 30000);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		managerConnection.logoff();
         

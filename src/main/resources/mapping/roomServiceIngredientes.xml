@@ -5,10 +5,9 @@
     
     <resultMap id="RoomServiceIngredientes" type="es.ubiqua.nhservices.model.RoomServiceIngredientes">
         <result property="id" column="id"/>
-        <result property="lang" column="lang"/>
-        <result property="categoria" column="categoria_name"/>
+        <result property="categoria" column="categoria"/>
         <result property="subcategoria" column="subcategoria_name"/>
-        <result property="ingrediente" column="ingrediente"/>
+        <result property="identificador" column="articulo"/>
         <result property="ligero_calorias" column="ligero_calorias"/>
         <result property="vegetariano" column="vegetariano"/>
         <result property="sin_gluten" column="sin_gluten"/>
@@ -17,7 +16,7 @@
     </resultMap>
     
     <select id="list" resultMap="RoomServiceIngredientes" parameterType="java.util.Map">
-    	SELECT rsi.*, rsc.categoria as categoria_name, rsis.subcategoria as subcategoria_name FROM room_service_ingredientes rsi, hotel_room_service_ingredientes hrsi, room_service_categoria rsc, room_service_ingredientes_subcategoria rsis WHERE hrsi.id_hotel = #{hotel.id} AND rsi.id = hrsi.id_room_service_ingredientes AND rsi.categoria = rsc.id AND rsi.subcategoria = rsis.id AND rsi.lang = #{lang};
+    	SELECT rsi.*, rsis.subcategoria as subcategoria_name, t.traduccion as articulo FROM room_service_ingredientes rsi, hotel_room_service_ingredientes hrsi, room_service_ingredientes_subcategoria rsis, traducciones t WHERE hrsi.id_hotel = #{hotel.id} AND rsi.id = hrsi.id_room_service_ingredientes AND rsi.subcategoria = rsis.id AND rsi.identificador LIKE t.identificador AND t.lang LIKE #{lang};
     </select>
     
     <!-- <select id="get" parameterType="HotelDirectoryRestaurantes" resultMap="HotelDirectoryRestaurantes">

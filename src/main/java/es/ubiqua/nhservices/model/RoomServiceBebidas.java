@@ -2,25 +2,20 @@ package es.ubiqua.nhservices.model;
 
 public class RoomServiceBebidas {
 	private int id;
-	private String lang;
-	private String categoria;
+	private int categoria;
 	private String subcategoria;
-	private String bebida;
-	private String precio;
+	private String identificador;
+	private Float precio;
 	
 	public int getId() {
 		return id;
 	}
 	
-	public String getLang() {
-		return lang;
-	}
-	
-	public String getCategoria() {
+	public int getCategoria() {
 		return categoria;
 	}
 	
-	public String getPrecio() {
+	public Float getPrecio() {
 		return precio;
 	}
 	
@@ -28,16 +23,12 @@ public class RoomServiceBebidas {
 		this.id = id;
 	}
 	
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
-	
-	public void setCategoria(String categoria) {
+	public void setCategoria(int categoria) {
 		this.categoria = categoria;
 	}
 	
 	
-	public void setPrecio(String precio) {
+	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
 
@@ -49,12 +40,12 @@ public class RoomServiceBebidas {
 		this.subcategoria = subcategoria;
 	}
 
-	public String getBebida() {
-		return bebida;
+	public String getIdentificador() {
+		return identificador;
 	}
 
-	public void setBebida(String bebida) {
-		this.bebida = bebida;
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
 	}
 
 }

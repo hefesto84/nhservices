@@ -5,15 +5,14 @@
     
     <resultMap id="RoomServiceBebidas" type="es.ubiqua.nhservices.model.RoomServiceBebidas">
         <result property="id" column="id"/>
-        <result property="lang" column="lang"/>
-        <result property="categoria" column="categoria_name"/>
+        <result property="categoria" column="categoria"/>
         <result property="subcategoria" column="subcategoria_name"/>
-        <result property="bebida" column="bebida"/>
+        <result property="identificador" column="articulo"/>
         <result property="precio" column="precio"/>
     </resultMap>
     
     <select id="list" resultMap="RoomServiceBebidas" parameterType="java.util.Map">
-    	SELECT rsb.*, rsc.categoria as categoria_name, rsbs.subcategoria as subcategoria_name FROM room_service_bebidas rsb, hotel_room_service_bebidas hrsb, room_service_categoria rsc, room_service_bebidas_subcategoria rsbs WHERE hrsb.id_hotel = #{hotel.id} AND rsb.id = hrsb.id_room_service_bebidas AND rsb.categoria = rsc.id AND rsb.subcategoria = rsbs.id AND rsb.lang = #{lang};
+    	SELECT rsb.*, rsbs.subcategoria as subcategoria_name, t.traduccion as articulo FROM room_service_bebidas rsb, hotel_room_service_bebidas hrsb, room_service_bebidas_subcategoria rsbs, traducciones t WHERE hrsb.id_hotel = #{hotel.id} AND rsb.id = hrsb.id_room_service_bebidas AND rsb.subcategoria = rsbs.id AND t.identificador LIKE rsb.identificador AND t.lang LIKE #{lang};
     </select>
     
     <!-- <select id="get" parameterType="HotelDirectoryRestaurantes" resultMap="HotelDirectoryRestaurantes">

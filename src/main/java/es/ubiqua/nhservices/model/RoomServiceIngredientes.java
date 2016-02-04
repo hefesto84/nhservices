@@ -2,10 +2,9 @@ package es.ubiqua.nhservices.model;
 
 public class RoomServiceIngredientes {
 	private int id;
-	private String lang;
-	private String categoria;
+	private int categoria;
 	private String subcategoria;
-	private String ingrediente;
+	private String identificador;
 	private Boolean ligero_calorias;
 	private Boolean vegetariano;
 	private Boolean sin_gluten;
@@ -16,11 +15,7 @@ public class RoomServiceIngredientes {
 		return id;
 	}
 	
-	public String getLang() {
-		return lang;
-	}
-	
-	public String getCategoria() {
+	public int getCategoria() {
 		return categoria;
 	}
 	
@@ -28,11 +23,7 @@ public class RoomServiceIngredientes {
 		this.id = id;
 	}
 	
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
-	
-	public void setCategoria(String categoria) {
+	public void setCategoria(int categoria) {
 		this.categoria = categoria;
 	}
 
@@ -84,12 +75,12 @@ public class RoomServiceIngredientes {
 		this.disponible_24h = disponible_24h;
 	}
 
-	public String getIngrediente() {
-		return ingrediente;
+	public String getIdentificador() {
+		return identificador;
 	}
 
-	public void setIngrediente(String ingrediente) {
-		this.ingrediente = ingrediente;
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
 	}
 
 }

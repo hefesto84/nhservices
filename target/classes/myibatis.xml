@@ -23,6 +23,7 @@
 		<typeAlias alias="RoomServicePlatos" type="es.ubiqua.nhservices.model.RoomServicePlatos"/>
 		<typeAlias alias="RoomServiceBebidas" type="es.ubiqua.nhservices.model.RoomServiceBebidas"/>
 		<typeAlias alias="RoomServiceIngredientes" type="es.ubiqua.nhservices.model.RoomServiceIngredientes"/>
+		<typeAlias alias="RoomExtension" type="es.ubiqua.nhservices.model.RoomExtension"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -31,9 +32,9 @@
 			<transactionManager type="JDBC"/>
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.jdbc.Driver"/>
-				<property name="url" value="jdbc:mysql://localhost:3306/telefono2.0"/>
-				<property name="username" value="root"/>
-				<property name="password" value="Roccopl2006"/>
+				<property name="url" value="jdbc:mysql://192.168.1.200/telefono2.0"/>
+				<property name="username" value="telefono"/>
+				<property name="password" value="20Ubiq2015"/>
 			</dataSource>
 		</environment>
 	</environments>
@@ -59,6 +60,7 @@
 		<mapper resource="mapping/roomServicePlatos.xml"/>
 		<mapper resource="mapping/roomServiceBebidas.xml"/>
 		<mapper resource="mapping/roomServiceIngredientes.xml"/>
+		<mapper resource="mapping/roomExtension.xml"/>
 	</mappers>
 	
 	
