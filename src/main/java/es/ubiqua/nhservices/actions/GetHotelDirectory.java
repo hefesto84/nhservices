@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.time.Instant;
+//import java.time.Instant;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -231,8 +231,9 @@ public class GetHotelDirectory extends ActionSupport {
 	}
 	
 	public String wakeUp() throws IOException{
-		
-		Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond( time ));
+	
+		//Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond( time ));
+		Timestamp timestamp = new Timestamp(time);
 		SecureRandom random = new SecureRandom();
 		String randomId = new BigInteger(130, random).toString(32);
 				
