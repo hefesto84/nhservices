@@ -1,6 +1,8 @@
 package es.ubiqua.nhservices.actions;
 
 import java.awt.print.PrinterException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.print.Doc;
@@ -22,6 +24,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 //import java.time.Instant;
 
+import com.itextpdf.text.log.SysoCounter;
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.ubiqua.nhservices.manger.HotelCanalesManager;
@@ -88,7 +91,8 @@ public class GetHotelDirectory extends ActionSupport {
 	private String name;
 	
 	private int room;
-	private int time;
+	private long time;
+	//private int time;
 	private String id;
 	
 	private InputStream inputStream;
@@ -231,15 +235,16 @@ public class GetHotelDirectory extends ActionSupport {
 	}
 	
 	public String wakeUp() throws IOException{
-	
-		//Timestamp timestamp = Timestamp.from(Instant.ofEpochSecond( time ));
-		Timestamp timestamp = new Timestamp(time);
+		
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(Long.valueOf(time));
+		
 		SecureRandom random = new SecureRandom();
 		String randomId = new BigInteger(130, random).toString(32);
 				
 		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
 		wakeUpAlarm.setRoom(room);
-		wakeUpAlarm.setWakeUpTime(timestamp);
+		wakeUpAlarm.setWakeUpTime(c.getTime());
 		wakeUpAlarm.setRandomId(randomId);
 		
 		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
@@ -486,6 +491,7 @@ public class GetHotelDirectory extends ActionSupport {
 		this.room = room;
 	}
 
+	/*
 	public int getTime() {
 		return time;
 	}
@@ -493,7 +499,16 @@ public class GetHotelDirectory extends ActionSupport {
 	public void setTime(int time) {
 		this.time = time;
 	}
+	*/
+	
+	public long getTime() {
+		return time;
+	}
 
+	public void setTime(long time) {
+		this.time = time;
+	}
+	
 	public String getId() {
 		return id;
 	}
