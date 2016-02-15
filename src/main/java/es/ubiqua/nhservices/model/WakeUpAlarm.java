@@ -1,13 +1,16 @@
 package es.ubiqua.nhservices.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class WakeUpAlarm {
 	
 	private int id;
 	private int room;
-	private Timestamp setedTime;
-	private Timestamp wakeUpTime;
+	private Date setedTime;
+	private Date wakeUpTime;
+	//private Timestamp setedTime;
+	//private Timestamp wakeUpTime;
 	private String randomId;
 	private Boolean actived;
 	
@@ -27,6 +30,8 @@ public class WakeUpAlarm {
 		this.room = room;
 	}
 
+	
+	/*
 	public Timestamp getSetedTime() {
 		return setedTime;
 	}
@@ -40,6 +45,24 @@ public class WakeUpAlarm {
 	}
 
 	public void setWakeUpTime(Timestamp wakeUpTime) {
+		this.wakeUpTime = wakeUpTime;
+	}
+
+	*/
+	
+	public Date getSetedTime() {
+		return setedTime;
+	}
+
+	public Date getWakeUpTime() {
+		return wakeUpTime;
+	}
+
+	public void setSetedTime(Date setedTime) {
+		this.setedTime = setedTime;
+	}
+
+	public void setWakeUpTime(Date wakeUpTime) {
 		this.wakeUpTime = wakeUpTime;
 	}
 

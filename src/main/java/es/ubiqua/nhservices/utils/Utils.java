@@ -63,11 +63,13 @@ import es.ubiqua.nhservices.model.Product;
 import es.ubiqua.nhservices.model.RoomExtension;
 import es.ubiqua.nhservices.model.RoomService;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
+/*
 import infobip.api.client.SendSingleTextualSms;
 import infobip.api.config.BasicAuthConfiguration;
 import infobip.api.model.sms.mt.send.SMSResponse;
 import infobip.api.model.sms.mt.send.SMSResponseDetails;
 import infobip.api.model.sms.mt.send.textual.SMSTextualRequest;
+*/
 
 public class Utils extends ActionSupport{
 	
@@ -304,6 +306,7 @@ public class Utils extends ActionSupport{
 	}
 	
 	public static void sendSMSWakeUpAlarm(WakeUpAlarm wakeUpAlarm){
+		/*
 		SendSingleTextualSms client = new SendSingleTextualSms(new BasicAuthConfiguration("nhtel20", "Nx0716rn"));
 		
 		SMSTextualRequest requestBody = new SMSTextualRequest();
@@ -317,7 +320,7 @@ public class Utils extends ActionSupport{
         System.out.println("Message ID: " + sentMessageInfo.getMessageId());
         System.out.println("Receiver: " + sentMessageInfo.getTo());
         System.out.println("Message status: " + sentMessageInfo.getStatus().getName());
-        
+        */
 	}
 	
 	

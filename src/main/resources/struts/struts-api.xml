@@ -5,11 +5,12 @@
 
 <struts>
 
+	<!-- 
     <package name="api" namespace="/api" extends="json-default">
         <default-action-ref name="index" />
         <action name="index" class="es.ubiqua.nhservices.IndexAction">
             <result>/WEB-INF/jsp/index.jsp</result>
         </action>
     </package>
-
+	-->
 </struts>
