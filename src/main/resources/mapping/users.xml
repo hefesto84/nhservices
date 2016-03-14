@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapUsers">
+    
+    <resultMap id="Users" type="es.ubiqua.nhservices.model.Users">
+        <result property="id" column="id"/>
+        <result property="identificador" column="identificador"/>
+        <result property="user" column="user"/>
+        <result property="password" column="password"/>
+        <result property="room" column="room"/>
+    </resultMap>
+    
+    <!-- <select id="list" resultMap="User">
+        SELECT * FROM user;
+    </select> -->
+    
+    <select id="get" parameterType="Users" resultMap="Users">
+        SELECT * FROM Users WHERE id = #{id} OR identificador = #{identificador};
+    </select>
+    
+    <!-- <select id="login" parameterType="User" resultMap="User">
+        SELECT * FROM user WHERE user = #{user} AND password = #{password};
+    </select>
+    
+    <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO RepositoryCustomer (user,password,mail) 
+        	VALUES (
+        		#{user},
+        		#{password},
+        		#{mail}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <delete id="del" parameterType="User">
+    	DELETE FROM user WHERE id = #{id}
+    </delete> -->
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapBreakfastRequests">
+    
+    <resultMap id="BreakfastRequests" type="es.ubiqua.nhservices.model.BreakfastRequests">
+        <result property="id" column="id"/>
+        <result property="dia" column="dia"/>
+        <result property="actived" column="actived"/>
+    </resultMap>
+    
+    <!-- <select id="list" resultMap="BreakfastServiceRequests">
+        SELECT * FROM breakfastServiceRequests;
+    </select>
+    
+    <select id="get" parameterType="BreakfastServiceRequests" resultMap="BreakfastServiceRequests">
+        SELECT * FROM breakfastServiceRequests WHERE id = #{id};
+    </select> -->
+    
+    <select id="get" resultMap="BreakfastRequests">
+        SELECT * FROM breakfastRequests WHERE DATE(dia) = CURDATE();
+    </select>
+    
+    <insert id="add" parameterType="BreakfastRequests" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO breakfastRequests (actived) 
+        	VALUES (
+        		#{actived}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="confirmRequest" parameterType="BreakfastRequests">
+    	UPDATE breakfastRequests SET 
+    		actived = 1
+    	WHERE id = #{id};
+    </update>
+    
+</mapper>

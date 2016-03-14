@@ -16,6 +16,10 @@
         SELECT * FROM wakeUpAlarm WHERE DATE(setedTime) = CURDATE();
     </select>
     
+    <select id="listByRoom" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">
+        SELECT * FROM wakeUpAlarm WHERE room = #{room} AND DATE(wakeUpTime) > NOW();
+    </select>
+    
     <select id="get" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">
         SELECT * FROM wakeUpAlarm WHERE id = #{id};
     </select>
@@ -43,5 +47,9 @@
     		actived = 1
     	WHERE randomId = #{randomId}
     </update>
+    
+    <delete id="del" parameterType="WakeUpAlarm">
+	  	delete from wakeUpAlarm where randomId = #{randomId}
+	</delete>
     
 </mapper>

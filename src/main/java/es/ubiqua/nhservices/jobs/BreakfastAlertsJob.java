@@ -11,31 +11,27 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import es.ubiqua.nhservices.constants.constants;
+import es.ubiqua.nhservices.manger.BreakfastRequestsManager;
 import es.ubiqua.nhservices.manger.RoomExtensionManager;
-import es.ubiqua.nhservices.manger.WakeUpAlarmManager;
+import es.ubiqua.nhservices.model.BreakfastRequests;
 import es.ubiqua.nhservices.model.RoomExtension;
-import es.ubiqua.nhservices.model.WakeUpAlarm;
 import es.ubiqua.nhservices.utils.Utils;
 
-public class WakeUpNoRespondJob implements Job {
+public class BreakfastAlertsJob implements Job {
 	
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-        
-		String randomId = ""+context.getJobDetail().getJobDataMap().get("RandomId");
-		int extension = (Integer) context.getJobDetail().getJobDataMap().get("Room") + 2000;
-		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
-		wakeUpAlarm.setRandomId(randomId);
-		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
-		wakeUpAlarm = wakeUpAlarmManager.getByRandomId(wakeUpAlarm);
-		if(wakeUpAlarm.getActived() == false){
+		
+		int count = Integer.parseInt(""+context.getJobDetail().getJobDataMap().get("count"));
+		BreakfastRequests breakfastRequests = new BreakfastRequestsManager().get();
+		
+		if(breakfastRequests.getActived() == false){
+			ManagerConnectionFactory factory = new ManagerConnectionFactory(constants.dominio, "ubiqua", "ubiqua.456");
+			ManagerConnection managerConnection = factory.createManagerConnection();
+
 			
 			RoomExtension roomExtension = new RoomExtension();
-			roomExtension.setRoom(1010);
+			roomExtension.setRoom(1011);
 			roomExtension = new RoomExtensionManager().get(roomExtension);
-			
-			ManagerConnectionFactory factory = new ManagerConnectionFactory(constants.dominio, "ubiqua", "ubiqua.456");
-
-			ManagerConnection managerConnection = factory.createManagerConnection();
 	        
 	        OriginateAction originateAction;
 	        
@@ -44,22 +40,28 @@ public class WakeUpNoRespondJob implements Job {
 	        originateAction = new OriginateAction();
 	        originateAction.setChannel("SIP/"+roomExtension.getExtension());
 	        originateAction.setContext("default");
-	        originateAction.setExten(String.valueOf(extension));
+	        originateAction.setExten("1012");
 	        originateAction.setApplication("Playback");
-	        originateAction.setData("custom/wakeUpNoRespond");
+	        if(count == 1){
+	        	originateAction.setData("custom/breakfast2");
+	        } else {
+	        	originateAction.setData("custom/breakfast3");
+	        }
 	        originateAction.setPriority(new Integer(1));
 	        originateAction.setTimeout(espera);
-	        originateAction.setCallerId("No respuesta despertador");
+	        originateAction.setCallerId("No respuesta room service");
 	        
 	        try{
 	        	managerConnection.login();
 	        	
 	        	try {
-	        		managerConnection.sendAction(originateAction,30000);
+					managerConnection.sendAction(originateAction,30000);
+
 				} catch(Exception e){
 					StringWriter errors = new StringWriter();
 					e.printStackTrace(new PrintWriter(errors));
-					Utils.mailErrorAsterisk("ActionCall Despertador No Respuesta", errors.toString());
+					String alert = "ActionCall Breakfast Alerts "+count;
+					Utils.mailErrorAsterisk(alert, errors.toString());
 					
 				}finally {
 					managerConnection.logoff();
@@ -68,12 +70,21 @@ public class WakeUpNoRespondJob implements Job {
 	        }catch(Exception e){
 	        	StringWriter errors = new StringWriter();
 				e.printStackTrace(new PrintWriter(errors));
-				Utils.mailErrorAsterisk("Login Despertador No Respuesta", errors.toString());
+				String alert = "Login Breakfast Alerts "+count;
+				Utils.mailErrorAsterisk(alert, errors.toString());
 	        }
 			
+			count = count + 1;
+			if (count <= 2){
+				Utils.stopCronAlertsBreakfast();
+				Utils.cronBreakfastAlerts(count);
+			} else {
+				Utils.stopCronAlertsBreakfast();
+			}
+			
+		} else {
+			Utils.stopCronAlertsBreakfast();
 		}
-		
-		Utils.stopCronNoRespond(wakeUpAlarm, "noRespondWakeUp");
         
     }
 }

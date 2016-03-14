@@ -8,26 +8,30 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1 style="text-transform:capitalize;"><s:property value="page"/></h1>
 	<table class="table table-striped table-bordered table-hover table-custom">
 		<tr>
+		    <th> Hora Solicitud </th>
 			<th> Habitación </th>
-			<th> Hora </th>
+			<th> Hora Room Service</th>
+			<th> Productos </th>
 			<th class="table-custom-acciones"> Estado </th>
 		</tr>
-		<s:iterator value="wakeUpAlarms">
+		<s:iterator value="roomServiceRequests">
 		<tr>
-			<td class="table-custom-room"><s:property value="room"/></td>
-			<td class="table-custom-alarm"><s:date name="wakeUpTime" format="dd/MM/yyyy HH:mm"/></td>
+			<td><s:date name="nowTime" format="dd/MM/yyyy HH:mm"/></td>
+			<td style="text-align: center;"><s:property value="room"/></td>
+			<td><s:date name="requestTime" format="dd/MM/yyyy HH:mm"/></td>
+			<td>
+				<div style="width:70% !important;" data-product="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Ver productos</div>
+			</td>
 			<td>
 				<s:set name="actived" value="actived"/>
 				<s:if test="%{actived==true}">
 				   <span>Alarma seteada</span> 
 				</s:if>
 				<s:else>
-				   <div data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Setear alarma</div>
+				   <div style="width:70% !important;" data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Setear alarma</div>
 				</s:else>
-				<!-- <a href="<s:url value="%{'/backend/'+page+'/edit?id='+id_hotel+'&lang='+lang}"/>">Modificar</a>&nbsp;&nbsp;&nbsp;<span id="list_delete" onclick='deleteList("<s:url value="%{'/backend/'+page+'/delete?id='+id}"/>")'>Eliminar</span> -->
 			</td>
 		</tr>
 		</s:iterator>
@@ -36,7 +40,7 @@
 	<script type="text/javascript">
 	
 		$('[data-set="true"]').click(function(){
-			var url = "<s:url value='/backend/alarms/wakeupActivate'/>";
+			var url = "<s:url value='/backend/alarms/roomserviceActivate'/>";
 			$.ajax({
 			  method: "POST",
 			  url: url,
@@ -47,6 +51,11 @@
 					location.reload();
 			    }
 			});
+		});
+		
+		$('[data-product="true"]').click(function(){
+			var url = "<s:url value='/backend/alarms/roomserviceProduct'/>";
+			window.open(url + "?id="+$(this).attr('data-id'));
 		});
 		
 	</script>

@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
-import es.ubiqua.nhservices.model.Language;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 
 public class WakeUpAlarmDAO extends BaseDAO{
@@ -22,6 +21,19 @@ public class WakeUpAlarmDAO extends BaseDAO{
 			session.close();
 		}
 		return wakeUpAlarm;
+	}
+	
+	public List<WakeUpAlarm> listByRoom(WakeUpAlarm wakeUpAlarm){
+		List<WakeUpAlarm> wakeUpAlarms = new ArrayList<WakeUpAlarm>();
+		SqlSession session = sql.openSession();
+		try{
+			wakeUpAlarms = session.selectList("SqlMapWakeUpAlarm.listByRoom",wakeUpAlarm);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return wakeUpAlarms;
 	}
 	
 	public WakeUpAlarm get(WakeUpAlarm wakeUpAlarm){
@@ -72,6 +84,18 @@ public class WakeUpAlarmDAO extends BaseDAO{
 			session.close();
 		}
 		return wakeUpAlarm;
+	}
+	
+	public void del(WakeUpAlarm wakeUpAlarm){
+		SqlSession session = sql.openSession();
+		try{
+			session.delete("SqlMapWakeUpAlarm.del",wakeUpAlarm);
+			session.commit();
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e.getMessage());
+		}finally{
+			session.close();
+		}
 	}
 
 }

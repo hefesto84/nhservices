@@ -9,8 +9,6 @@ public class WakeUpAlarm {
 	private int room;
 	private Date setedTime;
 	private Date wakeUpTime;
-	//private Timestamp setedTime;
-	//private Timestamp wakeUpTime;
 	private String randomId;
 	private Boolean actived;
 	

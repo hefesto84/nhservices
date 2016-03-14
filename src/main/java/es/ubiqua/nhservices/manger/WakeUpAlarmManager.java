@@ -3,7 +3,6 @@ package es.ubiqua.nhservices.manger;
 import java.util.List;
 
 import es.ubiqua.nhservices.dao.WakeUpAlarmDAO;
-import es.ubiqua.nhservices.model.Language;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 
 public class WakeUpAlarmManager {
@@ -16,6 +15,10 @@ public class WakeUpAlarmManager {
 	
 	public List<WakeUpAlarm> listToday(){
 		return wakeUpAlarmDao.listToday();
+	}
+	
+	public List<WakeUpAlarm> listByRoom(WakeUpAlarm wakeUpAlarm){
+		return wakeUpAlarmDao.listByRoom(wakeUpAlarm);
 	}
 
 	public WakeUpAlarm get(WakeUpAlarm wakeUpAlarm){
@@ -32,6 +35,10 @@ public class WakeUpAlarmManager {
 	
 	public WakeUpAlarm confirmAlarm(WakeUpAlarm wakeUpAlarm){
 		return wakeUpAlarmDao.confirmAlarm(wakeUpAlarm);
+	}
+	
+	public void del(WakeUpAlarm wakeUpAlarm){
+		wakeUpAlarmDao.del(wakeUpAlarm);
 	}
 
 }

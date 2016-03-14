@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapRoomServiceRequests">
+    
+    <resultMap id="RoomServiceRequests" type="es.ubiqua.nhservices.model.RoomServiceRequests">
+        <result property="id" column="id"/>
+        <result property="nowTime" column="nowTime"/>
+        <result property="requestTime" column="requestTime"/>
+        <result property="room" column="room"/>
+        <result property="products" column="products"/>
+        <result property="comments" column="comments"/>
+        <result property="people" column="people"/>
+        <result property="randomId" column="randomId"/>
+        <result property="actived" column="actived"/>
+    </resultMap>
+    
+    <select id="list" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests;
+    </select>
+    
+    <select id="get" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="RoomServiceRequests" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO roomServiceRequests (requestTime,room,products,comments,people,randomId) 
+        	VALUES (
+        		#{requestTime},
+        		#{room},
+        		#{products},
+        		#{comments},
+        		#{people},
+        		#{randomId}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <select id="getByRandomId" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests WHERE randomId = #{randomId};
+    </select>
+    
+    <update id="confirmRequest" parameterType="RoomServiceRequests">
+    	UPDATE roomServiceRequests SET 
+    		actived = 1
+    	WHERE randomId = #{randomId}
+    </update>
+    
+</mapper>

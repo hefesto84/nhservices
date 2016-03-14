@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="SqlMapRoomServicePlatos">
+<mapper namespace="SqlMapRoomServiceList">
     
-    <resultMap id="RoomServicePlatos" type="es.ubiqua.nhservices.model.RoomServicePlatos">
+    <resultMap id="RoomServiceList" type="es.ubiqua.nhservices.model.RoomServiceList">
         <result property="id" column="id"/>
+        <result property="tipo" column="tipo"/>
         <result property="categoria" column="categoria"/>
+        <result property="subcategoria" column="categoria"/>
         <result property="titulo" column="titulo_trad"/>
         <result property="subtitulo" column="subtitulo_trad"/>
         <result property="precio" column="precio"/>
@@ -15,18 +17,20 @@
         <result property="sin_gluten" column="sin_gluten"/>
         <result property="plato_especial" column="plato_especial"/>
         <result property="disponible_24h" column="disponible_24h"/>
+        <result property="customizable" column="customizable"/>
+        <result property="question" column="question"/>
         <result property="desayuno" column="desayuno"/>
     </resultMap>
     
-    <select id="list" resultMap="RoomServicePlatos" parameterType="java.util.Map">
-    	SELECT rsp.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM room_service_platos rsp, hotel_room_service_platos hrsp, traducciones t, traducciones t1 WHERE hrsp.id_hotel = #{hotel.id} AND rsp.id = hrsp.id_room_service_platos AND rsp.titulo LIKE t.identificador AND rsp.subtitulo LIKE t1.identificador AND t.lang LIKE #{lang} AND t1.lang LIKE #{lang};
+    <select id="list" resultMap="RoomServiceList" parameterType="java.util.Map">
+    	SELECT rsl.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM roomServiceList rsl, hotel_room_service_list hrsl, translations t, translations t1 WHERE hrsl.id_hotel = #{hotel.id} AND rsl.id = hrsl.id_room_service_list	 AND rsl.titulo LIKE t.identificador AND rsl.subtitulo LIKE t1.identificador AND t.lang LIKE #{lang} AND t1.lang LIKE #{lang};
     </select>
     
-    <!-- <select id="get" parameterType="HotelDirectoryRestaurantes" resultMap="HotelDirectoryRestaurantes">
-        SELECT * FROM hotel_directory_restaurantes WHERE id = #{id};
+    <select id="get" parameterType="RoomServiceList" resultMap="RoomServiceList">
+        SELECT rsl.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM roomServiceList rsl, translations t, translations t1 WHERE  rsl.id = #{id} AND rsl.titulo LIKE t.identificador AND rsl.subtitulo LIKE t1.identificador AND t.lang LIKE 'es' AND t1.lang LIKE 'es';
     </select>
     
-    <insert id="add" parameterType="HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <!-- <insert id="add" parameterType="HotelDirectoryRestaurantes" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO hotel_directory_restaurantes (lang,name,description,images,menu,localization,timetable,phone) 
         	VALUES (
         		#{lang},

@@ -1,6 +1,7 @@
 package es.ubiqua.nhservices.actions;
 
 import java.awt.print.PrinterException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,14 +20,23 @@ import org.asteriskjava.manager.response.ManagerResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 //import java.time.Instant;
+import java.text.SimpleDateFormat;
 
+import com.google.gson.Gson;
 import com.itextpdf.text.log.SysoCounter;
+import com.itextpdf.text.pdf.codec.Base64;
 import com.opensymphony.xwork2.ActionSupport;
 
+import es.ubiqua.nhservices.manger.BreakfastRequestsManager;
+import es.ubiqua.nhservices.manger.BreakfastServiceRequestsManager;
 import es.ubiqua.nhservices.manger.HotelCanalesManager;
 import es.ubiqua.nhservices.manger.HotelDirectoryDesayunoManager;
 import es.ubiqua.nhservices.manger.HotelDirectoryEventosManager;
@@ -40,10 +50,18 @@ import es.ubiqua.nhservices.manger.HotelManager;
 import es.ubiqua.nhservices.manger.HotelSeguridadManager;
 import es.ubiqua.nhservices.manger.HotelSostenibilidadManager;
 import es.ubiqua.nhservices.manger.HotelTelefonosManager;
+import es.ubiqua.nhservices.manger.RoomServiceAnswersManager;
 import es.ubiqua.nhservices.manger.RoomServiceBebidasManager;
 import es.ubiqua.nhservices.manger.RoomServiceIngredientesManager;
+import es.ubiqua.nhservices.manger.RoomServiceListManager;
 import es.ubiqua.nhservices.manger.RoomServicePlatosManager;
+import es.ubiqua.nhservices.manger.RoomServiceQuestionsManager;
+import es.ubiqua.nhservices.manger.RoomServiceRequestsManager;
+import es.ubiqua.nhservices.manger.UsersManager;
 import es.ubiqua.nhservices.manger.WakeUpAlarmManager;
+import es.ubiqua.nhservices.model.BreakfastRequests;
+import es.ubiqua.nhservices.model.BreakfastServiceRequest;
+import es.ubiqua.nhservices.model.BreakfastServiceRequests;
 import es.ubiqua.nhservices.model.Hotel;
 import es.ubiqua.nhservices.model.HotelCanales;
 import es.ubiqua.nhservices.model.HotelDirectoryDesayuno;
@@ -59,11 +77,19 @@ import es.ubiqua.nhservices.model.HotelSostenibilidad;
 import es.ubiqua.nhservices.model.HotelTelefonos;
 import es.ubiqua.nhservices.model.Product;
 import es.ubiqua.nhservices.model.RoomService;
+import es.ubiqua.nhservices.model.RoomServiceAnswers;
 import es.ubiqua.nhservices.model.RoomServiceBebidas;
 import es.ubiqua.nhservices.model.RoomServiceIngredientes;
+import es.ubiqua.nhservices.model.RoomServiceList;
 import es.ubiqua.nhservices.model.RoomServicePlatos;
+import es.ubiqua.nhservices.model.RoomServicePreguntas;
+import es.ubiqua.nhservices.model.RoomServiceQuestions;
+import es.ubiqua.nhservices.model.RoomServiceRequest;
+import es.ubiqua.nhservices.model.RoomServiceRequests;
+import es.ubiqua.nhservices.model.Users;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 import es.ubiqua.nhservices.utils.Utils;
+
 
 
 public class GetHotelDirectory extends ActionSupport {
@@ -73,6 +99,7 @@ public class GetHotelDirectory extends ActionSupport {
 	 */
 	private static final long serialVersionUID = 1L;
 	private List<RoomServicePlatos> platos;
+	private List<RoomServiceList> list;
 	private List<RoomServiceBebidas> bebidas;
 	private List<RoomServiceIngredientes> ingredientes;
 	private List<HotelDirectoryRestaurantes> restaurants;
@@ -89,27 +116,182 @@ public class GetHotelDirectory extends ActionSupport {
 	private List<HotelTelefonos> phones;
 	private String lang;
 	private String name;
+	private String query;
 	
 	private int room;
-	private long time;
-	//private int time;
+	private String time;
+	private Boolean today;
 	private String id;
 	
 	private InputStream inputStream;
 	
+	private List<RoomServiceQuestions> roomServiceQuestions;
+	private String identificador;
+	private Users user;
+	private List<WakeUpAlarm> alarms;
+	
 	public String execute() {
-	    
+	   
         return SUCCESS;
     }
+	
+	public String userInformation(){
+		
+		user = new Users();
+		user.setIdentificador(identificador);
+		user = new UsersManager().get(user);
+		
+		if (user == null){
+			user = new Users();
+			user.setIp_asterisk("10.8.0.1");
+			user.setRoom(105);
+			user.setUser("105");
+			user.setPassword("1234pbx");
+			user.setIdentificador("1111");
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String breakfastService() throws IOException{
+						
+		byte[] decoded = Base64.decode(query);
+		
+		String json = new String(decoded, "UTF-8");
+		
+		BreakfastServiceRequest request = new Gson().fromJson(json,BreakfastServiceRequest.class);
+				
+		Calendar now = Calendar.getInstance();
+		Calendar c = Calendar.getInstance();
+		c.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), Integer.parseInt(request.getHour()), Integer.parseInt(request.getMin()), 0);
+		c.add(Calendar.DATE, 1);
+		
+		BreakfastServiceRequests requests = new BreakfastServiceRequests();
+		
+		SecureRandom random = new SecureRandom();
+		String randomId = new BigInteger(130, random).toString(32);
+		
+		requests.setRoom(request.getRoom());
+		requests.setProducts(new Gson().toJson(request.getProducts()));
+		requests.setRequestTime(c.getTime());
+		requests.setRandomId(randomId);
+		requests.setComments(request.getComments());
+		requests.setPeople(request.getPeople());
+		
+		requests = new BreakfastServiceRequestsManager().add(requests);
+		
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		time = df.format(requests.getRequestTime());
+		return SUCCESS;
+	}
+	
+	public String confirmationBreakfast(){
+		
+		BreakfastRequestsManager breakfastRequestsManager = new BreakfastRequestsManager();
+		BreakfastRequests breakfastRequests = breakfastRequestsManager.get();
+		breakfastRequests = breakfastRequestsManager.confirmRequest(breakfastRequests);
+		
+		Utils.stopCronAlertsBreakfast();
+		Utils.stopCronNoRespondBreakfast();
+		
+		Calendar now = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		time = df.format(now.getTime());
+		
+		return SUCCESS;
+	}
+	
+	public String roomService() throws IOException{
+				
+		byte[] decoded = Base64.decode(query);
+		
+		String json = new String(decoded, "UTF-8");
+		
+		RoomServiceRequest request = new Gson().fromJson(json,RoomServiceRequest.class);
+		
+		Calendar now = Calendar.getInstance();
+		Calendar c = Calendar.getInstance();
+		c.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), Integer.parseInt(request.getHour()), Integer.parseInt(request.getMin()), 0);
+		if (now.getTimeInMillis() > c.getTimeInMillis()){
+			c.add(Calendar.DATE, 1);
+		}
+		
+		RoomServiceRequests requests = new RoomServiceRequests();
+		SecureRandom random = new SecureRandom();
+		String randomId = new BigInteger(130, random).toString(32);
+		
+		requests.setRoom(request.getRoom());
+		requests.setProducts(new Gson().toJson(request.getProducts()));
+		requests.setRequestTime(c.getTime());
+		requests.setRandomId(randomId);
+		requests.setComments(request.getComments());
+		requests.setPeople(request.getPeople());
+		
+		requests = new RoomServiceRequestsManager().add(requests);
+		
+		requests.setRandomId(randomId);
+		requests = new RoomServiceRequestsManager().getByRandomId(requests);
+		
+		avisarNuevoRoomServiceRequest(requests);
+		
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		time = df.format(requests.getRequestTime());
+		return SUCCESS;
+	}
+	
+	private void avisarNuevoRoomServiceRequest(RoomServiceRequests roomServiceRequests) throws IOException{
+		
+		inputStream = Utils.roomServicePDF(roomServiceRequests);
+		
+		Utils.sendMailRoomService(inputStream, roomServiceRequests);
+		//Utils.CronRoomService(roomServiceRequests);
+		final RoomServiceRequests rr = roomServiceRequests;
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Utils.llamadaRoomService(rr);
+			}
+		});
+		t.start();
+		Utils.cronRoomServiceTenMinutes(roomServiceRequests);
+		
+	}
+	
+	public String confirmationRoomService(){
+		
+		RoomServiceRequests roomServiceRequests = new RoomServiceRequests();
+		roomServiceRequests.setRandomId(id);
+		
+		RoomServiceRequestsManager roomServiceRequestsManager = new RoomServiceRequestsManager();
+		roomServiceRequests = roomServiceRequestsManager.getByRandomId(roomServiceRequests);
+		roomServiceRequests = roomServiceRequestsManager.confirmRequest(roomServiceRequests);
+		
+		Utils.stopCronRoomService(roomServiceRequests, "roomService");
+		Utils.stopCronNoRespondRoomService(roomServiceRequests, "noRespondRoomService");
+		Utils.stopCronRoomServiceTenMinutes(roomServiceRequests, "roomServiceTenMinutes");
+		
+		return SUCCESS;
+	}
 	
 	public String listRoomService(){
 		
 		Hotel h = new Hotel();
 		h.setName(name);
 		h = new HotelManager().get(h);
-		platos = new RoomServicePlatosManager().list(h, lang);
-		bebidas = new RoomServiceBebidasManager().list(h, lang);
-		ingredientes = new RoomServiceIngredientesManager().list(h, lang);
+		
+		list = new RoomServiceListManager().list(h, lang);
+		
+		for (RoomServiceList product: list){
+			if (product.getQuestion() == true){
+				ArrayList<RoomServicePreguntas> preguntas = Utils.obtenerQuestionsProductosRoomService(product.getId(), lang);
+				product.setQuestionText(preguntas);
+			}
+		}
+		
+		
+		//platos = new RoomServicePlatosManager().list(h, lang);
+		//bebidas = new RoomServiceBebidasManager().list(h, lang);
+		//ingredientes = new RoomServiceIngredientesManager().list(h, lang);
 		
 		return SUCCESS;
 	}
@@ -235,9 +417,20 @@ public class GetHotelDirectory extends ActionSupport {
 	}
 	
 	public String wakeUp() throws IOException{
+				
+		String hora = time.substring(0,time.indexOf(":"));
+		String minuto = time.substring(time.indexOf(":") + 1,time.length());
 		
+		Calendar now = Calendar.getInstance();
 		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(Long.valueOf(time));
+		c.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), Integer.parseInt(hora), Integer.parseInt(minuto), 0);
+		
+		today = true;
+		
+		if (now.getTimeInMillis() > c.getTimeInMillis()){
+			c.add(Calendar.DATE, 1);
+			today = false;
+		}
 		
 		SecureRandom random = new SecureRandom();
 		String randomId = new BigInteger(130, random).toString(32);
@@ -251,9 +444,39 @@ public class GetHotelDirectory extends ActionSupport {
 		
 		wakeUpAlarm = wakeUpAlarmManager.add(wakeUpAlarm);
 		
-		Utils.CronWakeUp(wakeUpAlarm);
+		Utils.CronWakeUp(wakeUpAlarm, lang);
+		
+		identificador = wakeUpAlarm.getRandomId();
 		
 		return SUCCESS;
+		
+	}
+	
+	public String wakeUpListByRoom() throws IOException{
+		
+		
+		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
+		wakeUpAlarm.setRoom(room);
+		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
+		alarms = wakeUpAlarmManager.listByRoom(wakeUpAlarm);
+		
+		return SUCCESS;
+		
+	}
+	
+	public String wakeUpDelete() throws IOException{
+		
+		
+		WakeUpAlarm wakeUpAlarm = new WakeUpAlarm();
+		wakeUpAlarm.setRandomId(identificador);
+		WakeUpAlarmManager wakeUpAlarmManager = new WakeUpAlarmManager();
+		wakeUpAlarm = wakeUpAlarmManager.getByRandomId(wakeUpAlarm);
+		
+		Utils.stopCron(wakeUpAlarm, "wakeUp");
+		wakeUpAlarmManager.del(wakeUpAlarm);
+		
+		return SUCCESS;
+		
 	}
 	
 	public String confirmationWakeUp(){
@@ -271,7 +494,7 @@ public class GetHotelDirectory extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String pdf() throws PrinterException, IOException{
+	/*public String pdf() throws PrinterException, IOException{
 	
 		RoomService roomService = new RoomService();
 		roomService.addProduct(new Product("Suc Taronja",2));
@@ -287,9 +510,9 @@ public class GetHotelDirectory extends ActionSupport {
 
 		return SUCCESS;
 		
-	}
+	}*/
 	
-	public String mail() throws IOException{
+	/*public String mail() throws IOException{
 		
 		RoomService roomService = new RoomService();
 		roomService.addProduct(new Product("Suc Taronja",2));
@@ -301,7 +524,9 @@ public class GetHotelDirectory extends ActionSupport {
 
 		return SUCCESS;
 		
-	}
+	}*/
+	
+	
 	
 	/*private void avisarNuevoDespertador(WakeUpAlarm wakeUpAlarm) throws IOException{
 		
@@ -317,7 +542,7 @@ public class GetHotelDirectory extends ActionSupport {
 	
 	public void provaAsterisk() throws IOException, AuthenticationFailedException, TimeoutException{
 		
-		ManagerConnectionFactory factory = new ManagerConnectionFactory("192.168.1.200", "ubiqua", "ubiqua.456");
+		ManagerConnectionFactory factory = new ManagerConnectionFactory("localhost", "ubiqua", "ubiqua.456");
 
 		ManagerConnection managerConnection = factory.createManagerConnection();
         
@@ -501,11 +726,19 @@ public class GetHotelDirectory extends ActionSupport {
 	}
 	*/
 	
-	public long getTime() {
+	/*public long getTime() {
 		return time;
 	}
 
 	public void setTime(long time) {
+		this.time = time;
+	}*/
+	
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
 		this.time = time;
 	}
 	
@@ -540,6 +773,61 @@ public class GetHotelDirectory extends ActionSupport {
 	public void setIngredientes(List<RoomServiceIngredientes> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
-	
+
+	public Boolean getToday() {
+		return today;
+	}
+
+	public void setToday(Boolean today) {
+		this.today = today;
+	}
+
+	public List<RoomServiceList> getList() {
+		return list;
+	}
+
+	public void setList(List<RoomServiceList> list) {
+		this.list = list;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public List<RoomServiceQuestions> getRoomServiceQuestions() {
+		return roomServiceQuestions;
+	}
+
+	public void setRoomServiceQuestions(List<RoomServiceQuestions> roomServiceQuestions) {
+		this.roomServiceQuestions = roomServiceQuestions;
+	}
+
+	public String getIdentificador() {
+		return identificador;
+	}
+
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public List<WakeUpAlarm> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(List<WakeUpAlarm> alarms) {
+		this.alarms = alarms;
+	}
 
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapRoomServiceQuestions">
+    
+    <resultMap id="RoomServiceQuestions" type="es.ubiqua.nhservices.model.RoomServiceQuestions">
+        <result property="id_plato" column="id_plato"/>
+        <result property="id_question" column="id_question"/>
+        <result property="question" column="question_t"/>
+    </resultMap>
+    
+    <select id="list" resultMap="RoomServiceQuestions">
+        SELECT * FROM roomServiceQuestions;
+    </select>
+    
+    <select id="listByProduct" parameterType="java.util.Map" resultMap="RoomServiceQuestions">
+        SELECT rsq.*, t.traduccion as question_t FROM roomServiceQuestions rsq, translations t WHERE rsq.id_plato = #{id} AND rsq.question LIKE t.identificador AND t.lang LIKE #{lang};
+    </select>
+    
+    <!-- <select id="get" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests WHERE id = #{id};
+    </select>
+    
+    <insert id="add" parameterType="RoomServiceRequests" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO roomServiceRequests (requestTime,room,products,comments,people,randomId) 
+        	VALUES (
+        		#{requestTime},
+        		#{room},
+        		#{products},
+        		#{comments},
+        		#{people},
+        		#{randomId}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <select id="getByRandomId" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests WHERE randomId = #{randomId};
+    </select>
+    
+    <update id="confirmRequest" parameterType="RoomServiceRequests">
+    	UPDATE roomServiceRequests SET 
+    		actived = 1
+    	WHERE randomId = #{randomId}
+    </update> -->
+    
+</mapper>

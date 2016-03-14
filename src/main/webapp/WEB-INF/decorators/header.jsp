@@ -103,28 +103,16 @@
           <li><a href="ht_manage_otas">OTA Status</a></li>
         </ul>
       </li> -->
-      <li><a href="<s:url value='/backend/idiomas/list'/>">Idiomas</a></li>
+      <!-- <li><a href="<s:url value='/backend/idiomas/list'/>">Idiomas</a></li> -->
       <li><a href="<s:url value='/backend/hoteles/list'/>">Hoteles</a></li>
-      <li class="dropdown">
+      <!-- <li class="dropdown">
         <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
           Web Services <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-          <!-- <li><a href="download_statistics">Hotel Directory</a></li>
-          <li><a href="fast_price_check">Fast Price Check</a></li>
-          <li><a href="ht_manage_hotels">Manage Hotels</a></li>
-          <li><a href="ht_manage_otas">OTA Status</a></li> -->
           <li class="dropdown-submenu">
 	          <a tabindex="-1" href="#">Hotel Directory</a>
 	          <ul class="dropdown-menu">
-	            <!-- <li><a tabindex="-1" href="#">Restaurantes</a></li>
-	            <li class="dropdown-submenu">
-	              <a href="#">Even More..</a>
-	              <ul class="dropdown-menu">
-	                  <li><a href="#">3rd level</a></li>
-	              	<li><a href="#">3rd level</a></li>
-	              </ul>
-	            </li> -->
 	            <li><a href="<s:url value='/backend/canales/list'/>">Canales</a></li>
 	            <li><a href="<s:url value='/backend/seguridad/list'/>">Seguridad</a></li>
 	            <li><a href="<s:url value='/backend/sostenibilidad/list'/>">Sostenibilidad</a></li>
@@ -139,7 +127,7 @@
 	          </ul>
 	        </li>
         </ul>
-      </li>
+      </li> -->
       <li class="dropdown">
         <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
           Alarmas <b class="caret"></b>
@@ -147,6 +135,8 @@
         <ul class="dropdown-menu">
           <!-- <li class="dropdown-submenu"> -->
 	          <li><a href="<s:url value='/backend/alarms/wakeup'/>">Wake Up</a></li>
+	          <li><a href="<s:url value='/backend/alarms/roomservice'/>">Room Service</a></li>
+	          <li><a href="<s:url value='/backend/alarms/breakfastservice'/>">Breakfast Service</a></li>
 	      <!-- </li> -->
         </ul>
       </li>

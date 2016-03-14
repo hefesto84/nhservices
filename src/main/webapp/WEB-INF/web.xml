@@ -78,6 +78,12 @@
     	<load-on-startup>5</load-on-startup>
     </servlet>
     
+    <servlet>
+	    <servlet-name>BreakfastCron</servlet-name>
+	    <servlet-class>es.ubiqua.nhservices.cron.breakfast</servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
+    
     <servlet-mapping>
         <servlet-name>dwr</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
