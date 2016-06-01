@@ -23,6 +23,10 @@
         SELECT rsa.id,t.traduccion as respuesta_t FROM roomServiceAnswers rsa, translations t WHERE rsa.id_plato = #{question.id_plato} AND rsa.id_question = #{question.id_question} AND rsa.respuesta LIKE t.identificador AND t.lang LIKE #{lang};
     </select>
     
+    <select id="getAnswerByIdEs" parameterType="int" resultMap="RoomServiceAnswers">
+        SELECT rsa.id,t.traduccion as respuesta FROM roomServiceAnswers rsa, translations t WHERE rsa.id = #{id} AND rsa.respuesta LIKE t.identificador AND t.lang LIKE 'es';
+    </select>
+    
     <!-- <select id="get" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
         SELECT * FROM roomServiceRequests WHERE id = #{id};
     </select>

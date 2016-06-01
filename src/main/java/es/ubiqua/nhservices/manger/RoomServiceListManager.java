@@ -17,6 +17,10 @@ public class RoomServiceListManager {
 	public List<RoomServiceList> list(Hotel h, String lang){
 		return roomServiceListDao.list(h,lang);
 	}
+	
+	public List<RoomServiceList> listOutOfHour(Hotel h, String lang){
+		return roomServiceListDao.listOutOfHour(h,lang);
+	}
 
 	public RoomServiceList get(RoomServiceList roomServiceList){
 		return roomServiceListDao.get(roomServiceList);

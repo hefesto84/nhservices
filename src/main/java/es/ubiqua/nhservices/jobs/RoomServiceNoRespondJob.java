@@ -1,19 +1,19 @@
 package es.ubiqua.nhservices.jobs;
 
-import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
-import org.asteriskjava.manager.AuthenticationFailedException;
 import org.asteriskjava.manager.ManagerConnection;
 import org.asteriskjava.manager.ManagerConnectionFactory;
-import org.asteriskjava.manager.TimeoutException;
 import org.asteriskjava.manager.action.OriginateAction;
-import org.asteriskjava.manager.response.ManagerResponse;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-
+import es.ubiqua.nhservices.constants.constants;
+import es.ubiqua.nhservices.manger.RoomExtensionManager;
 import es.ubiqua.nhservices.manger.RoomServiceRequestsManager;
+import es.ubiqua.nhservices.model.RoomExtension;
 import es.ubiqua.nhservices.model.RoomServiceRequests;
 import es.ubiqua.nhservices.utils.Utils;
 
@@ -27,61 +27,47 @@ public class RoomServiceNoRespondJob implements Job {
 		RoomServiceRequestsManager roomServiceRequestsManager = new RoomServiceRequestsManager();
 		roomServiceRequests = roomServiceRequestsManager.getByRandomId(roomServiceRequests);
 		if(roomServiceRequests.getActived() == false){
-			ManagerConnectionFactory factory = new ManagerConnectionFactory("localhost", "ubiqua", "ubiqua.456");
-
+			ManagerConnectionFactory factory = new ManagerConnectionFactory(constants.dominio, "ubiqua", "ubiqua.456");
 			ManagerConnection managerConnection = factory.createManagerConnection();
+			
+			RoomExtension roomExtension = new RoomExtension();
+			roomExtension.setRoom(1011);
+			roomExtension = new RoomExtensionManager().get(roomExtension);
 	        
 	        OriginateAction originateAction;
-	        ManagerResponse originateResponse;
 	        
 	        long espera = 30000; 
 
 	        originateAction = new OriginateAction();
-	        originateAction.setChannel("SIP/1011");
+	        //originateAction.setChannel("SIP/"+roomExtension.getExtension());
+	        originateAction.setChannel("Local/1011@from-internal");
 	        originateAction.setContext("default");
 	        originateAction.setExten("1012");
 	        originateAction.setApplication("Playback");
-	        originateAction.setData("tt-monkeys");
+	        originateAction.setData("custom/roomservice");
 	        originateAction.setPriority(new Integer(1));
 	        originateAction.setTimeout(espera);
 	        originateAction.setCallerId("No respuesta room service");
-
-	        // connect to Asterisk and log in
-			try {
-				managerConnection.login();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (AuthenticationFailedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	        
-	        // send the originate action and wait for a maximum of 30 seconds for Asterisk
-	        // to send a reply
-			try {
-				originateResponse = managerConnection.sendAction(originateAction,30000);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TimeoutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			managerConnection.logoff();
+	        try{
+	        	managerConnection.login();
+	        	
+	        	try {
+					managerConnection.sendAction(originateAction,30000);
+				} catch(Exception e){
+					StringWriter errors = new StringWriter();
+					e.printStackTrace(new PrintWriter(errors));
+					Utils.mailErrorAsterisk("ActionCall RoomServiceNoRespond", errors.toString());
+					
+				}finally {
+					managerConnection.logoff();
+				}
+	        	
+	        }catch(Exception e){
+	        	StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				Utils.mailErrorAsterisk("Login RoomServiceNoRespond", errors.toString());
+	        }
 			
 		}
 		

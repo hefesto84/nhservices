@@ -1,6 +1,5 @@
 package es.ubiqua.nhservices.model;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class RoomServiceList {
@@ -8,6 +7,8 @@ public class RoomServiceList {
 	private int tipo;
 	private int categoria;
 	private int subcategoria;
+	private String ingredient;
+	private String ingredient_type;
 	private String titulo;
 	private String subtitulo;
 	private String precio;
@@ -156,6 +157,22 @@ public class RoomServiceList {
 
 	public void setQuestionText(ArrayList<RoomServicePreguntas> questionText) {
 		this.questionText = questionText;
+	}
+
+	public String getIngredient() {
+		return ingredient;
+	}
+
+	public void setIngredient(String ingredient) {
+		this.ingredient = ingredient;
+	}
+
+	public String getIngredient_type() {
+		return ingredient_type;
+	}
+
+	public void setIngredient_type(String ingredient_type) {
+		this.ingredient_type = ingredient_type;
 	}
 
 }

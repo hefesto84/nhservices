@@ -5,39 +5,52 @@
     
     <resultMap id="Users" type="es.ubiqua.nhservices.model.Users">
         <result property="id" column="id"/>
+        <result property="tablet" column="tablet"/>
         <result property="identificador" column="identificador"/>
         <result property="user" column="user"/>
         <result property="password" column="password"/>
         <result property="room" column="room"/>
+        <result property="ip_asterisk" column="ip_asterisk"/>
     </resultMap>
     
-    <!-- <select id="list" resultMap="User">
-        SELECT * FROM user;
-    </select> -->
+    <select id="list" resultMap="Users">
+        SELECT u.*, t.tablet as identificador FROM Users u, Tablets t WHERE u.tablet = t.id ORDER BY room;
+    </select>
     
     <select id="get" parameterType="Users" resultMap="Users">
-        SELECT * FROM Users WHERE id = #{id} OR identificador = #{identificador};
+        SELECT * FROM Users WHERE id = #{id};
     </select>
     
-    <!-- <select id="login" parameterType="User" resultMap="User">
-        SELECT * FROM user WHERE user = #{user} AND password = #{password};
+    <select id="getUserByUUID" parameterType="String" resultMap="Users">
+        SELECT u.*, t.identificador as identificador FROM Users u, Tablets t WHERE t.identificador LIKE #{identificador} AND u.tablet = t.id;
     </select>
     
-    <insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO RepositoryCustomer (user,password,mail) 
+    <insert id="add" parameterType="Users" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO Users (tablet,user,password,room,ip_asterisk) 
         	VALUES (
+        		#{tablet},
         		#{user},
         		#{password},
-        		#{mail}
+        		#{room},
+        		#{ip_asterisk}
         	)
-        	
         <selectKey keyProperty="id" resultType="int" order="AFTER">
 			SELECT LAST_INSERT_ID();
 	  	</selectKey>
 	  	
     </insert>
     
-    <delete id="del" parameterType="User">
-    	DELETE FROM user WHERE id = #{id}
-    </delete> -->
+    <update id="update" parameterType="Users">
+    	UPDATE Users SET 
+    		tablet = #{tablet},
+    		user = #{user},
+    		password = #{password},
+    		room = #{room},
+    		ip_asterisk = #{ip_asterisk}
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="Users">
+    	DELETE FROM Users WHERE id = #{id}
+    </delete>
 </mapper>

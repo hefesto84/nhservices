@@ -6,6 +6,7 @@ public class RoomServicePreguntas {
 	
 	private int id_plato;
 	private int id_question;
+	private String selection_type;
 	private String pregunta;
 	private List<RoomServiceAnswers> respuesta;
 	
@@ -39,6 +40,14 @@ public class RoomServicePreguntas {
 
 	public void setId_question(int id_question) {
 		this.id_question = id_question;
+	}
+
+	public String getSelection_type() {
+		return selection_type;
+	}
+
+	public void setSelection_type(String selection_type) {
+		this.selection_type = selection_type;
 	}
 	
 

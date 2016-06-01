@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapTablets">
+    
+    <resultMap id="Tablets" type="es.ubiqua.nhservices.model.Tablets">
+        <result property="id" column="id"/>
+        <result property="tablet" column="tablet"/>
+        <result property="identificador" column="identificador"/>
+    </resultMap>
+    
+    <select id="list" resultMap="Tablets">
+        SELECT * FROM Tablets ORDER BY tablet;
+    </select>
+    
+    <select id="get" parameterType="Tablets" resultMap="Tablets">
+        SELECT * FROM Tablets WHERE id = #{id} OR identificador = #{identificador};
+    </select>
+    
+    <insert id="add" parameterType="Tablets" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO Tablets (tablet, identificador) 
+        	VALUES (
+        		#{tablet},
+        		#{identificador}
+        	)
+        	
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+	  	</selectKey>
+	  	
+    </insert>
+    
+    <update id="update" parameterType="Tablets">
+    	UPDATE Tablets SET 
+    	    tablet = #{tablet},
+    		identificador = #{identificador}
+    	WHERE id = #{id}
+    </update>
+    
+    <delete id="del" parameterType="Tablets">
+    	DELETE FROM Tablets WHERE id = #{id}
+    </delete>
+</mapper>

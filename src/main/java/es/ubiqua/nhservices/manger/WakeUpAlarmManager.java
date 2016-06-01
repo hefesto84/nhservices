@@ -17,6 +17,10 @@ public class WakeUpAlarmManager {
 		return wakeUpAlarmDao.listToday();
 	}
 	
+	public List<WakeUpAlarm> listFutureAlarms(){
+		return wakeUpAlarmDao.listFutureAlarms();
+	}
+	
 	public List<WakeUpAlarm> listByRoom(WakeUpAlarm wakeUpAlarm){
 		return wakeUpAlarmDao.listByRoom(wakeUpAlarm);
 	}

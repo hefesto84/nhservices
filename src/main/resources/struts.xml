@@ -17,6 +17,21 @@
     </package>-->
     
     <package name="api" namespace="/api" extends="json-default">
+    
+    	<result-types>
+			<result-type name="imageResult" class="es.ubiqua.nhservices.image.result.CustomImageBytesResult" />
+		</result-types>
+    	
+    	<action name="getTranslations" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="getTranslations">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+	            <param name="root">
+	                trans
+	            </param>
+        	</result>
+        </action>
+    	
     	<action name="information" class="es.ubiqua.nhservices.actions.GetHotelDirectory">
            <result type="json"/>
         	<param name="encoding">UTF-8</param>
@@ -29,6 +44,10 @@
         		<param name="contentType">application/json</param>
         	</result>
         </action>
+        <action name="getImageById" class="es.ubiqua.nhservices.image.action.ImageAction">
+			<result name="success" type="imageResult">
+			</result>
+		</action>
         <action name="breakfastService" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="breakfastService">
         	<result type="json">
 		    	<param name="excludeNullProperties">true</param>
@@ -38,11 +57,6 @@
         </action>
         <action name="confirmationBreakfast" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="confirmationBreakfast">
            <result name="success">/WEB-INF/jsp/confirmation/confirmationBreakfast.jsp</result>
-           <!-- <result type="json">
-        		<param name="encoding">UTF-8</param>
-        		<param name="contentType">application/json</param>
-		    	<param name="excludeNullProperties">true</param>
-		    </result> -->
         </action>
         <action name="roomService" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="roomService">
         	<result type="json">
@@ -52,11 +66,7 @@
         	</result>
         </action>
         <action name="confirmationRoomService" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="confirmationRoomService">
-           <result type="json">
-        		<param name="encoding">UTF-8</param>
-        		<param name="contentType">application/json</param>
-		    	<param name="excludeNullProperties">true</param>
-		    </result>
+        	<result name="success">/WEB-INF/jsp/confirmation/confirmationRoomService.jsp</result>
         </action>
         <action name="listRoomService" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="listRoomService">
         	<result type="json">
@@ -170,6 +180,13 @@
 		    	<param name="excludeNullProperties">true</param>
 		    </result>
         </action>
+        <action name="wakeUpDeleteInit" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="wakeUpDeleteInit">
+           <result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+        </action>
         <action name="confirmationWakeUp" class="es.ubiqua.nhservices.actions.GetHotelDirectory" method="confirmationWakeUp">
            <result type="json">
         		<param name="encoding">UTF-8</param>
@@ -222,43 +239,6 @@
     		<result name="success">/WEB-INF/jsp/backend/dashboard.jsp</result>
     		<result name="error" type="redirect">../login/</result>
     	</action>
-    	<!-- <action name="about" class="es.ubiqua.compareme.backend.actions.AboutBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/about.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="ht_manage_otas" class="es.ubiqua.compareme.backend.actions.ManageOtasBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/manage_otas.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="ht_manage_hotels" class="es.ubiqua.compareme.backend.actions.ManageHotelsBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/manage_hotels.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="ht_check_dbstatus" class="es.ubiqua.compareme.backend.actions.CheckDBStatusBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/check_dbstatus.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="contact" class="es.ubiqua.compareme.backend.actions.ContactBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/contact.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="general_reporting" class="es.ubiqua.compareme.backend.actions.GeneralReportingBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/general_reporting.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="download_statistics" class="es.ubiqua.compareme.backend.actions.DownloadStatisticsBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/download_statistics.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="fast_price_check" class="es.ubiqua.compareme.backend.actions.FastPriceCheckBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/fast_price_check.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action>
-    	<action name="widget_configuration" class="es.ubiqua.compareme.backend.actions.WidgetConfigurationBackendAction">
-    		<result name="success">/WEB-INF/jsp/backend/widget_configuration.jsp</result>
-    		<result name="error" type="redirect">../login/</result>
-    	</action> -->
-    		
     </package>
     
     <package name="idiomas" namespace="/backend/idiomas" extends="json-default">
@@ -512,6 +492,78 @@
     	</action>
     </package>
     
+    <package name="tablets" namespace="/backend/tablets" extends="json-default">
+    	<action name="list" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsList">
+    		<result name="success">/WEB-INF/jsp/backend/tablets/list.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="new" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsNew">
+    		<result name="success">/WEB-INF/jsp/backend/tablets/new.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="add" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsAdd">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="delete" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsDelete">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="edit" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsEdit">
+    		<result name="success">/WEB-INF/jsp/backend/tablets/edit.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="update" class="es.ubiqua.nhservices.backend.actions.TabletsAction" method="tabletsUpdate">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    </package>
+    
+    <package name="users" namespace="/backend/users" extends="json-default">
+    	<action name="list" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersList">
+    		<result name="success">/WEB-INF/jsp/backend/users/list.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="new" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersNew">
+    		<result name="success">/WEB-INF/jsp/backend/users/new.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="add" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersAdd">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="delete" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersDelete">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    	<action name="edit" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersEdit">
+    		<result name="success">/WEB-INF/jsp/backend/users/edit.jsp</result>
+    		<result name="error" type="redirect">../login/</result>
+    	</action>
+    	<action name="update" class="es.ubiqua.nhservices.backend.actions.UsersAction" method="usersUpdate">
+    		<result type="json">
+        		<param name="encoding">UTF-8</param>
+        		<param name="contentType">application/json</param>
+		    	<param name="excludeNullProperties">true</param>
+		    </result>
+    	</action>
+    </package>
+    
     <package name="wakeup" namespace="/backend/alarms" extends="json-default">
     	<action name="wakeup" class="es.ubiqua.nhservices.backend.actions.AlarmsAction" method="wakeUpList">
     		<result name="success">/WEB-INF/jsp/backend/alarmas/list.jsp</result>
@@ -553,13 +605,6 @@
     		<result name="success">/WEB-INF/jsp/backend/alarmas/listBreakfastService.jsp</result>
     		<result name="error" type="redirect">../login/</result>
     	</action>
-    	<!-- <action name="roomserviceActivate" class="es.ubiqua.nhservices.backend.actions.AlarmsAction" method="roomServiceActivate">
-    		<result type="json">
-        		<param name="encoding">UTF-8</param>
-        		<param name="contentType">application/json</param>
-		    	<param name="excludeNullProperties">true</param>
-		    </result>
-    	</action> -->
     	<action name="breakfastserviceProduct" class="es.ubiqua.nhservices.backend.actions.AlarmsAction" method="breakfastServiceProductPDF">
     		<result name="success" type="stream">
 		        <param name="contentType">application/pdf</param>

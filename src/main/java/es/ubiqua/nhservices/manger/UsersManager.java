@@ -1,6 +1,8 @@
 package es.ubiqua.nhservices.manger;
 
 
+import java.util.List;
+
 import es.ubiqua.nhservices.dao.UsersDAO;
 import es.ubiqua.nhservices.model.Users;
 
@@ -12,23 +14,27 @@ public class UsersManager {
 		
 	}
 	
-	/*public List<Hotel> list(){
-		return hotelDao.list();
-	}*/
+	public List<Users> list(){
+		return usersDao.list();
+	}
 
 	public Users get(Users user){
 		return usersDao.get(user);
 	}
-	
-	/*public Hotel add(Hotel hotel){
-		return hotelDao.add(hotel);
+
+	public Users getUserByUUID(String uuid){
+		return usersDao.getUserByUUID(uuid);
 	}
 	
-	public void update(Hotel hotel){
-		hotelDao.update(hotel);
+	public Users add(Users user){
+		return usersDao.add(user);
 	}
 	
-	public void del(Hotel hotel){
-		hotelDao.del(hotel);
-	}*/
+	public void update(Users user){
+		usersDao.update(user);
+	}
+	
+	public void del(Users user){
+		usersDao.del(user);
+	}
 }

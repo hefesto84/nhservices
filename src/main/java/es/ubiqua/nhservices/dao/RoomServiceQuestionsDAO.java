@@ -41,6 +41,22 @@ public class RoomServiceQuestionsDAO extends BaseDAO{
 		return roomServiceQuestions;
 	}
 	
+	public RoomServiceQuestions getByIdEs(int id_product, int id_question){
+		RoomServiceQuestions roomServiceQuestion = new RoomServiceQuestions();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("id_product", String.valueOf(id_product));
+			map.put("id_question", String.valueOf(id_question));
+			roomServiceQuestion = session.selectOne("SqlMapRoomServiceQuestions.getByIdEs",map);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e);
+		}finally{
+			session.close();
+		}
+		return roomServiceQuestion;
+	}
+	
 	/*public List<WakeUpAlarm> listToday(){
 		List<WakeUpAlarm> wakeUpAlarm = new ArrayList<WakeUpAlarm>();
 		SqlSession session = sql.openSession();

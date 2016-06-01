@@ -31,6 +31,10 @@
 		<typeAlias alias="RoomServiceQuestions" type="es.ubiqua.nhservices.model.RoomServiceQuestions"/>
 		<typeAlias alias="RoomServiceAnswers" type="es.ubiqua.nhservices.model.RoomServiceAnswers"/>
 		<typeAlias alias="Users" type="es.ubiqua.nhservices.model.Users"/>
+		<typeAlias alias="HotelInformation" type="es.ubiqua.nhservices.model.HotelInformation"/>
+		<typeAlias alias="HotelLinks" type="es.ubiqua.nhservices.model.HotelLinks"/>
+		<typeAlias alias="Traducciones" type="es.ubiqua.nhservices.model.Traducciones"/>
+		<typeAlias alias="Tablets" type="es.ubiqua.nhservices.model.Tablets"/>
 	</typeAliases>
 	
 	<!-- DATABASE Configuration -->
@@ -40,6 +44,7 @@
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.jdbc.Driver"/>
 				<property name="url" value="jdbc:mysql://10.8.0.1/telefono2.0"/>
+				<!-- <property name="url" value="jdbc:mysql://192.168.1.200/telefono2.0"/> -->
 				<property name="username" value="telefono"/>
 				<property name="password" value="20Ubiq2015"/>
 			</dataSource>
@@ -75,6 +80,10 @@
 		<mapper resource="mapping/roomServiceQuestions.xml"/>
 		<mapper resource="mapping/roomServiceAnswers.xml"/>
 		<mapper resource="mapping/users.xml"/>
+		<mapper resource="mapping/hotelInformation.xml"/>
+		<mapper resource="mapping/hotelLinks.xml"/>
+		<mapper resource="mapping/traducciones.xml"/>
+		<mapper resource="mapping/tablets.xml"/>
 	</mappers>
 	
 	

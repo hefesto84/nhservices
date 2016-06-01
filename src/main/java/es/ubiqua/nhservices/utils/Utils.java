@@ -72,8 +72,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import es.ubiqua.nhservices.constants.constants;
 import es.ubiqua.nhservices.jobs.BreakfastAlertsJob;
 import es.ubiqua.nhservices.jobs.BreakfastNoRespondJob;
+import es.ubiqua.nhservices.jobs.RoomServiceAlertsJob;
 import es.ubiqua.nhservices.jobs.RoomServiceNoRespondJob;
-import es.ubiqua.nhservices.jobs.RoomServiceTenMinutesJob;
 import es.ubiqua.nhservices.jobs.WakeUpJob;
 import es.ubiqua.nhservices.jobs.WakeUpNoRespondJob;
 import es.ubiqua.nhservices.manger.RoomExtensionManager;
@@ -91,6 +91,7 @@ import es.ubiqua.nhservices.model.RoomServiceList;
 import es.ubiqua.nhservices.model.RoomServicePreguntas;
 import es.ubiqua.nhservices.model.RoomServiceQuestions;
 import es.ubiqua.nhservices.model.RoomServiceRequestProduct;
+import es.ubiqua.nhservices.model.RoomServiceRequestProductQuestions;
 import es.ubiqua.nhservices.model.RoomServiceRequests;
 import es.ubiqua.nhservices.model.WakeUpAlarm;
 /*
@@ -120,6 +121,7 @@ public class Utils extends ActionSupport{
 			RoomServicePreguntas roomServicePreguntas = new RoomServicePreguntas();
 			roomServicePreguntas.setId_plato(question.getId_plato());
 			roomServicePreguntas.setId_question(question.getId_question());
+			roomServicePreguntas.setSelection_type(question.getSelection_type());
 			roomServicePreguntas.setPregunta(question.getQuestion());
 			roomServicePreguntas.setRespuesta(roomServiceAnswers);
 			preguntas.add(roomServicePreguntas);
@@ -141,7 +143,6 @@ public class Utils extends ActionSupport{
             document.add(new Paragraph("Nueva comanda Room Service"));
             document.add(new Paragraph("Habitación : "+roomService.getRoom()));
             document.add(new Paragraph("Programado para : "+roomService.getRequestTime()));
-            document.add(new Paragraph("Número de personas : "+roomService.getPeople()));
             
             PdfPTable table = new PdfPTable(2); // 2 columns.
             table.setWidthPercentage(100); //Width 100%
@@ -170,20 +171,23 @@ public class Utils extends ActionSupport{
             list = new Gson().fromJson(roomService.getProducts(), new TypeToken<ArrayList<RoomServiceRequestProduct>>() {}.getType());
             
             for (RoomServiceRequestProduct product : list){
-        		
             	if(product != null){
-  
-            		if (!product.getIngredients().isEmpty()){
+            		if (product.getQuestions() != null){
             			String content = getProductById(product.getId());
-            			String[] ingredients = product.getIngredients().split("#");
-            			for (int i = 0; i < ingredients.length; i++){
-            				content += "\n        -"+getProductById(Integer.parseInt(ingredients[i]));
+            			for(RoomServiceRequestProductQuestions question : product.getQuestions()){
+            				if(question != null){
+                				content += "\n    -"+getQuestionById(product.getId(),question.getId_question());
+	            				for(Integer answers : question.getId_answers()){
+	            					if (answers != null){
+	                    				content += "\n      ."+getAnswerById(answers);
+	            					}
+	            				}
+            				}
             			}
             			table.addCell(content);
             		} else {
             			table.addCell(getProductById(product.getId()));
             		}
-            		
                 	table.addCell(String.valueOf(product.getQuantity()));
             	}
             }
@@ -221,10 +225,28 @@ public class Utils extends ActionSupport{
 		
 	}
 	
-	public static void sendMailRoomService(InputStream prova, RoomServiceRequests roomService) throws IOException{
+	private static String getQuestionById (int id_product, int id_question){
 		
-		final String username = "rocprat@gmail.com";
-		final String password = "Roccopl2006";
+		RoomServiceQuestions question = new RoomServiceQuestions();
+		question = new RoomServiceQuestionsManager().getByIdEs(id_product, id_question);
+		String respuesta = question.getQuestion();
+		return respuesta;
+		
+	}
+	
+	private static String getAnswerById (int id){
+		
+		RoomServiceAnswers answer = new RoomServiceAnswers();
+		answer = new RoomServiceAnswersManager().getAnswerByIdEs(id);
+		String respuesta = answer.getRespuesta();
+		return respuesta;
+		
+	}
+	
+	public static void sendMailRoomService(RoomServiceRequests roomService) throws IOException{
+		
+		final String username = "noreplyavisostablet@gmail.com";
+		final String password = "nhconstanza";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -242,78 +264,53 @@ public class Utils extends ActionSupport{
 		try {
 						
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("rocprat@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
+			message.setFrom(new InternetAddress("noreplyavisostablet@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(constants.mailRoomService));
+			//message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
 			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse("jordi@ubiqua.es"));
-			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse("dani@ubiqua.es"));
 			message.setSubject("Room Service Request");
 			
-			Multipart multipart = new MimeMultipart();    
 			
-            BodyPart messageBodyPart1 = new MimeBodyPart();     
-            messageBodyPart1.setText("Hola, "
-            		+ "\n\nSe ha recibido una nueva petición de room Service"
-            		+ "\n\nHabitación : "+roomService.getRoom()+""
-            		+ "\n\nSolicitado para : "+roomService.getRequestTime()+""
-            		+ "\n\nNúmero de personas : "+roomService.getPeople()+"\n\n");
-            multipart.addBodyPart(messageBodyPart1); 
-            
-            BodyPart messageBodyPart2 = new MimeBodyPart(); 
-            messageBodyPart2.setText("<table style='border-collapse: collapse;'>"
-            		+ "<tr>"
-            		+ "<td style='font-weight: bold;border: 1px solid #000000;padding: 5px;'>Producto</td><td style='font-weight: bold;border: 1px solid #000000;padding: 5px;'>Cantidad</td>"
-            		+ "</tr>");
-            messageBodyPart2.setHeader("Content-Type", "text/html");
-            multipart.addBodyPart(messageBodyPart2); 
-            
-            ArrayList<RoomServiceRequestProduct> list = new ArrayList<RoomServiceRequestProduct>();
+			String content = "Hola,"
+					+ "\n\nSe ha recibido una nueva petición de room Service"
+					+ "\n\nHabitación : "+roomService.getRoom()+""
+					+ "\n\nSolicitado para : "+roomService.getRequestTime()+""
+					+ "\n\nProductos:\n\n";
+			
+			ArrayList<RoomServiceRequestProduct> list = new ArrayList<RoomServiceRequestProduct>();
             list = new Gson().fromJson(roomService.getProducts(), new TypeToken<ArrayList<RoomServiceRequestProduct>>() {}.getType());
             for (RoomServiceRequestProduct product : list){
             	if(product != null){
-            		String content = "<tr>"
-                    		+ "<td style='border: 1px solid #000000;padding: 5px;'>"+getProductById(product.getId())+"";
-            		if (!product.getIngredients().isEmpty()){
-            			String[] ingredients = product.getIngredients().split("#");
-            			for (int i = 0; i < ingredients.length; i++){
-            				content += "<br>    -"+getProductById(Integer.parseInt(ingredients[i]));
+            		content += "- Producto : "+getProductById(product.getId());
+            	    if (product.getQuestions() != null){
+            			for(RoomServiceRequestProductQuestions question : product.getQuestions()){
+            				if(question != null){
+            					content += "\n    ."+getQuestionById(product.getId(),question.getId_question());
+	            				for(Integer answers : question.getId_answers()){
+	            					if (answers != null){
+	            						content += "\n      "+getAnswerById(answers);
+	            					}
+	            				}
+            				}
             			}
-            			content += "</td><td style='text-align: center;border: 1px solid #000000;padding: 5px;'>"+product.getQuantity()+"</td></tr>";
-            			BodyPart messageBodyPartVariable = new MimeBodyPart(); 
-                		messageBodyPartVariable.setText(content);
-                		messageBodyPartVariable.setHeader("Content-Type", "text/html");
-                		multipart.addBodyPart(messageBodyPartVariable);
+            			content += "\n- Cantidad : "+product.getQuantity()+"\n\n";
+            			
             		} else {
-            			BodyPart messageBodyPartVariable = new MimeBodyPart(); 
-                		messageBodyPartVariable.setText("<tr>"
-                        		+ "<td style='border: 1px solid #000000;padding: 5px;'>"+getProductById(product.getId())+"</td><td style='text-align: center;border: 1px solid #000000;padding: 5px;'>"+product.getQuantity()+"</td>"
-                        		+ "</tr>");
-                		messageBodyPartVariable.setHeader("Content-Type", "text/html");
-                		multipart.addBodyPart(messageBodyPartVariable);
+            			content += "- Producto : "+getProductById(product.getId())+"\n- Cantidad : "+product.getQuantity()+"\n\n";
             		}
             	}
             }
-            BodyPart messageBodyPart3 = new MimeBodyPart(); 
-            messageBodyPart3.setText("</table>");
-            messageBodyPart3.setHeader("Content-Type", "text/html");
-            multipart.addBodyPart(messageBodyPart3); 
-            
-            BodyPart messageBodyPart4 = new MimeBodyPart(); 
             	
             if (roomService.getComments() != null && !roomService.getComments().isEmpty()) {
-            	BodyPart messageBodyPartComments = new MimeBodyPart();     
-            	messageBodyPartComments.setText("\n\nComentarios : "+roomService.getComments()+"\n");
-                multipart.addBodyPart(messageBodyPartComments);
+            	content += "\n\nComentarios : "+roomService.getComments()+"\n";
             }
             
-            messageBodyPart4.setText("\n\nConfirma en el siguiente enlace la recepción de este correo:"
-            		+ "\nhttp://localhost:8080/NHServices/api/confirmationRoomService?id="+roomService.getRandomId()); 
-            multipart.addBodyPart(messageBodyPart4); 
+            content += "\n\nConfirma en el siguiente enlace la recepción de este correo:"
+            		+ "\nhttp://"+constants.dominioMail+"/NHServices/api/confirmationRoomService?id="+roomService.getRandomId();
+            
+            message.setText(content);
    
-            message.setContent(multipart);
-
 			Transport.send(message);
-
-			System.out.println("Done");
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
@@ -366,13 +363,20 @@ public class Utils extends ActionSupport{
 						
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("noreplyavisostablet@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(constants.mailReception));
+			//message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
 			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse("jordi@ubiqua.es"));
 			message.setSubject("Despertador no respondido");
-			/*message.setText("Dear Mail Crawler,"
-				+ "\n\n No spam to my email, please!");*/
 			
-			//3) create MimeBodyPart object and set your message text        
+			String content = "El despertador programado en:"
+					+ "\nHabitación : "+room+""
+					+ "\nProgramado para : "+time+""
+					+ "\nNo se ha llevado a cabo.\nSi has leido este mail, corfirma en el siguiente enlace:"
+					+ "\nhttp://"+constants.dominioMail+"/NHServices/api/confirmationWakeUp?id="+randomId;
+			
+			message.setText(content);
+			
+			/*//3) create MimeBodyPart object and set your message text        
             BodyPart messageBodyPart1 = new MimeBodyPart();     
             messageBodyPart1.setText("El despertador programado en:");
             BodyPart messageBodyPart2 = new MimeBodyPart();     
@@ -380,9 +384,9 @@ public class Utils extends ActionSupport{
             BodyPart messageBodyPart3 = new MimeBodyPart();     
             messageBodyPart3.setText("\nProgramado para : "+time);
             BodyPart messageBodyPart4 = new MimeBodyPart();     
-            messageBodyPart4.setText("\nNo se ha llebado a cabo.\nSi has leido este mail, corfirma en el siguiente enlace:");
+            messageBodyPart4.setText("\nNo se ha llevado a cabo.\nSi has leido este mail, corfirma en el siguiente enlace:");
             BodyPart messageBodyPart5 = new MimeBodyPart();     
-            messageBodyPart5.setText("\nhttp://"+constants.dominio+":8080/NHServices/api/confirmationWakeUp?id="+randomId);          
+            messageBodyPart5.setText("\nhttp://"+constants.dominioMail+":8080/NHServices/api/confirmationWakeUp?id="+randomId);          
 
             //5) create Multipart object and add MimeBodyPart objects to this object        
             Multipart multipart = new MimeMultipart();    
@@ -393,11 +397,9 @@ public class Utils extends ActionSupport{
             multipart.addBodyPart(messageBodyPart5);    
 
             //6) set the multiplart object to the message object    
-            message.setContent(multipart);
+            message.setContent(multipart);*/
 
 			Transport.send(message);
-
-			System.out.println("Done");
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
@@ -470,7 +472,7 @@ public class Utils extends ActionSupport{
 		final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 		Calendar date = Calendar.getInstance();
 		long t = date.getTimeInMillis();
-		Date afterAddingFiveMins = new Date(t + (5 * ONE_MINUTE_IN_MILLIS));
+		Date afterAddingFiveMins = new Date(t + (constants.wakeUpNoRespond * ONE_MINUTE_IN_MILLIS));
 		date.setTime(afterAddingFiveMins);
 		
 		int day = date.get(Calendar.DAY_OF_MONTH);
@@ -506,75 +508,100 @@ public class Utils extends ActionSupport{
 	
 	public static void llamadaRoomService(RoomServiceRequests roomServiceRequests){
 		
-		ManagerConnectionFactory factory = new ManagerConnectionFactory("localhost", "ubiqua", "ubiqua.456");
-
+		ManagerConnectionFactory factory = new ManagerConnectionFactory(constants.dominio, "ubiqua", "ubiqua.456");
 		ManagerConnection managerConnection = factory.createManagerConnection();
+		
+		RoomExtension roomExtension = new RoomExtension();
+		roomExtension.setRoom(1011);
+		roomExtension = new RoomExtensionManager().get(roomExtension);
         
         OriginateAction originateAction;
         ManagerResponse originateResponse;
         Boolean respondido = false;
         
-        long espera = 20000; 
+        long espera = 50000; 
         
         originateAction = new OriginateAction();
-        originateAction.setChannel("SIP/1011");
+        //originateAction.setChannel("SIP/"+roomExtension.getExtension());
+        //originateAction.setChannel("SIP/0650583420");
+        originateAction.setChannel("Local/1011@from-internal");
         originateAction.setContext("default");
         originateAction.setExten("1012");
         originateAction.setApplication("Playback");
-        originateAction.setData("tt-monkeys");
+        originateAction.setData("custom/roomservice");
         originateAction.setPriority(new Integer(1));
         originateAction.setTimeout(espera);
         originateAction.setCallerId("RoomService");
-
-        // connect to Asterisk and log in
-		try {
-			managerConnection.login();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AuthenticationFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
-        // send the originate action and wait for a maximum of 30 seconds for Asterisk
-        // to send a reply
-		try {
-			originateResponse = managerConnection.sendAction(originateAction,30000);
-			if(originateResponse.getResponse().equals("Success")){
-				respondido = true;
+        try{
+        	managerConnection.login();
+        	
+        	try {
+				originateResponse = managerConnection.sendAction(originateAction,50000);
+				if(originateResponse.getResponse().equals("Success")){
+					respondido = true;
+				}
+			} catch(Exception e){
+				StringWriter errors = new StringWriter();
+				e.printStackTrace(new PrintWriter(errors));
+				Utils.mailErrorAsterisk("ActionCall RoomService", errors.toString());
+				
+			}finally {
+				managerConnection.logoff();
 			}
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		managerConnection.logoff();
+        	
+        }catch(Exception e){
+        	StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			Utils.mailErrorAsterisk("Login RoomService", errors.toString());
+        }
 		
 		if (respondido == false){
 			Utils.cronRoomServiceNoResponse(roomServiceRequests);
 		}
 	}
 	
+    public static void cronRoomServiceAlerts(int count,RoomServiceRequests roomServiceRequests){
+		
+		final long ONE_MINUTE_IN_MILLIS=60000;
+		Calendar date = Calendar.getInstance();
+		long t = date.getTimeInMillis();
+		int minutes;
+		if (count == 1){
+			minutes = constants.roomServiceAlerts * 2;
+		} else {
+			minutes = constants.roomServiceAlerts;
+		}
+		Date afterAddingTwoMins = new Date(t + (minutes * ONE_MINUTE_IN_MILLIS));
+		date.setTime(afterAddingTwoMins);
+		
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		int month = date.get(Calendar.MONTH) + 1;
+		int year = date.get(Calendar.YEAR);
+		int hour = date.get(Calendar.HOUR_OF_DAY);
+		int minute = date.get(Calendar.MINUTE);
+		int second = date.get(Calendar.SECOND);
+				
+		try{
+			String triggerName = roomServiceRequests.getRandomId() + "RoomServiceAlertsTrigger";
+			JobDetail roomServiceAlertsJob = JobBuilder.newJob(RoomServiceAlertsJob.class).withIdentity(roomServiceRequests.getRandomId(), "RoomServiceAlerts").build();
+			roomServiceAlertsJob.getJobDataMap().put("RandomId",roomServiceRequests.getRandomId());
+			roomServiceAlertsJob.getJobDataMap().put("count",count); 
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "RoomServiceAlerts").withSchedule(CronScheduleBuilder.cronSchedule(second+" "+minute+" "+hour+" "+day+" "+month+" ? "+year+"")).build();
+			Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+			scheduler.start();
+			scheduler.scheduleJob(roomServiceAlertsJob, trigger);
+			
+			} catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		
+	}
+	
 	
 
 	
-	public static void cronRoomServiceTenMinutes(RoomServiceRequests roomServiceRequests){
+	/*public static void cronRoomServiceTenMinutes(RoomServiceRequests roomServiceRequests){
 		
 		final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 		Calendar date = Calendar.getInstance();
@@ -601,14 +628,14 @@ public class Utils extends ActionSupport{
 	            e.printStackTrace();
 	        }
 		
-	}
+	}*/
 	
 	public static void cronRoomServiceNoResponse(RoomServiceRequests roomServiceRequests){
 		
 		final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
 		Calendar date = Calendar.getInstance();
 		long t = date.getTimeInMillis();
-		Date afterAddingTwoMins = new Date(t + (2 * ONE_MINUTE_IN_MILLIS));
+		Date afterAddingTwoMins = new Date(t + (constants.roomServiceNoRespond * ONE_MINUTE_IN_MILLIS));
 		date.setTime(afterAddingTwoMins);
 		
 		int day = date.get(Calendar.DAY_OF_MONTH);
@@ -716,10 +743,10 @@ public class Utils extends ActionSupport{
         }
 		
 	}
-	
-    public static void stopCronRoomServiceTenMinutes(RoomServiceRequests roomServiceRequests, String group){
+    
+    public static void stopCronRoomServiceAlerts(RoomServiceRequests roomServiceRequests, String group){
 		
-		String triggerName = roomServiceRequests.getRandomId() + "RoomServiceTenMinutesTrigger";
+		String triggerName = roomServiceRequests.getRandomId() + "RoomServiceAlertsTrigger";
 		
 		try{
 			
@@ -1005,21 +1032,29 @@ public class Utils extends ActionSupport{
 						
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("noreplyavisostablet@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
+			//message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
 			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse("jordi@ubiqua.es"));
+			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(constants.mailRoomService));
 			message.setSubject("Breakfast Requests");
+			
+			String content = "Hola,"
+					+ "\n\nDesayunos previstos para hoy, ver el el PDF adjunto"
+					+ "\n\nConfirma en el siguiente enlace la recepción de este correo:"
+					+ "\nhttp://"+constants.dominioMail+"/NHServices/api/confirmationBreakfast";
+			
+			message.setText(content);
 			
 			Multipart multipart = new MimeMultipart();    
 			
-            BodyPart messageBodyPart1 = new MimeBodyPart();     
+            /*BodyPart messageBodyPart1 = new MimeBodyPart();     
             messageBodyPart1.setText("Hola, "
             		+ "\n\nDesayunos previstos para hoy, ver el el PDF adjunto\n");
             multipart.addBodyPart(messageBodyPart1); 
             
             BodyPart messageBodyPart4 = new MimeBodyPart();  
             messageBodyPart4.setText("\n\nConfirma en el siguiente enlace la recepción de este correo:"
-            		+ "\nhttp://"+constants.dominio+":8080/NHServices/api/confirmationBreakfast"); 
-            multipart.addBodyPart(messageBodyPart4);
+            		+ "\nhttp://"+constants.dominioMail+":8080/NHServices/api/confirmationBreakfast"); 
+            multipart.addBodyPart(messageBodyPart4);*/
             
             MimeBodyPart messageBodyPartFile = new MimeBodyPart();   
             ByteArrayDataSource ds = new ByteArrayDataSource(file, "application/pdf");
@@ -1207,7 +1242,6 @@ public class Utils extends ActionSupport{
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("ubiqua.developer@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("r.prat@ubiqua.es"));
-			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse("dani@ubiqua.es"));
 			message.setSubject("Error Call Asterisk : "+call);
 			
 			Multipart multipart = new MimeMultipart();    

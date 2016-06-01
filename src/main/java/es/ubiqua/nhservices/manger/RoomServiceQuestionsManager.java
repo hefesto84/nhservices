@@ -21,6 +21,10 @@ public class RoomServiceQuestionsManager {
 		return roomServiceQuestionsDao.listByProduct(id, lang);
 	}
 	
+	public RoomServiceQuestions getByIdEs(int id_product, int id_question){
+		return roomServiceQuestionsDao.getByIdEs(id_product, id_question);
+	}
+	
 	/*public List<WakeUpAlarm> listToday(){
 		return wakeUpAlarmDao.listToday();
 	}

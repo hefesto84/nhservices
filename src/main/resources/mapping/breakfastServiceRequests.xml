@@ -17,6 +17,10 @@
         SELECT * FROM breakfastServiceRequests;
     </select>
     
+    <select id="listFutureBreakfasts" resultMap="BreakfastServiceRequests">
+        SELECT * FROM breakfastServiceRequests WHERE requestTime > NOW() ORDER BY requestTime;
+    </select>
+    
     <select id="listToday" resultMap="BreakfastServiceRequests">
         SELECT * FROM breakfastServiceRequests WHERE DATE(requestTime) = CURDATE();
     </select>

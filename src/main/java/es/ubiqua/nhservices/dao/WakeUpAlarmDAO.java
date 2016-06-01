@@ -23,6 +23,19 @@ public class WakeUpAlarmDAO extends BaseDAO{
 		return wakeUpAlarm;
 	}
 	
+	public List<WakeUpAlarm> listFutureAlarms(){
+		List<WakeUpAlarm> wakeUpAlarm = new ArrayList<WakeUpAlarm>();
+		SqlSession session = sql.openSession();
+		try{
+			wakeUpAlarm = session.selectList("SqlMapWakeUpAlarm.listFutureAlarms");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return wakeUpAlarm;
+	}
+	
 	public List<WakeUpAlarm> listByRoom(WakeUpAlarm wakeUpAlarm){
 		List<WakeUpAlarm> wakeUpAlarms = new ArrayList<WakeUpAlarm>();
 		SqlSession session = sql.openSession();

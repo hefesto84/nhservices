@@ -29,6 +29,19 @@ public class RoomServiceAnswersDAO extends BaseDAO{
 		return roomServiceAnswers;
 	}
 	
+	public RoomServiceAnswers getAnswerByIdEs(int id){
+		RoomServiceAnswers answers = new RoomServiceAnswers();
+		SqlSession session = sql.openSession();
+		try{
+			answers = session.selectOne("SqlMapRoomServiceAnswers.getAnswerByIdEs",id);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e);
+		}finally{
+			session.close();
+		}
+		return answers;
+	}
+	
 	/*public List<WakeUpAlarm> listToday(){
 		List<WakeUpAlarm> wakeUpAlarm = new ArrayList<WakeUpAlarm>();
 		SqlSession session = sql.openSession();

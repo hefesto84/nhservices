@@ -3,6 +3,7 @@ package es.ubiqua.nhservices.model;
 public class Users {
 	
 	private int id;
+	private int tablet;
 	private String identificador;
 	private String user;
 	private String password;
@@ -55,6 +56,14 @@ public class Users {
 
 	public void setIp_asterisk(String ip_asterisk) {
 		this.ip_asterisk = ip_asterisk;
+	}
+
+	public int getTablet() {
+		return tablet;
+	}
+
+	public void setTablet(int tablet) {
+		this.tablet = tablet;
 	}
 	
 }

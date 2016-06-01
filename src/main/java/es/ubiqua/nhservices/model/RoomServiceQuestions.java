@@ -4,6 +4,7 @@ public class RoomServiceQuestions {
 	private int id_plato;
 	private int id_question;
 	private String question;
+	private String selection_type;
 	
 	public int getId_plato() {
 		return id_plato;
@@ -27,6 +28,14 @@ public class RoomServiceQuestions {
 	
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+
+	public String getSelection_type() {
+		return selection_type;
+	}
+
+	public void setSelection_type(String selection_type) {
+		this.selection_type = selection_type;
 	}
 	
 }

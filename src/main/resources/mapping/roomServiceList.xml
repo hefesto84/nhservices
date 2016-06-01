@@ -8,6 +8,8 @@
         <result property="tipo" column="tipo"/>
         <result property="categoria" column="categoria"/>
         <result property="subcategoria" column="categoria"/>
+        <result property="ingredient" column="ingredient"/>
+        <result property="ingredient_type" column="ingredient_type"/>
         <result property="titulo" column="titulo_trad"/>
         <result property="subtitulo" column="subtitulo_trad"/>
         <result property="precio" column="precio"/>
@@ -23,7 +25,11 @@
     </resultMap>
     
     <select id="list" resultMap="RoomServiceList" parameterType="java.util.Map">
-    	SELECT rsl.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM roomServiceList rsl, hotel_room_service_list hrsl, translations t, translations t1 WHERE hrsl.id_hotel = #{hotel.id} AND rsl.id = hrsl.id_room_service_list	 AND rsl.titulo LIKE t.identificador AND rsl.subtitulo LIKE t1.identificador AND t.lang LIKE #{lang} AND t1.lang LIKE #{lang};
+    	SELECT rsl.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM roomServiceList rsl, hotel_room_service_list hrsl, translations t, translations t1 WHERE hrsl.id_hotel = #{hotel.id} AND rsl.id = hrsl.id_room_service_list	 AND rsl.titulo LIKE t.identificador AND rsl.subtitulo LIKE t1.identificador AND t.lang LIKE #{lang} AND t1.lang LIKE #{lang} ORDER BY id;
+    </select>
+    
+    <select id="listOutOfHour" resultMap="RoomServiceList" parameterType="java.util.Map">
+    	SELECT rsl.*, t.traduccion as titulo_trad, t1.traduccion as subtitulo_trad FROM roomServiceList rsl, hotel_room_service_list hrsl, translations t, translations t1 WHERE hrsl.id_hotel = #{hotel.id} AND rsl.id = hrsl.id_room_service_list	AND rsl.disponible_24h = 1 AND rsl.titulo LIKE t.identificador AND rsl.subtitulo LIKE t1.identificador AND t.lang LIKE #{lang} AND t1.lang LIKE #{lang};
     </select>
     
     <select id="get" parameterType="RoomServiceList" resultMap="RoomServiceList">

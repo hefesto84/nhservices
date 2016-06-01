@@ -23,6 +23,19 @@ public class BreakfastServiceRequestsDAO extends BaseDAO{
 		return breakfastServiceRequests;
 	}
 	
+	public List<BreakfastServiceRequests> listFutureBreakfasts(){
+		List<BreakfastServiceRequests> breakfastServiceRequests = new ArrayList<BreakfastServiceRequests>();
+		SqlSession session = sql.openSession();
+		try{
+			breakfastServiceRequests = session.selectList("SqlMapBreakfastServiceRequests.listFutureBreakfasts");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e);
+		}finally{
+			session.close();
+		}
+		return breakfastServiceRequests;
+	}
+	
 	public List<BreakfastServiceRequests> listToday(){
 		List<BreakfastServiceRequests> breakfastServiceRequests = new ArrayList<BreakfastServiceRequests>();
 		SqlSession session = sql.openSession();

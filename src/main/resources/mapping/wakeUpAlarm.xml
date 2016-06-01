@@ -16,8 +16,12 @@
         SELECT * FROM wakeUpAlarm WHERE DATE(setedTime) = CURDATE();
     </select>
     
+    <select id="listFutureAlarms" resultMap="WakeUpAlarm">
+        SELECT * FROM wakeUpAlarm WHERE wakeUpTime > NOW() ORDER BY wakeUpTime;
+    </select>
+    
     <select id="listByRoom" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">
-        SELECT * FROM wakeUpAlarm WHERE room = #{room} AND DATE(wakeUpTime) > NOW();
+        SELECT * FROM wakeUpAlarm WHERE room = #{room} AND wakeUpTime > NOW();
     </select>
     
     <select id="get" parameterType="WakeUpAlarm" resultMap="WakeUpAlarm">

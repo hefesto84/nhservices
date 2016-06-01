@@ -1,10 +1,13 @@
 package es.ubiqua.nhservices.model;
 
+import java.util.List;
+
 public class RoomServiceRequestProduct {
 	
 	private int id;
 	private int quantity;
 	private String ingredients;
+	private List<RoomServiceRequestProductQuestions> questions;
 	
 	public int getId() {
 		return id;
@@ -28,6 +31,14 @@ public class RoomServiceRequestProduct {
 
 	public void setIngredients(String ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public List<RoomServiceRequestProductQuestions> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<RoomServiceRequestProductQuestions> questions) {
+		this.questions = questions;
 	}
 	
 }

@@ -17,6 +17,10 @@ public class RoomServiceRequestsManager {
 		return roomServiceRequestsDao.list();
 	}
 	
+	public List<RoomServiceRequests> listFutureRoomServices(){
+		return roomServiceRequestsDao.listFutureRoomServices();
+	}
+	
 	/*public List<WakeUpAlarm> listToday(){
 		return wakeUpAlarmDao.listToday();
 	}*/

@@ -37,12 +37,12 @@ public class BreakfastServiceJob implements Job {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					//Utils.llamadaBreakfast();
+					Utils.llamadaBreakfast();
 				}
 			});
 			t.start();
 			
-			//Utils.cronBreakfastAlerts(1);
+			Utils.cronBreakfastAlerts(1);
 			
 		}
         

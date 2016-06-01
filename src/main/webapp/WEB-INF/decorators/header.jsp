@@ -20,7 +20,7 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="<s:url value='/js/jquery-ui-datapicker-es.js'/>"></script>
 <script src="<s:url value='/js/Chart.min.js'/>"></script>
-<title>123Compare.me v.2</title>
+<title>NH Services</title>
 </head>
 <body  style="margin:1em;">
 
@@ -83,79 +83,30 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">123 Compare.Me v.2</a>
+    <a class="navbar-brand" href="#">NH Services</a>
   </div>
  
   <!-- Agrupar los enlaces de navegación, los formularios y cualquier
        otro elemento que se pueda ocultar al minimizar la barra -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="dashboard">Dashboard</a></li>
-      <!-- <li><a href="widget_configuration">Configuration</a></li>
-      <li class="dropdown">
-        <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
-          Tools <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="download_statistics">Download Statistics</a></li>
-          <li><a href="fast_price_check">Fast Price Check</a></li>
-          <li><a href="ht_manage_hotels">Manage Hotels</a></li>
-          <li><a href="ht_manage_otas">OTA Status</a></li>
-        </ul>
-      </li> -->
-      <!-- <li><a href="<s:url value='/backend/idiomas/list'/>">Idiomas</a></li> -->
-      <li><a href="<s:url value='/backend/hoteles/list'/>">Hoteles</a></li>
-      <!-- <li class="dropdown">
-        <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
-          Web Services <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li class="dropdown-submenu">
-	          <a tabindex="-1" href="#">Hotel Directory</a>
-	          <ul class="dropdown-menu">
-	            <li><a href="<s:url value='/backend/canales/list'/>">Canales</a></li>
-	            <li><a href="<s:url value='/backend/seguridad/list'/>">Seguridad</a></li>
-	            <li><a href="<s:url value='/backend/sostenibilidad/list'/>">Sostenibilidad</a></li>
-	            <li class="dropdown-submenu">
-	              <a href="#">Restaurantes</a>
-	              <ul class="dropdown-menu">
-	                  <li><a href="#">Añadir Restaurante</a></li>
-	              	<li><a href="#">Restaurantes</a></li>
-	              </ul>
-	            </li>
-	            <li><a href="<s:url value='/backend/telefonos/list'/>">Telefonos</a></li>
-	          </ul>
-	        </li>
-        </ul>
-      </li> -->
+      <li class="active"><a href="<s:url value='/backend/dashboard'/>">Dashboard</a></li>
+      <!-- <li><a href="<s:url value='/backend/hoteles/list'/>">Hoteles</a></li> -->
+      <li><a href="<s:url value='/backend/tablets/list'/>">Tablets</a></li>
+      <li><a href="<s:url value='/backend/users/list'/>">Users</a></li>
       <li class="dropdown">
         <a href="tools" class="dropdown-toggle" data-toggle="dropdown">
           Alarmas <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
-          <!-- <li class="dropdown-submenu"> -->
 	          <li><a href="<s:url value='/backend/alarms/wakeup'/>">Wake Up</a></li>
 	          <li><a href="<s:url value='/backend/alarms/roomservice'/>">Room Service</a></li>
 	          <li><a href="<s:url value='/backend/alarms/breakfastservice'/>">Breakfast Service</a></li>
-	      <!-- </li> -->
         </ul>
       </li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-	  <!--        
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          Help<b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="ht_check_dbstatus">How to check DB status</a></li>
-          <li class="divider"></li>
-          <li><a href="contact">Contact with us</a></li>
-        </ul>
-        
-      </li>
-      -->
       <li><a href="<s:url value='/login/signout'/>"><b><font color="#FF8C00">Logout</font></b></a></li>
     </ul>
   </div>

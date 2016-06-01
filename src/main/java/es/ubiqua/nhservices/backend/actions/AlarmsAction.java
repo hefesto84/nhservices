@@ -31,7 +31,7 @@ public class AlarmsAction extends ActionSupport {
 	
 	public String breakfastServiceList(){
 		
-		breakfastServiceRequests = new BreakfastServiceRequestsManager().list();
+		breakfastServiceRequests = new BreakfastServiceRequestsManager().listFutureBreakfasts();
 		
 		return SUCCESS;
 	}
@@ -53,7 +53,8 @@ public class AlarmsAction extends ActionSupport {
 	
 	public String roomServiceList(){
 		
-		roomServiceRequests = new RoomServiceRequestsManager().list();
+		//roomServiceRequests = new RoomServiceRequestsManager().list();
+		roomServiceRequests = new RoomServiceRequestsManager().listFutureRoomServices();
 		
 		return SUCCESS;
 	}
@@ -68,7 +69,7 @@ public class AlarmsAction extends ActionSupport {
 		
 		Utils.stopCronRoomService(roomServiceRequest, "roomService");
 		Utils.stopCronNoRespondRoomService(roomServiceRequest, "noRespondRoomService");
-		Utils.stopCronRoomServiceTenMinutes(roomServiceRequest, "roomServiceTenMinutes");
+		Utils.stopCronRoomServiceAlerts(roomServiceRequest, "roomServiceAlerts");
 				
 		status = "ok";
 		
@@ -92,7 +93,7 @@ public class AlarmsAction extends ActionSupport {
 	
 	public String wakeUpList(){
 		
-		wakeUpAlarms = new WakeUpAlarmManager().listToday();
+		wakeUpAlarms = new WakeUpAlarmManager().listFutureAlarms();
 		
 		return SUCCESS;
 	}

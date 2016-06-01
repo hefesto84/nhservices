@@ -19,6 +19,10 @@
         SELECT * FROM roomServiceRequests;
     </select>
     
+    <select id="listFutureRoomServices" resultMap="RoomServiceRequests">
+        SELECT * FROM roomServiceRequests WHERE requestTime >= CURDATE() ORDER BY requestTime;
+    </select>
+    
     <select id="get" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
         SELECT * FROM roomServiceRequests WHERE id = #{id};
     </select>

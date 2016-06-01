@@ -22,6 +22,10 @@ public class RoomServiceAnswersManager {
 		return roomServiceAnswersDao.listByPlato(roomServiceQuestions, lang);
 	}
 	
+	public RoomServiceAnswers getAnswerByIdEs(int id){
+		return roomServiceAnswersDao.getAnswerByIdEs(id);
+	}	
+	
 	/*public List<WakeUpAlarm> listToday(){
 		return wakeUpAlarmDao.listToday();
 	}

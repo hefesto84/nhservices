@@ -17,6 +17,10 @@ public class BreakfastServiceRequestsManager {
 		return breakfastServiceRequestsDao.list();
 	}
 	
+	public List<BreakfastServiceRequests> listFutureBreakfasts(){
+		return breakfastServiceRequestsDao.listFutureBreakfasts();
+	}
+	
 	public List<BreakfastServiceRequests> listToday(){
 		return breakfastServiceRequestsDao.listToday();
 	}

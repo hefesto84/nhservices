@@ -22,10 +22,10 @@
 			<td>
 				<s:set name="actived" value="actived"/>
 				<s:if test="%{actived==true}">
-				   <span>Alarma seteada</span> 
+				   <span>Aviso confirmado</span> 
 				</s:if>
 				<s:else>
-				   <div data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Setear alarma</div>
+				   <div data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Confirmar aviso</div>
 				</s:else>
 				<!-- <a href="<s:url value="%{'/backend/'+page+'/edit?id='+id_hotel+'&lang='+lang}"/>">Modificar</a>&nbsp;&nbsp;&nbsp;<span id="list_delete" onclick='deleteList("<s:url value="%{'/backend/'+page+'/delete?id='+id}"/>")'>Eliminar</span> -->
 			</td>

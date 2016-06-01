@@ -7,6 +7,7 @@
         <result property="id_plato" column="id_plato"/>
         <result property="id_question" column="id_question"/>
         <result property="question" column="question_t"/>
+        <result property="selection_type" column="selection_type"/>
     </resultMap>
     
     <select id="list" resultMap="RoomServiceQuestions">
@@ -16,6 +17,10 @@
     <select id="listByProduct" parameterType="java.util.Map" resultMap="RoomServiceQuestions">
         SELECT rsq.*, t.traduccion as question_t FROM roomServiceQuestions rsq, translations t WHERE rsq.id_plato = #{id} AND rsq.question LIKE t.identificador AND t.lang LIKE #{lang};
     </select>
+    
+    <select id="getByIdEs" parameterType="java.util.Map" resultMap="RoomServiceQuestions">
+        SELECT rsq.*, t.traduccion as question_t FROM roomServiceQuestions rsq, translations t WHERE rsq.id_plato = #{id_product} AND rsq.id_question = #{id_question} AND rsq.question LIKE t.identificador AND t.lang LIKE 'es';
+    </select>    
     
     <!-- <select id="get" parameterType="RoomServiceRequests" resultMap="RoomServiceRequests">
         SELECT * FROM roomServiceRequests WHERE id = #{id};

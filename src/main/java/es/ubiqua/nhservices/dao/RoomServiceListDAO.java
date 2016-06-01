@@ -29,6 +29,22 @@ public class RoomServiceListDAO extends BaseDAO{
 		return roomServiceList;
 	}
 	
+	public List<RoomServiceList> listOutOfHour(Hotel h, String lang){
+		List<RoomServiceList> roomServiceList = new ArrayList<RoomServiceList>();
+		SqlSession session = sql.openSession();
+		try{
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("hotel", h);
+			map.put("lang", lang);
+			roomServiceList = session.selectList("SqlMapRoomServiceList.listOutOfHour",map);
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(/*e.getMessage()*/e);
+		}finally{
+			session.close();
+		}
+		return roomServiceList;
+	}
+	
 	public RoomServiceList get(RoomServiceList roomServiceList){
 		SqlSession session = sql.openSession();
 		try{

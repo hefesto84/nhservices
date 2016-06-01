@@ -27,10 +27,10 @@
 			<td>
 				<s:set name="actived" value="actived"/>
 				<s:if test="%{actived==true}">
-				   <span>Alarma seteada</span> 
+				   <span>Aviso confirmado</span> 
 				</s:if>
 				<s:else>
-				   <div style="width:70% !important;" data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Setear alarma</div>
+				   <div style="width:70% !important;" data-set="true" data-id="<s:property value="id"/>" id="button_settear_alarma">Confirmar aviso</div>
 				</s:else>
 			</td>
 		</tr>

@@ -28,7 +28,6 @@ public class BreakfastAlertsJob implements Job {
 			ManagerConnectionFactory factory = new ManagerConnectionFactory(constants.dominio, "ubiqua", "ubiqua.456");
 			ManagerConnection managerConnection = factory.createManagerConnection();
 
-			
 			RoomExtension roomExtension = new RoomExtension();
 			roomExtension.setRoom(1011);
 			roomExtension = new RoomExtensionManager().get(roomExtension);

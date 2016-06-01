@@ -30,8 +30,8 @@ public class breakfast extends HttpServlet{
 		try {
 			String triggerName = "BreakfastServiceTrigger";
 			JobDetail breakfastServiceJob = JobBuilder.newJob(BreakfastServiceJob.class).withIdentity("BreakfastServiceJob", "breakfastService").build();
-			//Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "breakfastService").withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *")).build();
-			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "breakfastService").withSchedule(CronScheduleBuilder.cronSchedule("0 36 10 * * ? *")).build();
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "breakfastService").withSchedule(CronScheduleBuilder.cronSchedule("0 5 3 * * ? *")).build();
+			//Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, "breakfastService").withSchedule(CronScheduleBuilder.cronSchedule("0 36 10 * * ? *")).build();
 			Scheduler scheduler;
 			scheduler = new StdSchedulerFactory().getScheduler();
 			scheduler.start();

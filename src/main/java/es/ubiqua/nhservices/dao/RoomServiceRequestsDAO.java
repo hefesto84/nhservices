@@ -23,6 +23,19 @@ public class RoomServiceRequestsDAO extends BaseDAO{
 		return roomServiceRequests;
 	}
 	
+	public List<RoomServiceRequests> listFutureRoomServices(){
+		List<RoomServiceRequests> roomServiceRequests = new ArrayList<RoomServiceRequests>();
+		SqlSession session = sql.openSession();
+		try{
+			roomServiceRequests = session.selectList("SqlMapRoomServiceRequests.listFutureRoomServices");
+		}catch(Exception e){
+			Logger.getLogger(this.getClass()).error(e);
+		}finally{
+			session.close();
+		}
+		return roomServiceRequests;
+	}
+	
 	/*public List<WakeUpAlarm> listToday(){
 		List<WakeUpAlarm> wakeUpAlarm = new ArrayList<WakeUpAlarm>();
 		SqlSession session = sql.openSession();

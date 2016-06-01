@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SqlMapHotelLinks">
+    
+    <resultMap id="HotelLinks" type="es.ubiqua.nhservices.model.HotelLinks">
+        <result property="id" column="id"/>
+        <result property="identifier" column="identifier"/>
+        <result property="url" column="url"/>
+    </resultMap>
+    
+    <select id="list" resultMap="HotelLinks">
+        SELECT * FROM HotelLinks;
+    </select>
+    
+</mapper>
